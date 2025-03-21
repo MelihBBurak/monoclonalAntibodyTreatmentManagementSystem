@@ -153,11 +153,15 @@ const AboutScreen = () => {
         const db = Database.getInstance();
         await db.initialize();
         const data = db.getData();
+        
         // Seçilen antikora ait hastalıkları filtrele
-        const relatedDiseases = data.diseases
-          .filter(d => data.antibodies.some(ab => ab.name === value && ab.disease_id === d.id))
-          .map(d => d.name);
-        setDiseases(relatedDiseases);
+        const selectedAntibodyData = data.antibodies.find(ab => ab.name === value);
+        if (selectedAntibodyData) {
+          const relatedDiseases = data.diseases
+            .filter(d => d.id === selectedAntibodyData.disease_id)
+            .map(d => d.name);
+          setDiseases(relatedDiseases);
+        }
       } catch (error) {
         console.error('Hastalık verisi yüklenirken hata:', error);
         Alert.alert('Hata', 'Hastalık verileri yüklenirken bir hata oluştu.');
@@ -177,11 +181,23 @@ const AboutScreen = () => {
         const db = Database.getInstance();
         await db.initialize();
         const data = db.getData();
-        // Seçilen hastalığa ait ilaçları filtrele
-        const relatedDrugs = data.drugs
-          .filter(d => data.diseases.some(ds => ds.name === value && ds.id === d.disease_id))
-          .map(d => d.name);
-        setDrugs(relatedDrugs);
+        
+        // Seçilen hastalığa ve antikora ait ilaçları filtrele
+        const selectedDiseaseData = data.diseases.find(d => d.name === value);
+        const selectedAntibodyData = data.antibodies.find(ab => ab.name === selectedAntibody);
+        
+        if (selectedDiseaseData && selectedAntibodyData) {
+          const relatedDrugs = data.drugs
+            .filter(d => 
+              d.disease_id === selectedDiseaseData.id && 
+              data.antibodies.some(ab => 
+                ab.name === selectedAntibody && 
+                ab.disease_id === d.disease_id
+              )
+            )
+            .map(d => d.name);
+          setDrugs(relatedDrugs);
+        }
       } catch (error) {
         console.error('İlaç verisi yüklenirken hata:', error);
         Alert.alert('Hata', 'İlaç verileri yüklenirken bir hata oluştu.');
