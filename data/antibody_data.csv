@@ -1,0 +1,31 @@
+antibody_id,antibody_name,disease_id,disease_name,drug_id,drug_name,dosage_id,dosage_value,frequency_days
+1,Adalimumab,1,Romatoid artrit,1,Humira,1,40mg/0.4ml,14
+1,Adalimumab,2,Ankilozan spondilit,1,Humira,1,40mg/0.4ml,14
+1,Adalimumab,3,Psöriyatik artrit,1,Humira,1,40mg/0.4ml,14
+1,Adalimumab,4,Crohn hastalığı,1,Humira,1,40mg/0.4ml,14
+1,Adalimumab,5,Ülseratif kolit,1,Humira,1,40mg/0.4ml,14
+2,Certolizumab pegol,1,Romatoid artrit,2,Cimzia,2,200mg/1ml,14
+2,Certolizumab pegol,2,Ankilozan spondilit,2,Cimzia,2,200mg/1ml,14
+2,Certolizumab pegol,3,Psöriyatik artrit,2,Cimzia,2,200mg/1ml,14
+2,Certolizumab pegol,4,Crohn hastalığı,2,Cimzia,2,200mg/1ml,14
+3,Golimumab,1,Romatoid artrit,3,Simponi,3,50mg/0.5ml,28
+3,Golimumab,2,Ankilozan spondilit,3,Simponi,3,50mg/0.5ml,28
+3,Golimumab,3,Psöriyatik artrit,3,Simponi,3,50mg/0.5ml,28
+3,Golimumab,5,Ülseratif kolit,3,Simponi,3,50mg/0.5ml,28
+4,Infliximab,1,Romatoid artrit,4,Remicade,4,100mg/10ml,42
+4,Infliximab,1,Romatoid artrit,5,Inflectra,4,100mg/10ml,42
+4,Infliximab,1,Romatoid artrit,6,Remsima,4,100mg/10ml,42
+4,Infliximab,2,Ankilozan spondilit,4,Remicade,4,100mg/10ml,42
+4,Infliximab,2,Ankilozan spondilit,5,Inflectra,4,100mg/10ml,42
+4,Infliximab,2,Ankilozan spondilit,6,Remsima,4,100mg/10ml,42
+4,Infliximab,3,Psöriyatik artrit,4,Remicade,4,100mg/10ml,42
+4,Infliximab,3,Psöriyatik artrit,5,Inflectra,4,100mg/10ml,42
+4,Infliximab,3,Psöriyatik artrit,6,Remsima,4,100mg/10ml,42
+4,Infliximab,4,Crohn hastalığı,4,Remicade,4,100mg/10ml,42
+4,Infliximab,4,Crohn hastalığı,5,Inflectra,4,100mg/10ml,42
+4,Infliximab,4,Crohn hastalığı,6,Remsima,4,100mg/10ml,42
+4,Infliximab,5,Ülseratif kolit,4,Remicade,4,100mg/10ml,42
+4,Infliximab,5,Ülseratif kolit,5,Inflectra,4,100mg/10ml,42
+4,Infliximab,5,Ülseratif kolit,6,Remsima,4,100mg/10ml,42
+5,Canakinumab,6,Periyodik ateş sendromları,7,Ilaris,5,150mg/1ml,28
+5,Canakinumab,7,Sistemik Jüvenil İdiyopatik Artrit,7,Ilaris,5,150mg/1ml,28 

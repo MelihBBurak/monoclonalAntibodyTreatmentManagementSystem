@@ -1,0 +1,10 @@
+antibody_id,antibody_name,disease_id,disease_name,drug_id,drug_name,dosage_id,dosage_value,frequency_days
+1,adalimumab,1,romatoid,1,humira,1,40mg,14
+1,adalimumab,2,ankilozan,1,humira,1,40mg,14
+1,adalimumab,3,psoriyatik,1,humira,1,40mg,14
+2,infliximab,1,romatoid,2,remicade,2,100mg,28
+2,infliximab,2,ankilozan,2,remicade,2,100mg,28
+2,infliximab,4,crohn,2,remicade,2,100mg,28
+3,certolizumab,1,romatoid,3,cimzia,3,200mg,14
+3,certolizumab,2,ankilozan,3,cimzia,3,200mg,14
+3,certolizumab,5,ulseratif,3,cimzia,3,200mg,14 

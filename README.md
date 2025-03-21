@@ -1,50 +1,51 @@
-# Welcome to your Expo app 👋
+# Monoklonal Antikor Tedavi Yönetim Sistemi
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Bu uygulama, monoklonal antikor tedavisi alan hastaların tedavi süreçlerini takip etmelerine yardımcı olan bir mobil uygulamadır.
 
-## Get started
+## Özellikler
 
-1. Install dependencies
+- Hasta profil bilgilerinin kaydı
+- Tedavi bilgilerinin yönetimi
+- Doz takip sistemi
+- Takvim entegrasyonu
+- Tedavi hatırlatıcıları
 
-   ```bash
-   npm install
-   ```
+## Teknolojiler
 
-2. Start the app
+- React Native
+- Expo
+- TypeScript
+- React Navigation
+- AsyncStorage
 
-   ```bash
-    npx expo start
-   ```
+## Kurulum
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
+1. Projeyi klonlayın:
 ```bash
-npm run reset-project
+git clone [repository-url]
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. Bağımlılıkları yükleyin:
+```bash
+npm install
+```
 
-## Learn more
+3. Uygulamayı başlatın:
+```bash
+npx expo start
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+4. Expo Go uygulamasını kullanarak QR kodu okutun veya emülatörde çalıştırın.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Geliştirme
 
-## Join the community
+Projeyi geliştirmek için:
 
-Join our community of developers creating universal apps.
+1. Yeni bir branch oluşturun
+2. Değişikliklerinizi commit edin
+3. Branch'inizi push edin
+4. Pull request oluşturun
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Lisans
+
+Bu proje MIT lisansı altında lisanslanmıştır.
