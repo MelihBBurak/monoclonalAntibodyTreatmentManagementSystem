@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLocalSearchParams } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import { commonStyles } from '../utils/styles';
 
 // Tip tanımlamaları
 type Week = (number | null)[];
@@ -17,7 +18,23 @@ interface DayInfo {
 
 const { width } = Dimensions.get('window');
 
-const daysInMonth = (month: number, year: number) => new Date(year, month + 1, 0).getDate();
+const daysInMonth = (month: number, year: number): (number | null)[] => {
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const days: (number | null)[] = Array(firstDay === 0 ? 6 : firstDay - 1).fill(null);
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    days.push(day);
+  }
+
+  const remainingDays = 42 - days.length; // 6 hafta x 7 gün = 42
+  if (remainingDays > 0) {
+    days.push(...Array(remainingDays).fill(null));
+  }
+
+  return days;
+};
+
 const getFirstDayOfMonth = (month: number, year: number) => new Date(year, month, 1).getDay();
 
 const Calendar = () => {
@@ -134,110 +151,74 @@ const Calendar = () => {
 
   // Ayın günlerini hesapla
   const days = daysInMonth(currentMonth, year);
-  const firstDay = getFirstDayOfMonth(currentMonth, year);
-  const weeks: Weeks = [];
-  let week: Week = Array(firstDay === 0 ? 6 : firstDay - 1).fill(null);
-
-  for (let day = 1; day <= days; day++) {
-    week.push(day);
-    if (week.length === 7) {
-      weeks.push([...week]);
-      week = [];
-    }
-  }
-
-  if (week.length > 0) {
-    weeks.push([...week].concat(Array(7 - week.length).fill(null)));
-  }
 
   return (
     <LinearGradient
       colors={['#E8F5E9', '#FFFFFF']}
-      style={styles.container}
+      style={commonStyles.container}
     >
-      <View style={styles.headerContainer}>
-        <TouchableOpacity 
-          style={styles.navButton} 
-          onPress={() => navigateMonth(-1)}
-        >
-          <Ionicons name="chevron-back" size={24} color="#2E7D32" />
-        </TouchableOpacity>
-        <Text style={styles.header}>{monthNames[currentMonth]} 2025</Text>
-        <TouchableOpacity 
-          style={styles.navButton} 
-          onPress={() => navigateMonth(1)}
-        >
-          <Ionicons name="chevron-forward" size={24} color="#2E7D32" />
-        </TouchableOpacity>
-      </View>
-
-      <ScrollView contentContainerStyle={styles.calendarContainer}>
-        <View style={styles.week}>
-          {dayNames.map((dayName, index) => (
-            <Text key={index} style={styles.dayName}>{dayName}</Text>
-          ))}
+      <ScrollView contentContainerStyle={commonStyles.scrollContainer}>
+        <View style={commonStyles.headerContainer}>
+          <Text style={commonStyles.header}>Tedavi Takvimi</Text>
+          <Text style={commonStyles.subHeader}>Doz günlerinizi ve hatırlatmalarınızı takip edin</Text>
         </View>
-        {weeks.map((week, weekIndex) => (
-          <View key={weekIndex} style={styles.week}>
-            {week.map((day, dayIndex) => (
-              day ? (
-                <Tooltip
-                  key={dayIndex}
-                  isVisible={selectedDay === day}
-                  content={
-                    <Text style={styles.tooltipText}>
-                      {getDayInfo(day, currentMonth).descIndex >= 0 
-                        ? descriptions[getDayInfo(day, currentMonth).descIndex] 
-                        : ''}
-                    </Text>
-                  }
-                  placement="top"
-                  onClose={() => setSelectedDay(null)}
+
+        <View style={commonStyles.formContainer}>
+          <View style={styles.calendarContainer}>
+            <View style={styles.monthHeader}>
+              <TouchableOpacity onPress={() => navigateMonth(-1)}>
+                <Ionicons name="chevron-back" size={24} color="#2E7D32" />
+              </TouchableOpacity>
+              <Text style={styles.monthText}>{monthNames[currentMonth]} 2025</Text>
+              <TouchableOpacity onPress={() => navigateMonth(1)}>
+                <Ionicons name="chevron-forward" size={24} color="#2E7D32" />
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.weekDaysContainer}>
+              {dayNames.map((day, index) => (
+                <Text key={index} style={styles.weekDayText}>{day}</Text>
+              ))}
+            </View>
+
+            <View style={styles.daysContainer}>
+              {days.map((day, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={styles.dayContainer}
+                  onPress={() => day && handleDayPress(day)}
                 >
-                  <TouchableOpacity 
-                    style={[
-                      styles.dayCard,
-                      getDayInfo(day, currentMonth).imageIndex >= 0 && styles.activeDayCard
-                    ]}
-                    onPress={() => {
-                      setSelectedDay(day);
-                      handleDayPress(day);
-                    }}
-                  >
-                    <Text style={styles.dayText}>{day}</Text>
-                    {getDayInfo(day, currentMonth).imageIndex >= 0 && (
-                      <Image 
-                        source={images[getDayInfo(day, currentMonth).imageIndex]} 
-                        style={styles.image} 
-                      />
-                    )}
-                  </TouchableOpacity>
-                </Tooltip>
-              ) : (
-                <View key={dayIndex} style={styles.emptyDay} />
-              )
+                  <Text style={styles.dayText}>{day}</Text>
+                  {day && getDayInfo(day, currentMonth).imageIndex >= 0 && (
+                    <Image
+                      source={images[getDayInfo(day, currentMonth).imageIndex]}
+                      style={styles.image}
+                    />
+                  )}
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+
+          <View style={styles.legendContainer}>
+            {images.map((image, index) => (
+              <View key={index} style={styles.legendItem}>
+                <Image source={image} style={styles.legendImage} />
+                <View style={styles.legendTextContainer}>
+                  <Text style={styles.legendText}>{descriptions[index]}</Text>
+                  <Text style={styles.legendDescriptionText}>
+                    {index === 0 && 'Doz öncesi hatırlatma mesajıdır. Dozunuzu yarın almayı unutmayın.'}
+                    {index === 1 && 'Doz alım günündesiniz. Kullanım talimatlarına uyun.'}
+                    {index === 2 && 'Dozunuzu aldığınız andan itibaren 24 saat boyunca duş almamanız önerilir.'}
+                    {index === 3 && 'Sigara içmek sağlığınızı olumsuz etkiler. İçmeyin.'}
+                    {index === 4 && 'Alkol tüketimi tedavi sürecinizi olumsuz etkileyebilir. Alkol almayın.'}
+                    {index === 5 && 'Sağlıksız besinlerin tüketimi sağlığınıza zararlıdır. Sağlıklı beslenin.'}
+                    {index === 6 && 'Kalabalık ortamlarda bulunmak enfeksiyon riskini artırır. Kalabalıkta kalmayın.'}
+                  </Text>
+                </View>
+              </View>
             ))}
           </View>
-        ))}
-
-        <View style={styles.legendContainer}>
-          {images.map((image, index) => (
-            <View key={index} style={styles.legendItem}>
-              <Image source={image} style={styles.legendImage} />
-              <View style={styles.legendTextContainer}>
-                <Text style={styles.legendText}>{descriptions[index]}</Text>
-                <Text style={styles.legendDescriptionText}>
-                  {index === 0 && 'Doz öncesi hatırlatma mesajıdır. Dozunuzu yarın almayı unutmayın.'}
-                  {index === 1 && 'Doz alım günündesiniz. Kullanım talimatlarına uyun.'}
-                  {index === 2 && 'Dozunuzu aldığınız andan itibaren 24 saat boyunca duş almamanız önerilir.'}
-                  {index === 3 && 'Sigara içmek sağlığınızı olumsuz etkiler. İçmeyin.'}
-                  {index === 4 && 'Alkol tüketimi tedavi sürecinizi olumsuz etkileyebilir. Alkol almayın.'}
-                  {index === 5 && 'Sağlıksız besinlerin tüketimi sağlığınıza zararlıdır. Sağlıklı beslenin.'}
-                  {index === 6 && 'Kalabalık ortamlarda bulunmak enfeksiyon riskini artırır. Kalabalıkta kalmayın.'}
-                </Text>
-              </View>
-            </View>
-          ))}
         </View>
       </ScrollView>
 
@@ -247,13 +228,13 @@ const Calendar = () => {
         visible={isModalVisible}
         onRequestClose={() => setIsModalVisible(false)}
       >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>{selectedDay} {monthNames[currentMonth]} 2025</Text>
+        <View style={commonStyles.modalOverlay}>
+          <View style={commonStyles.modalContent}>
+            <View style={commonStyles.modalHeader}>
+              <Text style={commonStyles.modalTitle}>{selectedDay} {monthNames[currentMonth]} 2025</Text>
               <TouchableOpacity 
                 onPress={() => setIsModalVisible(false)}
-                style={styles.closeButton}
+                style={commonStyles.closeButton}
               >
                 <Ionicons name="close-circle" size={24} color="#666" />
               </TouchableOpacity>
@@ -286,15 +267,13 @@ const Calendar = () => {
               />
             </View>
 
-            <View style={styles.buttonContainer}>
-              <Pressable
-                style={[styles.button, styles.saveButton]}
-                onPress={saveNote}
-              >
-                <Text style={styles.buttonText}>Kaydet</Text>
-                <Ionicons name="save-outline" size={20} color="#FFFFFF" />
-              </Pressable>
-            </View>
+            <TouchableOpacity
+              style={commonStyles.button}
+              onPress={saveNote}
+            >
+              <Text style={commonStyles.buttonText}>Kaydet</Text>
+              <Ionicons name="save-outline" size={20} color="#FFFFFF" />
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -303,111 +282,45 @@ const Calendar = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  calendarContainer: {
     backgroundColor: '#FFFFFF',
-    padding: Platform.select({
-      web: 20,
-      default: 15
-    }),
-    ...Platform.select({
-      web: {
-        maxWidth: 1200,
-        marginHorizontal: 'auto',
-      },
-      default: {}
-    }),
+    borderRadius: 15,
+    padding: 15,
+    marginBottom: 20,
   },
-  navButton: {
-    padding: 8,
-    borderRadius: 20,
-    backgroundColor: '#F5F5F5',
+  monthHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
   },
-  header: {
+  monthText: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#2E7D32',
   },
-  calendarContainer: {
-    padding: Platform.select({
-      web: 30,
-      default: 15
-    }),
-    ...Platform.select({
-      web: {
-        maxWidth: 1200,
-        marginHorizontal: 'auto',
-      },
-      default: {}
-    }),
-  },
-  week: {
+  weekDaysContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 10,
   },
-  dayName: {
+  weekDayText: {
     width: 40,
     textAlign: 'center',
-    fontWeight: 'bold',
-    color: '#2E7D32',
+    color: '#666',
     fontSize: 14,
   },
-  dayCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: Platform.select({
-      web: 12,
-      default: 10
-    }),
-    padding: Platform.select({
-      web: 10,
-      default: 8
-    }),
-    width: Platform.select({
-      web: 50,
-      default: 40
-    }),
-    height: Platform.select({
-      web: 70,
-      default: 60
-    }),
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 2,
-    ...Platform.select({
-      web: {
-        cursor: 'pointer',
-        transition: 'all 0.2s',
-        ':hover': {
-          transform: 'scale(1.05)',
-        },
-      },
-      default: {
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 0,
-          height: 1,
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 2,
-        elevation: 2,
-      }
-    }),
+  daysContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
-  activeDayCard: {
-    backgroundColor: '#E8F5E9',
-    borderWidth: 2,
-    borderColor: '#2E7D32',
-  },
-  emptyDay: {
+  dayContainer: {
     width: 40,
     height: 60,
     marginHorizontal: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   dayText: {
     color: '#333',
@@ -418,13 +331,6 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     marginTop: 5,
-  },
-  tooltipText: {
-    color: '#2E7D32',
-    fontSize: 14,
-    padding: 8,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 8,
   },
   legendContainer: {
     marginTop: 20,
@@ -466,115 +372,36 @@ const styles = StyleSheet.create({
     color: '#666',
     marginTop: 4,
   },
-  modalOverlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    borderRadius: Platform.select({
-      web: 25,
-      default: 20
-    }),
-    padding: Platform.select({
-      web: 30,
-      default: 20
-    }),
-    width: Platform.select({
-      web: '60%',
-      default: '90%'
-    }),
-    maxHeight: '80%',
-    ...Platform.select({
-      web: {
-        maxWidth: 800,
-      },
-      default: {}
-    }),
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#2E7D32',
-  },
-  closeButton: {
-    padding: 5,
-  },
   modalMessageContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
-    padding: 15,
-    backgroundColor: '#E8F5E9',
-    borderRadius: 10,
   },
   modalImage: {
-    width: 40,
-    height: 40,
-    marginRight: 15,
+    width: 100,
+    height: 100,
+    marginBottom: 10,
   },
   modalMessage: {
-    flex: 1,
-    fontSize: 16,
-    color: '#2E7D32',
+    fontSize: 18,
+    color: '#333',
+    textAlign: 'center',
   },
   noteContainer: {
     marginBottom: 20,
   },
   noteLabel: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#2E7D32',
-    marginBottom: 8,
+    color: '#666',
+    marginBottom: 5,
   },
   noteInput: {
-    width: '100%',
-    height: 100,
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
+    backgroundColor: '#F5F5F5',
     borderRadius: 10,
-    padding: 10,
-    textAlignVertical: 'top',
+    padding: 12,
     fontSize: 16,
     color: '#333',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  button: {
-    backgroundColor: '#2E7D32',
-    borderRadius: 30,
-    padding: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-  },
-  saveButton: {
-    backgroundColor: '#2E7D32',
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginRight: 8,
+    minHeight: 100,
+    textAlignVertical: 'top',
   },
 });
 

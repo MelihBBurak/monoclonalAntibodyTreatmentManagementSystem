@@ -1,31 +1,44 @@
-antibody_id,antibody_name,disease_id,disease_name,drug_id,drug_name,dosage_id,dosage_value,frequency_days
-1,Adalimumab,1,Romatoid artrit,1,Humira,1,40mg/0.4ml,14
-1,Adalimumab,2,Ankilozan spondilit,1,Humira,1,40mg/0.4ml,14
-1,Adalimumab,3,Psöriyatik artrit,1,Humira,1,40mg/0.4ml,14
-1,Adalimumab,4,Crohn hastalığı,1,Humira,1,40mg/0.4ml,14
-1,Adalimumab,5,Ülseratif kolit,1,Humira,1,40mg/0.4ml,14
-2,Certolizumab pegol,1,Romatoid artrit,2,Cimzia,2,200mg/1ml,14
-2,Certolizumab pegol,2,Ankilozan spondilit,2,Cimzia,2,200mg/1ml,14
-2,Certolizumab pegol,3,Psöriyatik artrit,2,Cimzia,2,200mg/1ml,14
-2,Certolizumab pegol,4,Crohn hastalığı,2,Cimzia,2,200mg/1ml,14
-3,Golimumab,1,Romatoid artrit,3,Simponi,3,50mg/0.5ml,28
-3,Golimumab,2,Ankilozan spondilit,3,Simponi,3,50mg/0.5ml,28
-3,Golimumab,3,Psöriyatik artrit,3,Simponi,3,50mg/0.5ml,28
-3,Golimumab,5,Ülseratif kolit,3,Simponi,3,50mg/0.5ml,28
-4,Infliximab,1,Romatoid artrit,4,Remicade,4,100mg/10ml,42
-4,Infliximab,1,Romatoid artrit,5,Inflectra,4,100mg/10ml,42
-4,Infliximab,1,Romatoid artrit,6,Remsima,4,100mg/10ml,42
-4,Infliximab,2,Ankilozan spondilit,4,Remicade,4,100mg/10ml,42
-4,Infliximab,2,Ankilozan spondilit,5,Inflectra,4,100mg/10ml,42
-4,Infliximab,2,Ankilozan spondilit,6,Remsima,4,100mg/10ml,42
-4,Infliximab,3,Psöriyatik artrit,4,Remicade,4,100mg/10ml,42
-4,Infliximab,3,Psöriyatik artrit,5,Inflectra,4,100mg/10ml,42
-4,Infliximab,3,Psöriyatik artrit,6,Remsima,4,100mg/10ml,42
-4,Infliximab,4,Crohn hastalığı,4,Remicade,4,100mg/10ml,42
-4,Infliximab,4,Crohn hastalığı,5,Inflectra,4,100mg/10ml,42
-4,Infliximab,4,Crohn hastalığı,6,Remsima,4,100mg/10ml,42
-4,Infliximab,5,Ülseratif kolit,4,Remicade,4,100mg/10ml,42
-4,Infliximab,5,Ülseratif kolit,5,Inflectra,4,100mg/10ml,42
-4,Infliximab,5,Ülseratif kolit,6,Remsima,4,100mg/10ml,42
-5,Canakinumab,6,Periyodik ateş sendromları,7,Ilaris,5,150mg/1ml,28
-5,Canakinumab,7,Sistemik Jüvenil İdiyopatik Artrit,7,Ilaris,5,150mg/1ml,28 
+antibody_id,antibody_name,antibody_description,disease_id,disease_name,disease_description,drug_id,drug_name,drug_description,dosage_id,dosage_value,frequency_days,drug_prospectus_links
+1,Adalimumab,TNF-alfa inhibitörü,1,Romatoid Artrit,Otoimmün eklem hastalığı,1,AMGEVİTA,Adalimumab biosimilar,1,40mg/0.4ml,14,"https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/amgetivatemizkt_6ef678d8-bfd9-43ac-889b-6affa9e5a3d3.pdf,https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/amgetivakt_f781bd38-a5c5-45d6-a3c0-555d6240411e.pdf,https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/amgevita4008kt_a5500d80-ac15-4925-b388-e340fa23f934.pdf"
+1,Adalimumab,TNF-alfa inhibitörü,1,Romatoid Artrit,Otoimmün eklem hastalığı,2,HUMİRA,Adalimumab orijinal,1,40mg/0.4ml,14,"https://titck.gov.tr/storage/Archive/2022/kubKtAttachments/Humira20kTincelendi28.09.2022_a8f22251-086f-49a5-859f-b6831f52f6bf.pdf,https://titck.gov.tr/storage/Archive/2022/kubKtAttachments/humira40enjektrktincelendi28.09.2022_d7e8079e-0231-4091-af3e-d2688e214913.pdf,https://titck.gov.tr/storage/kubKtAttachments/mfgfGfWpZDnrK5.pdf,https://titck.gov.tr/storage/Archive/2022/kubKtAttachments/humirakt40incelendi28.09.2022_106dc431-3d40-4f5f-83c9-a411d06656dd.pdf"
+1,Adalimumab,TNF-alfa inhibitörü,1,Romatoid Artrit,Otoimmün eklem hastalığı,3,HYRIMOZ,Adalimumab biosimilar,1,40mg/0.4ml,14,"https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/SonKTEnjektr_4fab1a4b-f379-4089-b570-7e391d0fadca.pdf,https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/OnaylKTkalem_3eea0ccf-ff5a-4761-a19b-e4559b5f5edc.pdf"
+1,Adalimumab,TNF-alfa inhibitörü,2,Ankilozan Spondilit,Otoimmün omurga hastalığı,1,AMGEVİTA,Adalimumab biosimilar,1,40mg/0.4ml,14
+1,Adalimumab,TNF-alfa inhibitörü,2,Ankilozan Spondilit,Otoimmün omurga hastalığı,2,HUMİRA,Adalimumab orijinal,1,40mg/0.4ml,14
+1,Adalimumab,TNF-alfa inhibitörü,2,Ankilozan Spondilit,Otoimmün omurga hastalığı,3,HYRIMOZ,Adalimumab biosimilar,1,40mg/0.4ml,14
+1,Adalimumab,TNF-alfa inhibitörü,3,Psöriyatik Artrit,Psöriyazis ile ilişkili eklem hastalığı,1,AMGEVİTA,Adalimumab biosimilar,1,40mg/0.4ml,14
+1,Adalimumab,TNF-alfa inhibitörü,3,Psöriyatik Artrit,Psöriyazis ile ilişkili eklem hastalığı,2,HUMİRA,Adalimumab orijinal,1,40mg/0.4ml,14
+1,Adalimumab,TNF-alfa inhibitörü,3,Psöriyatik Artrit,Psöriyazis ile ilişkili eklem hastalığı,3,HYRIMOZ,Adalimumab biosimilar,1,40mg/0.4ml,14
+1,Adalimumab,TNF-alfa inhibitörü,4,Crohn Hastalığı,İnflamatuar bağırsak hastalığı,1,AMGEVİTA,Adalimumab biosimilar,1,40mg/0.4ml,14
+1,Adalimumab,TNF-alfa inhibitörü,4,Crohn Hastalığı,İnflamatuar bağırsak hastalığı,2,HUMİRA,Adalimumab orijinal,1,40mg/0.4ml,14
+1,Adalimumab,TNF-alfa inhibitörü,4,Crohn Hastalığı,İnflamatuar bağırsak hastalığı,3,HYRIMOZ,Adalimumab biosimilar,1,40mg/0.4ml,14
+1,Adalimumab,TNF-alfa inhibitörü,5,Ülseratif Kolit,İnflamatuar bağırsak hastalığı,1,AMGEVİTA,Adalimumab biosimilar,1,40mg/0.4ml,14
+1,Adalimumab,TNF-alfa inhibitörü,5,Ülseratif Kolit,İnflamatuar bağırsak hastalığı,2,HUMİRA,Adalimumab orijinal,1,40mg/0.4ml,14
+1,Adalimumab,TNF-alfa inhibitörü,5,Ülseratif Kolit,İnflamatuar bağırsak hastalığı,3,HYRIMOZ,Adalimumab biosimilar,1,40mg/0.4ml,14
+1,Adalimumab,TNF-alfa inhibitörü,6,Üveit,Göz içi inflamasyonu,1,AMGEVİTA,Adalimumab biosimilar,1,40mg/0.4ml,14
+1,Adalimumab,TNF-alfa inhibitörü,6,Üveit,Göz içi inflamasyonu,2,HUMİRA,Adalimumab orijinal,1,40mg/0.4ml,14
+1,Adalimumab,TNF-alfa inhibitörü,6,Üveit,Göz içi inflamasyonu,3,HYRIMOZ,Adalimumab biosimilar,1,40mg/0.4ml,14
+1,Adalimumab,TNF-alfa inhibitörü,7,Hidradenitis Suppurativa,Kronik cilt hastalığı,1,AMGEVİTA,Adalimumab biosimilar,1,40mg/0.4ml,14
+1,Adalimumab,TNF-alfa inhibitörü,7,Hidradenitis Suppurativa,Kronik cilt hastalığı,2,HUMİRA,Adalimumab orijinal,1,40mg/0.4ml,14
+1,Adalimumab,TNF-alfa inhibitörü,7,Hidradenitis Suppurativa,Kronik cilt hastalığı,3,HYRIMOZ,Adalimumab biosimilar,1,40mg/0.4ml,14
+2,Certolizumab pegol,TNF-alfa inhibitörü,1,Romatoid Artrit,Otoimmün eklem hastalığı,4,CIMZIA,Certolizumab pegol orijinal,2,200mg/1ml,14,"https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/ek9temizkt_d9c99a8a-dac1-45e9-9e1c-7593fa784209.pdf"
+2,Certolizumab pegol,TNF-alfa inhibitörü,2,Ankilozan Spondilit,Otoimmün omurga hastalığı,4,CIMZIA,Certolizumab pegol orijinal,2,200mg/1ml,14,"https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/ek9temizkt_d9c99a8a-dac1-45e9-9e1c-7593fa784209.pdf"
+2,Certolizumab pegol,TNF-alfa inhibitörü,3,Psöriyatik Artrit,Psöriyazis ile ilişkili eklem hastalığı,4,CIMZIA,Certolizumab pegol orijinal,2,200mg/1ml,14,"https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/ek9temizkt_d9c99a8a-dac1-45e9-9e1c-7593fa784209.pdf"
+2,Certolizumab pegol,TNF-alfa inhibitörü,4,Crohn Hastalığı,İnflamatuar bağırsak hastalığı,4,CIMZIA,Certolizumab pegol orijinal,2,200mg/1ml,14,"https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/ek9temizkt_d9c99a8a-dac1-45e9-9e1c-7593fa784209.pdf"
+3,Golimumab,TNF-alfa inhibitörü,1,Romatoid Artrit,Otoimmün eklem hastalığı,5,SIMPONI,Golimumab orijinal,3,50mg/0.5ml,28,"https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/yaynlanacaksimponienjektr1312ktbaxter_8346333e-2b69-426a-80e9-0e410c02df89.pdf,https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/yaynlanacaksimponipen1312ktbaxter_167429d9-906f-45e1-8aea-ee9f3dacc091.pdf"
+3,Golimumab,TNF-alfa inhibitörü,2,Ankilozan Spondilit,Otoimmün omurga hastalığı,5,SIMPONI,Golimumab orijinal,3,50mg/0.5ml,28,"https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/yaynlanacaksimponienjektr1312ktbaxter_8346333e-2b69-426a-80e9-0e410c02df89.pdf,https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/yaynlanacaksimponipen1312ktbaxter_167429d9-906f-45e1-8aea-ee9f3dacc091.pdf"
+3,Golimumab,TNF-alfa inhibitörü,3,Psöriyatik Artrit,Psöriyazis ile ilişkili eklem hastalığı,5,SIMPONI,Golimumab orijinal,3,50mg/0.5ml,28,"https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/yaynlanacaksimponienjektr1312ktbaxter_8346333e-2b69-426a-80e9-0e410c02df89.pdf,https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/yaynlanacaksimponipen1312ktbaxter_167429d9-906f-45e1-8aea-ee9f3dacc091.pdf"
+3,Golimumab,TNF-alfa inhibitörü,5,Ülseratif Kolit,İnflamatuar bağırsak hastalığı,5,SIMPONI,Golimumab orijinal,3,50mg/0.5ml,28,"https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/yaynlanacaksimponienjektr1312ktbaxter_8346333e-2b69-426a-80e9-0e410c02df89.pdf,https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/yaynlanacaksimponipen1312ktbaxter_167429d9-906f-45e1-8aea-ee9f3dacc091.pdf"
+4,Infliximab,TNF-alfa inhibitörü,1,Romatoid Artrit,Otoimmün eklem hastalığı,6,AVSOLA,Infliximab biosimilar,4,100mg/10ml,42,"https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/FirmaKT06.04.2023UYGUNyaynlanacak_9ad31be9-3f92-4b26-9c71-3bf0b5d63174.pdf"
+4,Infliximab,TNF-alfa inhibitörü,1,Romatoid Artrit,Otoimmün eklem hastalığı,7,IXIFI,Infliximab biosimilar,4,100mg/10ml,42,"https://titck.gov.tr/storage/Archive/2025/kubKtAttachments/ONAYLIKT_12_03_2025.pdf"
+4,Infliximab,TNF-alfa inhibitörü,1,Romatoid Artrit,Otoimmün eklem hastalığı,8,REMICADE,Infliximab orijinal,4,100mg/10ml,42,"https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/yaynlanacakremicade1312kt_e94b0acd-3a55-4d39-bc1e-ec67ba521178.pdf"
+4,Infliximab,TNF-alfa inhibitörü,1,Romatoid Artrit,Otoimmün eklem hastalığı,9,TOLURİNE,Infliximab biosimilar,4,100mg/10ml,42,"https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/uygunKT_c014a2e7-3d37-4626-88df-3d98f39c6bc2.pdf"
+4,Infliximab,TNF-alfa inhibitörü,2,Ankilozan Spondilit,Otoimmün omurga hastalığı,6,AVSOLA,Infliximab biosimilar,4,100mg/10ml,42,"https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/FirmaKT06.04.2023UYGUNyaynlanacak_9ad31be9-3f92-4b26-9c71-3bf0b5d63174.pdf"
+4,Infliximab,TNF-alfa inhibitörü,2,Ankilozan Spondilit,Otoimmün omurga hastalığı,7,IXIFI,Infliximab biosimilar,4,100mg/10ml,42,"https://titck.gov.tr/storage/Archive/2025/kubKtAttachments/ONAYLIKT_12_03_2025.pdf"
+4,Infliximab,TNF-alfa inhibitörü,2,Ankilozan Spondilit,Otoimmün omurga hastalığı,8,REMICADE,Infliximab orijinal,4,100mg/10ml,42,"https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/yaynlanacakremicade1312kt_e94b0acd-3a55-4d39-bc1e-ec67ba521178.pdf"
+4,Infliximab,TNF-alfa inhibitörü,2,Ankilozan Spondilit,Otoimmün omurga hastalığı,9,TOLURİNE,Infliximab biosimilar,4,100mg/10ml,42,"https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/uygunKT_c014a2e7-3d37-4626-88df-3d98f39c6bc2.pdf"
+4,Infliximab,TNF-alfa inhibitörü,3,Psöriyatik Artrit,Psöriyazis ile ilişkili eklem hastalığı,6,AVSOLA,Infliximab biosimilar,4,100mg/10ml,42,"https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/FirmaKT06.04.2023UYGUNyaynlanacak_9ad31be9-3f92-4b26-9c71-3bf0b5d63174.pdf"
+4,Infliximab,TNF-alfa inhibitörü,3,Psöriyatik Artrit,Psöriyazis ile ilişkili eklem hastalığı,7,IXIFI,Infliximab biosimilar,4,100mg/10ml,42,"https://titck.gov.tr/storage/Archive/2025/kubKtAttachments/ONAYLIKT_12_03_2025.pdf"
+4,Infliximab,TNF-alfa inhibitörü,3,Psöriyatik Artrit,Psöriyazis ile ilişkili eklem hastalığı,8,REMICADE,Infliximab orijinal,4,100mg/10ml,42,"https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/yaynlanacakremicade1312kt_e94b0acd-3a55-4d39-bc1e-ec67ba521178.pdf"
+4,Infliximab,TNF-alfa inhibitörü,3,Psöriyatik Artrit,Psöriyazis ile ilişkili eklem hastalığı,9,TOLURİNE,Infliximab biosimilar,4,100mg/10ml,42,"https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/uygunKT_c014a2e7-3d37-4626-88df-3d98f39c6bc2.pdf"
+5,Canakinumab,IL-1β inhibitörü,8,Gut,Metabolik eklem hastalığı,10,ILARIS,Canakinumab orijinal,150mg/1ml,28,"https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/uygunktilarisenjzelti_fe65e5d3-165c-40a0-b427-ac7083854469.pdf,https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/uygunktilaristoz_eda29fb1-636b-41b1-9ec7-68106cb98871.pdf"
+5,Canakinumab,IL-1β inhibitörü,10,Gut,Metabolik eklem hastalığı,11,ILARIS,Canakinumab orijinal,150mg/1ml,28,"https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/uygunktilarisenjzelti_fe65e5d3-165c-40a0-b427-ac7083854469.pdf,https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/uygunktilaristoz_eda29fb1-636b-41b1-9ec7-68106cb98871.pdf" 

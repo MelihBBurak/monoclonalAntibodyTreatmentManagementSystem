@@ -1,42 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, ScrollView, Modal, Dimensions, Alert } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, ScrollView, Modal, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { Calendar, DateData } from 'react-native-calendars';
-
-// Statik veri
-const MOCK_DATA = {
-  antibodies: ['Adalimumab', 'Infliximab', 'Rituximab'],
-  diseases: {
-    'Adalimumab': ['Romatoid Artrit', 'Crohn Hastalığı'],
-    'Infliximab': ['Ülseratif Kolit', 'Ankilozan Spondilit'],
-    'Rituximab': ['Lenfoma', 'Lösemi']
-  },
-  drugs: {
-    'Romatoid Artrit': ['Humira', 'Amgevita'],
-    'Crohn Hastalığı': ['Humira'],
-    'Ülseratif Kolit': ['Remicade'],
-    'Ankilozan Spondilit': ['Remicade'],
-    'Lenfoma': ['MabThera'],
-    'Lösemi': ['MabThera']
-  },
-  dosages: {
-    'Humira': ['40mg/0.4ml', '80mg/0.8ml'],
-    'Amgevita': ['40mg/0.8ml'],
-    'Remicade': ['100mg'],
-    'MabThera': ['500mg', '1000mg']
-  },
-  frequencies: {
-    '40mg/0.4ml': 14,
-    '80mg/0.8ml': 28,
-    '40mg/0.8ml': 14,
-    '100mg': 56,
-    '500mg': 180,
-    '1000mg': 180
-  }
-};
+import { Database } from '../utils/database';
+import { commonStyles } from '../utils/styles';
 
 const AboutScreen = () => {
   const router = useRouter();
@@ -61,8 +31,21 @@ const AboutScreen = () => {
   const [startDate, setStartDate] = useState<Date>(new Date());
 
   useEffect(() => {
-    // CSV okuma yerine statik veriyi kullan
-    setAntibodies(MOCK_DATA.antibodies);
+    const initializeData = async () => {
+      try {
+        const db = Database.getInstance();
+        await db.initialize();
+        const data = db.getData();
+        // Benzersiz antikor isimlerini al
+        const uniqueAntibodies = [...new Set(data.antibodies.map(ab => ab.name))];
+        setAntibodies(uniqueAntibodies);
+      } catch (error) {
+        console.error('Veri başlatma hatası:', error);
+        Alert.alert('Hata', 'Veriler yüklenirken bir hata oluştu.');
+      }
+    };
+
+    initializeData();
   }, []);
 
   const handleAgeChange = (text: string) => {
@@ -159,37 +142,73 @@ const AboutScreen = () => {
     }
   };
 
-  const handleAntibodyChange = (value: string) => {
+  const handleAntibodyChange = async (value: string) => {
     setSelectedAntibody(value);
     setSelectedDisease('');
     setSelectedDrug('');
     setSelectedDosage('');
     setSelectedFrequency(0);
     if (value) {
-      setDiseases(MOCK_DATA.diseases[value] || []);
+      try {
+        const db = Database.getInstance();
+        await db.initialize();
+        const data = db.getData();
+        // Seçilen antikora ait hastalıkları filtrele
+        const relatedDiseases = data.diseases
+          .filter(d => data.antibodies.some(ab => ab.name === value && ab.disease_id === d.id))
+          .map(d => d.name);
+        setDiseases(relatedDiseases);
+      } catch (error) {
+        console.error('Hastalık verisi yüklenirken hata:', error);
+        Alert.alert('Hata', 'Hastalık verileri yüklenirken bir hata oluştu.');
+      }
     } else {
       setDiseases([]);
     }
   };
 
-  const handleDiseaseChange = (value: string) => {
+  const handleDiseaseChange = async (value: string) => {
     setSelectedDisease(value);
     setSelectedDrug('');
     setSelectedDosage('');
     setSelectedFrequency(0);
     if (value) {
-      setDrugs(MOCK_DATA.drugs[value] || []);
+      try {
+        const db = Database.getInstance();
+        await db.initialize();
+        const data = db.getData();
+        // Seçilen hastalığa ait ilaçları filtrele
+        const relatedDrugs = data.drugs
+          .filter(d => data.diseases.some(ds => ds.name === value && ds.id === d.disease_id))
+          .map(d => d.name);
+        setDrugs(relatedDrugs);
+      } catch (error) {
+        console.error('İlaç verisi yüklenirken hata:', error);
+        Alert.alert('Hata', 'İlaç verileri yüklenirken bir hata oluştu.');
+      }
     } else {
       setDrugs([]);
     }
   };
 
-  const handleDrugChange = (value: string) => {
+  const handleDrugChange = async (value: string) => {
     setSelectedDrug(value);
     setSelectedDosage('');
     setSelectedFrequency(0);
     if (value) {
-      setDosages(MOCK_DATA.dosages[value] || []);
+      try {
+        const db = Database.getInstance();
+        await db.initialize();
+        const data = db.getData();
+        // Seçilen ilaca ait dozajları filtrele
+        const relatedDosages = data.dosages
+          .filter(d => data.drugs.some(dr => dr.name === value && dr.dosage_id === d.id))
+          .map(d => d.value);
+        setDosages(relatedDosages);
+      } catch (error) {
+        console.error('Dozaj verisi yüklenirken hata:', error);
+        Alert.alert('Hata', 'Dozaj verileri yüklenirken bir hata oluştu.');
+      }
     } else {
       setDosages([]);
     }
@@ -198,7 +217,12 @@ const AboutScreen = () => {
   const handleDosageChange = (value: string) => {
     setSelectedDosage(value);
     if (value) {
-      setSelectedFrequency(MOCK_DATA.frequencies[value] || 0);
+      // Doz sıklığını belirle
+      let frequency = 14; // Varsayılan değer
+      if (value.includes('80mg')) frequency = 28;
+      if (value.includes('100mg')) frequency = 56;
+      if (value.includes('150mg') || value.includes('200mg')) frequency = 180;
+      setSelectedFrequency(frequency);
     } else {
       setSelectedFrequency(0);
     }
@@ -271,33 +295,32 @@ const AboutScreen = () => {
   return (
     <LinearGradient
       colors={['#E8F5E9', '#FFFFFF']}
-      style={styles.container}
+      style={commonStyles.container}
     >
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.headerContainer}>
-          <Ionicons name="person-add-outline" size={40} color="#2E7D32" />
-          <Text style={styles.header}>Profil Bilgileri</Text>
-          <Text style={styles.subHeader}>Lütfen bilgilerinizi eksiksiz doldurun</Text>
+      <ScrollView contentContainerStyle={commonStyles.scrollContainer}>
+        <View style={commonStyles.headerContainer}>
+          <Text style={commonStyles.header}>Tedavi Bilgileri</Text>
+          <Text style={commonStyles.subHeader}>Lütfen tedavi bilgilerinizi girin</Text>
         </View>
 
-        <View style={styles.formContainer}>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Kişisel Bilgiler</Text>
-            <View style={styles.inputRow}>
-              <View style={[styles.inputContainer, { flex: 1, marginRight: 10 }]}>
-                <Text style={styles.inputLabel}>Ad</Text>
+        <View style={commonStyles.formContainer}>
+          <View style={commonStyles.inputGroup}>
+            <Text style={commonStyles.label}>Kişisel Bilgiler</Text>
+            <View style={commonStyles.inputRow}>
+              <View style={[commonStyles.inputContainer, { flex: 1, marginRight: 10 }]}>
+                <Text style={commonStyles.inputLabel}>Ad</Text>
                 <TextInput
-                  style={styles.input}
+                  style={commonStyles.input}
                   placeholder="Adınız"
                   value={name}
                   onChangeText={setName}
                   placeholderTextColor="#999"
                 />
               </View>
-              <View style={[styles.inputContainer, { flex: 1 }]}>
-                <Text style={styles.inputLabel}>Soyad</Text>
+              <View style={[commonStyles.inputContainer, { flex: 1 }]}>
+                <Text style={commonStyles.inputLabel}>Soyad</Text>
                 <TextInput
-                  style={styles.input}
+                  style={commonStyles.input}
                   placeholder="Soyadınız"
                   value={surname}
                   onChangeText={setSurname}
@@ -305,10 +328,11 @@ const AboutScreen = () => {
                 />
               </View>
             </View>
-            <View style={styles.inputContainer}>
-              <Text style={styles.inputLabel}>Yaş (1-99)</Text>
+
+            <View style={commonStyles.inputContainer}>
+              <Text style={commonStyles.inputLabel}>Yaş (1-99)</Text>
               <TextInput
-                style={styles.input}
+                style={commonStyles.input}
                 placeholder="Yaşınız"
                 value={age}
                 onChangeText={handleAgeChange}
@@ -319,14 +343,14 @@ const AboutScreen = () => {
             </View>
           </View>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Tedavi Bilgileri</Text>
-            <View style={styles.inputContainer}>
-              <Text style={styles.inputLabel}>Antikor</Text>
-              <View style={styles.pickerContainer}>
+          <View style={commonStyles.inputGroup}>
+            <Text style={commonStyles.label}>Tedavi Bilgileri</Text>
+            <View style={commonStyles.inputContainer}>
+              <Text style={commonStyles.inputLabel}>Antikor</Text>
+              <View style={commonStyles.pickerContainer}>
                 <Picker
                   selectedValue={selectedAntibody}
-                  style={styles.picker}
+                  style={commonStyles.picker}
                   onValueChange={(value: string) => handleAntibodyChange(value)}
                   dropdownIconColor="#2E7D32"
                 >
@@ -338,12 +362,12 @@ const AboutScreen = () => {
               </View>
             </View>
 
-            <View style={styles.inputContainer}>
-              <Text style={styles.inputLabel}>Hastalık</Text>
-              <View style={styles.pickerContainer}>
+            <View style={commonStyles.inputContainer}>
+              <Text style={commonStyles.inputLabel}>Hastalık</Text>
+              <View style={commonStyles.pickerContainer}>
                 <Picker
                   selectedValue={selectedDisease}
-                  style={styles.picker}
+                  style={commonStyles.picker}
                   onValueChange={(value: string) => handleDiseaseChange(value)}
                   dropdownIconColor="#2E7D32"
                   enabled={!!selectedAntibody}
@@ -356,13 +380,13 @@ const AboutScreen = () => {
               </View>
             </View>
 
-            <View style={styles.inputContainer}>
-              <Text style={styles.inputLabel}>Hastalık Süresi</Text>
-              <View style={styles.durationContainer}>
-                <View style={[styles.pickerContainer, { flex: 1, marginRight: 10 }]}>
+            <View style={commonStyles.inputContainer}>
+              <Text style={commonStyles.inputLabel}>Hastalık Süresi</Text>
+              <View style={commonStyles.durationContainer}>
+                <View style={[commonStyles.pickerContainer, { flex: 1, marginRight: 10 }]}>
                   <Picker
                     selectedValue={diseaseDurationType}
-                    style={styles.picker}
+                    style={commonStyles.picker}
                     onValueChange={(itemValue: 'year' | 'month' | 'week') => {
                       setDiseaseDurationType(itemValue);
                       setDiseaseDuration('');
@@ -374,9 +398,9 @@ const AboutScreen = () => {
                     <Picker.Item label="Hafta" value="week" />
                   </Picker>
                 </View>
-                <View style={[styles.inputContainer, { flex: 2 }]}>
+                <View style={[commonStyles.inputContainer, { flex: 2 }]}>
                   <TextInput
-                    style={styles.input}
+                    style={commonStyles.input}
                     placeholder={
                       diseaseDurationType === 'year' ? "1-99 yıl" :
                       diseaseDurationType === 'month' ? "1-12 ay" :
@@ -392,12 +416,12 @@ const AboutScreen = () => {
               </View>
             </View>
 
-            <View style={styles.inputContainer}>
-              <Text style={styles.inputLabel}>İlaç</Text>
-              <View style={styles.pickerContainer}>
+            <View style={commonStyles.inputContainer}>
+              <Text style={commonStyles.inputLabel}>İlaç</Text>
+              <View style={commonStyles.pickerContainer}>
                 <Picker
                   selectedValue={selectedDrug}
-                  style={styles.picker}
+                  style={commonStyles.picker}
                   onValueChange={(value: string) => handleDrugChange(value)}
                   dropdownIconColor="#2E7D32"
                   enabled={!!selectedDisease}
@@ -410,12 +434,12 @@ const AboutScreen = () => {
               </View>
             </View>
 
-            <View style={styles.inputContainer}>
-              <Text style={styles.inputLabel}>Dozaj</Text>
-              <View style={styles.pickerContainer}>
+            <View style={commonStyles.inputContainer}>
+              <Text style={commonStyles.inputLabel}>Dozaj</Text>
+              <View style={commonStyles.pickerContainer}>
                 <Picker
                   selectedValue={selectedDosage}
-                  style={styles.picker}
+                  style={commonStyles.picker}
                   onValueChange={(value: string) => handleDosageChange(value)}
                   dropdownIconColor="#2E7D32"
                   enabled={!!selectedDrug}
@@ -428,13 +452,13 @@ const AboutScreen = () => {
               </View>
             </View>
 
-            <View style={styles.inputContainer}>
-              <Text style={styles.inputLabel}>İlaç Kullanım Süresi</Text>
-              <View style={styles.durationContainer}>
-                <View style={[styles.pickerContainer, { flex: 1, marginRight: 10 }]}>
+            <View style={commonStyles.inputContainer}>
+              <Text style={commonStyles.inputLabel}>İlaç Kullanım Süresi</Text>
+              <View style={commonStyles.durationContainer}>
+                <View style={[commonStyles.pickerContainer, { flex: 1, marginRight: 10 }]}>
                   <Picker
                     selectedValue={drugDurationType}
-                    style={styles.picker}
+                    style={commonStyles.picker}
                     onValueChange={(itemValue: 'year' | 'month' | 'week') => {
                       setDrugDurationType(itemValue);
                       setDrugDuration('');
@@ -446,9 +470,9 @@ const AboutScreen = () => {
                     <Picker.Item label="Hafta" value="week" />
                   </Picker>
                 </View>
-                <View style={[styles.inputContainer, { flex: 2 }]}>
+                <View style={[commonStyles.inputContainer, { flex: 2 }]}>
                   <TextInput
-                    style={styles.input}
+                    style={commonStyles.input}
                     placeholder={
                       drugDurationType === 'year' ? "1-99 yıl" :
                       drugDurationType === 'month' ? "1-12 ay" :
@@ -465,25 +489,25 @@ const AboutScreen = () => {
             </View>
           </View>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Doz Bilgileri</Text>
-            <View style={styles.inputContainer}>
-              <Text style={styles.inputLabel}>Doz Başlangıç Günü</Text>
+          <View style={commonStyles.inputGroup}>
+            <Text style={commonStyles.label}>Doz Bilgileri</Text>
+            <View style={commonStyles.inputContainer}>
+              <Text style={commonStyles.inputLabel}>Doz Başlangıç Günü</Text>
               <TouchableOpacity 
-                style={styles.dateButton}
+                style={commonStyles.dateButton}
                 onPress={() => setIsCalendarVisible(true)}
               >
-                <Text style={[styles.dateButtonText, !selectedStartDate && styles.placeholder]}>
+                <Text style={[commonStyles.dateButtonText, !selectedStartDate && commonStyles.placeholder]}>
                   {selectedStartDate ? formatDate(selectedStartDate) : 'Tarih Seçin'}
                 </Text>
                 <Ionicons name="calendar-outline" size={20} color="#2E7D32" />
               </TouchableOpacity>
             </View>
 
-            <View style={styles.inputContainer}>
-              <Text style={styles.inputLabel}>Doz Sıklığı</Text>
-              <View style={styles.frequencyInfo}>
-                <Text style={styles.frequencyText}>
+            <View style={commonStyles.inputContainer}>
+              <Text style={commonStyles.inputLabel}>Doz Sıklığı</Text>
+              <View style={commonStyles.frequencyInfo}>
+                <Text style={commonStyles.frequencyText}>
                   {selectedDrug ? 
                     `${selectedFrequency} günde bir` : 
                     'Lütfen önce ilaç seçin'}
@@ -493,8 +517,8 @@ const AboutScreen = () => {
           </View>
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>Devam Et</Text>
+        <TouchableOpacity style={commonStyles.button} onPress={handleSubmit}>
+          <Text style={commonStyles.buttonText}>Devam Et</Text>
           <Ionicons name="arrow-forward" size={20} color="#FFFFFF" />
         </TouchableOpacity>
       </ScrollView>
@@ -504,9 +528,9 @@ const AboutScreen = () => {
         transparent={true}
         animationType="slide"
       >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Doz Başlangıç Günü Seçin</Text>
+        <View style={commonStyles.modalOverlay}>
+          <View style={commonStyles.modalContent}>
+            <Text style={commonStyles.modalTitle}>Doz Başlangıç Günü Seçin</Text>
             <Calendar
               onDayPress={(day: DateData) => {
                 const selectedDate = new Date(day.dateString);
@@ -531,10 +555,10 @@ const AboutScreen = () => {
               }}
             />
             <TouchableOpacity
-              style={styles.closeButton}
+              style={commonStyles.closeButton}
               onPress={() => setIsCalendarVisible(false)}
             >
-              <Text style={styles.closeButtonText}>Kapat</Text>
+              <Text style={commonStyles.closeButtonText}>Kapat</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -542,162 +566,5 @@ const AboutScreen = () => {
     </LinearGradient>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollContainer: {
-    padding: 20,
-  },
-  headerContainer: {
-    alignItems: 'center',
-    marginBottom: 30,
-  },
-  header: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#2E7D32',
-    marginTop: 10,
-  },
-  subHeader: {
-    fontSize: 16,
-    color: '#666',
-    marginTop: 5,
-  },
-  formContainer: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 15,
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  inputGroup: {
-    marginBottom: 25,
-  },
-  label: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#2E7D32',
-    marginBottom: 15,
-  },
-  inputRow: {
-    flexDirection: 'row',
-    marginBottom: 15,
-  },
-  inputContainer: {
-    marginBottom: 15,
-  },
-  inputLabel: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 5,
-  },
-  input: {
-    backgroundColor: '#F5F5F5',
-    borderRadius: 10,
-    padding: 12,
-    fontSize: 16,
-    color: '#333',
-  },
-  pickerContainer: {
-    backgroundColor: '#F5F5F5',
-    borderRadius: 10,
-    overflow: 'hidden',
-  },
-  picker: {
-    height: 50,
-  },
-  durationContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  dateButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#F5F5F5',
-    borderRadius: 10,
-    padding: 12,
-  },
-  dateButtonText: {
-    fontSize: 16,
-    color: '#333',
-  },
-  placeholder: {
-    color: '#999',
-  },
-  frequencyInfo: {
-    backgroundColor: '#F5F5F5',
-    borderRadius: 10,
-    padding: 12,
-  },
-  frequencyText: {
-    fontSize: 16,
-    color: '#333',
-    textAlign: 'center',
-  },
-  button: {
-    backgroundColor: '#2E7D32',
-    borderRadius: 30,
-    padding: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 20,
-    marginBottom: 30,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginRight: 10,
-  },
-  modalOverlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 20,
-    width: '90%',
-    maxHeight: '80%',
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#2E7D32',
-    marginBottom: 15,
-    textAlign: 'center',
-  },
-  closeButton: {
-    backgroundColor: '#95A5A6',
-    padding: 12,
-    borderRadius: 10,
-    marginTop: 15,
-  },
-  closeButtonText: {
-    color: 'white',
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-});
 
 export default AboutScreen;

@@ -3,82 +3,9 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Platf
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
+import { getAntibodyLabel, getDiseaseLabel, getDrugLabel, getDosageLabel } from '../utils/labels';
 
 const { width } = Dimensions.get('window');
-
-const getAntibodyLabel = (value: string) => {
-  switch (value) {
-    case 'adalimumab':
-      return 'Adalimumab';
-    case 'certolizumab':
-      return 'Certolizumab pegol';
-    case 'golimumab':
-      return 'Golimumab';
-    case 'infliximab':
-      return 'Infliximab';
-    case 'canakinumab':
-      return 'Canakinumab';
-    default:
-      return value;
-  }
-};
-
-const getDiseaseLabel = (value: string) => {
-  switch (value) {
-    case 'romatoid':
-      return 'Romatoid artrit';
-    case 'ankilozan':
-      return 'Ankilozan spondilit';
-    case 'psoriyatik':
-      return 'Psöriyatik artrit';
-    case 'crohn':
-      return 'Crohn hastalığı';
-    case 'ulseratif':
-      return 'Ülseratif Kolit';
-    default:
-      return value;
-  }
-};
-
-const getDrugLabel = (value: string) => {
-  switch (value) {
-    case 'humira':
-      return 'Humira';
-    case 'cimzia':
-      return 'Cimzia';
-    case 'simponi':
-      return 'Simponi';
-    case 'remicade':
-      return 'Remicade';
-    case 'inflectra':
-      return 'Inflectra';
-    case 'remsima':
-      return 'Remsima';
-    case 'ilaris':
-      return 'Ilaris';
-    default:
-      return value;
-  }
-};
-
-const getDosageLabel = (value: string) => {
-  switch (value) {
-    case '40mg':
-      return '40mg/0.4ml';
-    case '200mg':
-      return '200mg/1ml';
-    case '50mg':
-      return '50mg/0.5ml';
-    case '100mg':
-      return '100mg/10ml';
-    case '400mg':
-      return '400mg/40ml';
-    case '150mg':
-      return '150mg/1ml';
-    default:
-      return value;
-  }
-};
 
 const ProfileScreen: React.FC = () => {
   const params = useLocalSearchParams();
