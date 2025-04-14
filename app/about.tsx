@@ -8,6 +8,49 @@ import { Calendar, DateData } from 'react-native-calendars';
 import { Database } from '../utils/database';
 import { commonStyles } from '../utils/styles';
 
+// Statik veri
+const MOCK_DATA = {
+  antibodies: ['Adalimumab', 'Certolizumab Pegol', 'Golimumab', 'Infliximab', 'Canakinumab'],
+  diseases: {
+    'Adalimumab': ['Romatoid Artrit', 'Ankilozan Spondilit', 'Psöriyatik Artrit', 'Crohn Hastalığı', 'Ülseratif Kolit', 'Üveit', 'Hidradenitis Suppurativa'],
+    'Certolizumab Pegol': ['Romatoid Artrit', 'Ankilozan Spondilit', 'Psöriyatik Artrit', 'Crohn Hastalığı'],
+    'Golimumab': ['Romatoid Artrit', 'Ankilozan Spondilit', 'Psöriyatik Artrit'],
+    'Infliximab': ['Romatoid Artrit', 'Ankilozan Spondilit', 'Psöriyatik Artrit'],
+    'Canakinumab': ['Gut Hastalığı']
+  },
+  drugs: {
+    'Romatoid Artrit': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ', 'CIMZIA', 'SIMPONI', 'AVSOLA', 'RIXIFI', 'REMICADE', 'TOLURİNE'],
+    'Ankilozan Spondilit': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ', 'CIMZIA', 'SIMPONI', 'AVSOLA', 'RIXIFI', 'REMICADE', 'TOLURİNE'],
+    'Psöriyatik Artrit': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ', 'CIMZIA', 'SIMPONI', 'AVSOLA', 'RIXIFI', 'REMICADE', 'TOLURİNE'],
+    'Crohn Hastalığı': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ', 'CIMZIA'],
+    'Ülseratif Kolit': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ'],
+    'Üveit': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ'],
+    'Hidradenitis Suppurativa': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ'],
+    'Gut Hastalığı': ['ILARIS']
+  },
+  dosages: {
+    'AMGEVİTA': ['40mg/0.4ml', '80mg/0.8ml'],
+    'HUMİRA': ['40mg/0.4ml', '80mg/0.8ml'],
+    'HYRIMOZ': ['40mg/0.4ml', '80mg/0.8ml'],
+    'CIMZIA': ['200mg/1ml'],
+    'SIMPONI': ['50mg/0.5ml', '100mg/1ml'],
+    'AVSOLA': ['100mg/10ml'],
+    'RIXIFI': ['100mg/10ml'],
+    'REMICADE': ['100mg/10ml'],
+    'TOLURİNE': ['100mg/10ml'],
+    'ILARIS': ['150mg/1ml']
+  },
+  frequencies: {
+    '40mg/0.4ml': 14,
+    '80mg/0.8ml': 28,
+    '200mg/1ml': 28,
+    '50mg/0.5ml': 28,
+    '100mg/1ml': 28,
+    '100mg/10ml': 56,
+    '150mg/1ml': 28
+  }
+};
+
 const AboutScreen = () => {
   const router = useRouter();
   const [antibodies, setAntibodies] = useState<string[]>([]);
@@ -142,66 +185,29 @@ const AboutScreen = () => {
     }
   };
 
-  const handleAntibodyChange = async (value: string) => {
+  const handleAntibodyChange = (value: string) => {
     setSelectedAntibody(value);
     setSelectedDisease('');
     setSelectedDrug('');
     setSelectedDosage('');
     setSelectedFrequency(0);
     if (value) {
-      try {
-        const db = Database.getInstance();
-        await db.initialize();
-        const data = db.getData();
-        
-        // Seçilen antikora ait hastalıkları filtrele
-        const selectedAntibodyData = data.antibodies.find(ab => ab.name === value);
-        if (selectedAntibodyData) {
-          const relatedDiseases = data.diseases
-            .filter(d => d.id === selectedAntibodyData.disease_id)
-            .map(d => d.name);
-          setDiseases(relatedDiseases);
-        }
-      } catch (error) {
-        console.error('Hastalık verisi yüklenirken hata:', error);
-        Alert.alert('Hata', 'Hastalık verileri yüklenirken bir hata oluştu.');
-      }
+      setDiseases(MOCK_DATA.diseases[value] || []);
     } else {
       setDiseases([]);
     }
   };
 
-  const handleDiseaseChange = async (value: string) => {
+  const handleDiseaseChange = (value: string) => {
     setSelectedDisease(value);
     setSelectedDrug('');
     setSelectedDosage('');
     setSelectedFrequency(0);
-    if (value) {
-      try {
-        const db = Database.getInstance();
-        await db.initialize();
-        const data = db.getData();
-        
-        // Seçilen hastalığa ve antikora ait ilaçları filtrele
-        const selectedDiseaseData = data.diseases.find(d => d.name === value);
-        const selectedAntibodyData = data.antibodies.find(ab => ab.name === selectedAntibody);
-        
-        if (selectedDiseaseData && selectedAntibodyData) {
-          const relatedDrugs = data.drugs
-            .filter(d => 
-              d.disease_id === selectedDiseaseData.id && 
-              data.antibodies.some(ab => 
-                ab.name === selectedAntibody && 
-                ab.disease_id === d.disease_id
-              )
-            )
-            .map(d => d.name);
-          setDrugs(relatedDrugs);
-        }
-      } catch (error) {
-        console.error('İlaç verisi yüklenirken hata:', error);
-        Alert.alert('Hata', 'İlaç verileri yüklenirken bir hata oluştu.');
-      }
+    
+    if (value && selectedAntibody) {
+      // Seçilen hastalık ve antikor için uygun ilaçları filtrele
+      const availableDrugs = MOCK_DATA.drugs[value] || [];
+      setDrugs(availableDrugs);
     } else {
       setDrugs([]);
     }
@@ -341,6 +347,8 @@ const AboutScreen = () => {
                   value={surname}
                   onChangeText={setSurname}
                   placeholderTextColor="#999"
+                  autoCapitalize="words"
+                  autoCorrect={false}
                 />
               </View>
             </View>
