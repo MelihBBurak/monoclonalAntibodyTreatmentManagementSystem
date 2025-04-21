@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Modal, Pressable, TextInput, Dimensions, Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Modal, Pressable, TextInput, Dimensions, Platform, Linking } from 'react-native';
 import Tooltip, { TooltipProps } from 'react-native-walkthrough-tooltip';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -41,6 +41,9 @@ const Calendar = () => {
   const params = useLocalSearchParams();
   const startDate = params.startDate as string;
   const frequency = parseInt(params.frequency as string, 10);
+  const selectedDrug = params.selectedDrug as string;
+  const selectedDosage = params.selectedDosage as string;
+  const selectedForm = params.selectedForm as string;
 
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -151,6 +154,76 @@ const Calendar = () => {
 
   // Ayın günlerini hesapla
   const days = daysInMonth(currentMonth, year);
+
+  const openProspectus = () => {
+    if (selectedDrug === 'HUMİRA') {
+      if (selectedDosage === '20mg/0.2ml') {
+        Linking.openURL('https://titck.gov.tr/storage/Archive/2025/kubKtAttachments/ek41312humirapfs2002kttemiz_26_03_2025.pdf');
+      } else if (selectedDosage === '40mg/0.4ml') {
+        if (selectedForm === 'enjektor') {
+          Linking.openURL('https://titck.gov.tr/storage/Archive/2025/kubKtAttachments/humirapfs4004kttemiz_26_03_2025.pdf');
+        } else if (selectedForm === 'kalem') {
+          Linking.openURL('https://titck.gov.tr/storage/Archive/2025/kubKtAttachments/humirapen401312kttemiz_26_03_2025.pdf');
+        }
+      } else if (selectedDosage === '40mg/0.8ml') {
+        Linking.openURL('https://titck.gov.tr/storage/kubKtAttachments/mfgfGfWpZDnrK5.pdf');
+      }
+    } else if (selectedDrug === 'AMGEVİTA') {
+      if (selectedDosage === '20mg/0.4ml') {
+        Linking.openURL('https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/amgetivatemizkt_6ef678d8-bfd9-43ac-889b-6affa9e5a3d3.pdf');
+      } else if (selectedDosage === '40mg/0.8ml') {
+        if (selectedForm === 'enjektor') {
+          Linking.openURL('https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/amgetivakt_f781bd38-a5c5-45d6-a3c0-555d6240411e.pdf');
+        } else if (selectedForm === 'kalem') {
+          Linking.openURL('https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/amgevita4008kt_a5500d80-ac15-4925-b388-e340fa23f934.pdf');
+        }
+      }
+    } else if (selectedDrug === 'HYRIMOZ') {
+      if (selectedDosage === '40mg/0.8ml') {
+        if (selectedForm === 'enjektor') {
+          Linking.openURL('https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/SonKTEnjektr_4fab1a4b-f379-4089-b570-7e391d0fadca.pdf');
+        } else if (selectedForm === 'kalem') {
+          Linking.openURL('https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/OnaylKTkalem_3eea0ccf-ff5a-4761-a19b-e4559b5f5edc.pdf');
+        }
+      }
+    } else if (selectedDrug === 'CIMZIA') {
+      if (selectedDosage === '200mg/1ml') {
+        Linking.openURL('https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/ek9temizkt_d9c99a8a-dac1-45e9-9e1c-7593fa784209.pdf');
+      }
+    } else if (selectedDrug === 'SIMPONI') {
+      if (selectedDosage === '50mg/0.5ml') {
+        if (selectedForm === 'enjektor') {
+          Linking.openURL('https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/yaynlanacaksimponienjektr1312ktbaxter_8346333e-2b69-426a-80e9-0e410c02df89.pdf');
+        } else if (selectedForm === 'kalem') {
+          Linking.openURL('https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/yaynlanacaksimponipen1312ktbaxter_167429d9-906f-45e1-8aea-ee9f3dacc091.pdf');
+        }
+      }
+    } else if (selectedDrug === 'AVSOLA') {
+      if (selectedDosage === '100mg/10ml') {
+        Linking.openURL('https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/FirmaKT06.04.2023UYGUNyaynlanacak_9ad31be9-3f92-4b26-9c71-3bf0b5d63174.pdf');
+      }
+    } else if (selectedDrug === 'IXIFI') {
+      if (selectedDosage === '100mg/10ml') {
+        Linking.openURL('https://titck.gov.tr/storage/Archive/2025/kubKtAttachments/ONAYLIKT_12_03_2025.pdf');
+      }
+    } else if (selectedDrug === 'REMICADE') {
+      if (selectedDosage === '100mg/10ml') {
+        Linking.openURL('https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/yaynlanacakremicade1312kt_e94b0acd-3a55-4d39-bc1e-ec67ba521178.pdf');
+      }
+    } else if (selectedDrug === 'TOLURİNE') {
+      if (selectedDosage === '100mg/10ml') {
+        Linking.openURL('https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/uygunKT_c014a2e7-3d37-4626-88df-3d98f39c6bc2.pdf');
+      }
+    } else if (selectedDrug === 'ILARIS') {
+      if (selectedDosage === '150mg/1ml') {
+        if (selectedForm === 'enjektor') {
+          Linking.openURL('https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/uygunktilarisenjzelti_fe65e5d3-165c-40a0-b427-ac7083854469.pdf');
+        } else if (selectedForm === 'toz') {
+          Linking.openURL('https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/uygunktilaristoz_eda29fb1-636b-41b1-9ec7-68106cb98871.pdf');
+        }
+      }
+    }
+  };
 
   return (
     <LinearGradient
@@ -267,13 +340,23 @@ const Calendar = () => {
               />
             </View>
 
-            <TouchableOpacity
-              style={commonStyles.button}
-              onPress={saveNote}
-            >
-              <Text style={commonStyles.buttonText}>Kaydet</Text>
-              <Ionicons name="save-outline" size={20} color="#FFFFFF" />
-            </TouchableOpacity>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={[commonStyles.button, styles.prospectusButton]}
+                onPress={openProspectus}
+              >
+                <Text style={commonStyles.buttonText}>Prospektüs</Text>
+                <Ionicons name="document-text-outline" size={20} color="#FFFFFF" />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={commonStyles.button}
+                onPress={saveNote}
+              >
+                <Text style={commonStyles.buttonText}>Kaydet</Text>
+                <Ionicons name="save-outline" size={20} color="#FFFFFF" />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
@@ -402,6 +485,15 @@ const styles = StyleSheet.create({
     color: '#333',
     minHeight: 100,
     textAlignVertical: 'top',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+  },
+  prospectusButton: {
+    backgroundColor: '#4CAF50',
+    marginRight: 10,
   },
 });
 

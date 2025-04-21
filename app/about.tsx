@@ -19,9 +19,9 @@ const MOCK_DATA = {
     'Canakinumab': ['Gut Hastalığı']
   },
   drugs: {
-    'Romatoid Artrit': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ', 'CIMZIA', 'SIMPONI', 'AVSOLA', 'RIXIFI', 'REMICADE', 'TOLURİNE'],
-    'Ankilozan Spondilit': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ', 'CIMZIA', 'SIMPONI', 'AVSOLA', 'RIXIFI', 'REMICADE', 'TOLURİNE'],
-    'Psöriyatik Artrit': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ', 'CIMZIA', 'SIMPONI', 'AVSOLA', 'RIXIFI', 'REMICADE', 'TOLURİNE'],
+    'Romatoid Artrit': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ', 'CIMZIA', 'SIMPONI', 'AVSOLA', 'IXIFI', 'REMICADE', 'TOLURİNE'],
+    'Ankilozan Spondilit': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ', 'CIMZIA', 'SIMPONI', 'AVSOLA', 'IXIFI', 'REMICADE', 'TOLURİNE'],
+    'Psöriyatik Artrit': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ', 'CIMZIA', 'SIMPONI', 'AVSOLA', 'IXIFI', 'REMICADE', 'TOLURİNE'],
     'Crohn Hastalığı': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ', 'CIMZIA'],
     'Ülseratif Kolit': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ'],
     'Üveit': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ'],
@@ -29,13 +29,13 @@ const MOCK_DATA = {
     'Gut Hastalığı': ['ILARIS']
   },
   dosages: {
-    'AMGEVİTA': ['40mg/0.4ml', '80mg/0.8ml'],
-    'HUMİRA': ['40mg/0.4ml', '80mg/0.8ml'],
-    'HYRIMOZ': ['40mg/0.4ml', '80mg/0.8ml'],
+    'AMGEVİTA': ['20mg/0.4ml', '40mg/0.8ml'],
+    'HUMİRA': ['20mg/0.2ml', '40mg/0.4ml', '40mg/0.8ml'],
+    'HYRIMOZ': ['40mg/0.8ml'],
     'CIMZIA': ['200mg/1ml'],
-    'SIMPONI': ['50mg/0.5ml', '100mg/1ml'],
+    'SIMPONI': ['50mg/0.5ml'],
     'AVSOLA': ['100mg/10ml'],
-    'RIXIFI': ['100mg/10ml'],
+    'IXIFI': ['100mg/10ml'],
     'REMICADE': ['100mg/10ml'],
     'TOLURİNE': ['100mg/10ml'],
     'ILARIS': ['150mg/1ml']
@@ -72,6 +72,8 @@ const AboutScreen = () => {
   const [isCalendarVisible, setIsCalendarVisible] = useState<boolean>(false);
   const [selectedStartDate, setSelectedStartDate] = useState<string>('');
   const [startDate, setStartDate] = useState<Date>(new Date());
+  const [isFormSelectionVisible, setIsFormSelectionVisible] = useState<boolean>(false);
+  const [selectedForm, setSelectedForm] = useState<string>('');
 
   useEffect(() => {
     const initializeData = async () => {
@@ -218,19 +220,7 @@ const AboutScreen = () => {
     setSelectedDosage('');
     setSelectedFrequency(0);
     if (value) {
-      try {
-        const db = Database.getInstance();
-        await db.initialize();
-        const data = db.getData();
-        // Seçilen ilaca ait dozajları filtrele
-        const relatedDosages = data.dosages
-          .filter(d => data.drugs.some(dr => dr.name === value && dr.dosage_id === d.id))
-          .map(d => d.value);
-        setDosages(relatedDosages);
-      } catch (error) {
-        console.error('Dozaj verisi yüklenirken hata:', error);
-        Alert.alert('Hata', 'Dozaj verileri yüklenirken bir hata oluştu.');
-      }
+      setDosages(MOCK_DATA.dosages[value] || []);
     } else {
       setDosages([]);
     }
@@ -245,8 +235,20 @@ const AboutScreen = () => {
       if (value.includes('100mg')) frequency = 56;
       if (value.includes('150mg') || value.includes('200mg')) frequency = 180;
       setSelectedFrequency(frequency);
+
+      // Form seçimi gerektiren ilaçlar için kontrol
+      if ((selectedDrug === 'AMGEVİTA' && value === '40mg/0.8ml') || 
+          (selectedDrug === 'HUMİRA' && (value === '40mg/0.4ml' || value === '40mg/0.8ml')) ||
+          (selectedDrug === 'HYRIMOZ' && value === '40mg/0.8ml') ||
+          (selectedDrug === 'SIMPONI' && value === '50mg/0.5ml') ||
+          (selectedDrug === 'ILARIS' && value === '150mg/1ml')) {
+        setIsFormSelectionVisible(true);
+      } else {
+        setIsFormSelectionVisible(false);
+      }
     } else {
       setSelectedFrequency(0);
+      setIsFormSelectionVisible(false);
     }
   };
 
@@ -475,6 +477,24 @@ const AboutScreen = () => {
                 </Picker>
               </View>
             </View>
+
+            {isFormSelectionVisible && (
+              <View style={commonStyles.inputContainer}>
+                <Text style={commonStyles.inputLabel}>Form Seçimi</Text>
+                <View style={commonStyles.pickerContainer}>
+                  <Picker
+                    selectedValue={selectedForm}
+                    style={commonStyles.picker}
+                    onValueChange={(value: string) => setSelectedForm(value)}
+                    dropdownIconColor="#2E7D32"
+                  >
+                    <Picker.Item label="Form Seçin" value="" />
+                    <Picker.Item label="Enjektör" value="enjektor" />
+                    <Picker.Item label="Kalem" value="kalem" />
+                  </Picker>
+                </View>
+              </View>
+            )}
 
             <View style={commonStyles.inputContainer}>
               <Text style={commonStyles.inputLabel}>İlaç Kullanım Süresi</Text>

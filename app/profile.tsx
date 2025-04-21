@@ -20,6 +20,7 @@ const ProfileScreen: React.FC = () => {
       pathname: '/calendar',
       params: {
         ...params,
+        selectedForm: params.selectedForm || '',
       }
     });
   };
@@ -66,6 +67,17 @@ const ProfileScreen: React.FC = () => {
               <Text style={styles.infoLabel}>Dozaj:</Text>
               <Text style={styles.infoValue}>{getDosageLabel(params.selectedDosage as string)}</Text>
             </View>
+            {params.selectedForm && (
+              <View style={styles.infoRow}>
+                <Text style={styles.infoLabel}>Form:</Text>
+                <Text style={styles.infoValue}>
+                  {params.selectedForm === 'enjektor' ? 'Enjektör' : 
+                   params.selectedForm === 'toz' ? 'Toz' : 
+                   params.selectedForm === 'kalem' ? 'Kalem' : 
+                   params.selectedForm}
+                </Text>
+              </View>
+            )}
           </View>
 
           <View style={styles.card}>
@@ -75,11 +87,23 @@ const ProfileScreen: React.FC = () => {
             </View>
             <View style={styles.infoRow}>
               <Text style={styles.infoLabel}>Hastalık Süresi:</Text>
-              <Text style={styles.infoValue}>{params.diseaseDuration as string}</Text>
+              <Text style={styles.infoValue}>
+                {params.diseaseDuration as string} {
+                  params.diseaseDurationType === 'year' ? 'yıl' :
+                  params.diseaseDurationType === 'month' ? 'ay' :
+                  'gün'
+                }
+              </Text>
             </View>
             <View style={styles.infoRow}>
               <Text style={styles.infoLabel}>İlaç Kullanım Süresi:</Text>
-              <Text style={styles.infoValue}>{params.drugDuration as string}</Text>
+              <Text style={styles.infoValue}>
+                {params.drugDuration as string} {
+                  params.drugDurationType === 'year' ? 'yıl' :
+                  params.drugDurationType === 'month' ? 'ay' :
+                  'gün'
+                }
+              </Text>
             </View>
           </View>
 
