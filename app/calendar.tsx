@@ -7,26 +7,35 @@ import { useLocalSearchParams } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { commonStyles } from '../utils/styles';
 
-// Tip tanımlamaları
+// Tip tanımlamaları - Takvim bileşeninin veri yapılarını tanımlar
 type Week = (number | null)[];
 type Weeks = Week[];
 
+// Gün bilgilerini tutan interface - her gün için gösterilecek ikon ve açıklama indekslerini saklar
 interface DayInfo {
-  imageIndex: number;
-  descIndex: number;
+  imageIndex: number;  // Gösterilecek ikonun indeksi
+  descIndex: number;   // Gösterilecek açıklamanın indeksi
 }
 
 const { width } = Dimensions.get('window');
 
+/**
+ * Belirli bir ayın günlerini hesaplar ve takvim görünümü için düzenler
+ * @param month - Ay (0-11 arası)
+ * @param year - Yıl
+ * @returns Ayın günlerini içeren dizi (boş günler null ile doldurulur)
+ */
 const daysInMonth = (month: number, year: number): (number | null)[] => {
-  const firstDay = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const days: (number | null)[] = Array(firstDay === 0 ? 6 : firstDay - 1).fill(null);
+  const firstDay = new Date(year, month, 1).getDay(); // Ayın ilk gününün haftanın hangi günü olduğu
+  const daysInMonth = new Date(year, month + 1, 0).getDate(); // Ayın toplam gün sayısı
+  const days: (number | null)[] = Array(firstDay === 0 ? 6 : firstDay - 1).fill(null); // İlk haftanın boş günleri
 
+  // Ayın günlerini ekle
   for (let day = 1; day <= daysInMonth; day++) {
     days.push(day);
   }
 
+  // 6 haftalık görünüm için kalan günleri null ile doldur
   const remainingDays = 42 - days.length; // 6 hafta x 7 gün = 42
   if (remainingDays > 0) {
     days.push(...Array(remainingDays).fill(null));
@@ -35,32 +44,43 @@ const daysInMonth = (month: number, year: number): (number | null)[] => {
   return days;
 };
 
+/**
+ * Ayın ilk gününün haftanın hangi günü olduğunu döndürür
+ */
 const getFirstDayOfMonth = (month: number, year: number) => new Date(year, month, 1).getDay();
 
 const Calendar = () => {
+  // URL parametrelerinden gelen verileri al
   const params = useLocalSearchParams();
-  const startDate = params.startDate as string;
-  const frequency = parseInt(params.frequency as string, 10);
-  const selectedDrug = params.selectedDrug as string;
-  const selectedDosage = params.selectedDosage as string;
-  const selectedForm = params.selectedForm as string;
+  const startDate = params.startDate as string;        // Tedavi başlangıç tarihi
+  const frequency = parseInt(params.frequency as string, 10); // Doz sıklığı (gün)
+  const selectedDrug = params.selectedDrug as string;  // Seçilen ilaç
+  const selectedDosage = params.selectedDosage as string; // Seçilen dozaj
+  const selectedForm = params.selectedForm as string;  // Seçilen form (enjektör/kalem)
 
-  const [selectedDay, setSelectedDay] = useState<number | null>(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [note, setNote] = useState('');
-  const [savedNotes, setSavedNotes] = useState<{[key: string]: string}>({});
+  // State tanımlamaları
+  const [selectedDay, setSelectedDay] = useState<number | null>(null); // Seçilen gün
+  const [isModalVisible, setIsModalVisible] = useState(false); // Modal görünürlüğü
+  const [note, setNote] = useState(''); // Günlük not
+  const [savedNotes, setSavedNotes] = useState<{[key: string]: string}>({}); // Kaydedilen notlar
   const [currentMonth, setCurrentMonth] = useState(() => {
     const date = new Date(startDate);
-    return date.getMonth();
+    return date.getMonth(); // Başlangıç tarihinin ayını al
   });
-  const year = 2025;
+  const year = 2025; // Sabit yıl
 
+  // Türkçe ay isimleri
   const monthNames = [
     'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
     'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
   ];
 
-  // Doz günlerini hesapla (seçilen başlangıç gününden itibaren seçilen sıklıkta)
+  /**
+   * Belirli bir günün doz günü olup olmadığını hesaplar
+   * @param day - Gün
+   * @param month - Ay
+   * @returns Doz günü indeksi (-1: doz günü değil, 0: doz günü, diğer: doz öncesi günler)
+   */
   const calculateDoseDays = (day: number, month: number) => {
     const currentDate = new Date(2025, month, day);
     const startDateObj = new Date(startDate);
@@ -68,10 +88,15 @@ const Calendar = () => {
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
     
     if (diffDays < 0) return -1; // Başlangıç tarihinden önceki günler için
-    return diffDays % frequency;
+    return diffDays % frequency; // Doz sıklığına göre kalan gün
   };
 
-  // Gün için gösterilecek ikonu ve açıklamayı belirle
+  /**
+   * Gün için gösterilecek ikonu ve açıklamayı belirler
+   * @param day - Gün
+   * @param month - Ay
+   * @returns Gün bilgisi (ikon ve açıklama indeksleri)
+   */
   const getDayInfo = (day: number, month: number) => {
     const doseDay = calculateDoseDays(day, month);
     
@@ -84,16 +109,18 @@ const Calendar = () => {
     return { imageIndex: -1, descIndex: -1 }; // Normal gün
   };
 
+  // Takvimde gösterilecek ikonlar
   const images = [
-    require('../assets/images/warning.webp'),
-    require('../assets/images/syringe.png'),
-    require('../assets/images/donottakeashower.jpeg'),
-    require('../assets/images/donotsmoke.jpeg'),
-    require('../assets/images/donotdrinkalcohol.jpeg'),
-    require('../assets/images/junkfood.jpeg'),
-    require('../assets/images/donotstayinpeople.jpeg')
+    require('../assets/images/warning.webp'),        // Doz öncesi uyarı
+    require('../assets/images/syringe.png'),         // Doz günü
+    require('../assets/images/donottakeashower.jpeg'), // Duş almayın
+    require('../assets/images/donotsmoke.jpeg'),     // Sigara içmeyin
+    require('../assets/images/donotdrinkalcohol.jpeg'), // Alkol almayın
+    require('../assets/images/junkfood.jpeg'),       // Sağlıklı beslenme
+    require('../assets/images/donotstayinpeople.jpeg') // Kalabalıkta kalmayın
   ];
 
+  // İkonların açıklamaları
   const descriptions = [
     'Doz Öncesi Hatırlatma',
     'Doz Günü',
@@ -104,12 +131,17 @@ const Calendar = () => {
     'Kalabalıkta Kalmayın'
   ];
 
+  // Haftanın günleri
   const dayNames = ['Pzt', 'Sal', 'Çar', 'Per', 'Cuma', 'Cmt', 'Pzr'];
 
+  // Component yüklendiğinde kaydedilen notları yükle
   useEffect(() => {
     loadNotes();
   }, []);
 
+  /**
+   * AsyncStorage'dan kaydedilen notları yükler
+   */
   const loadNotes = async () => {
     try {
       const notes = await AsyncStorage.getItem('calendar_notes');
@@ -121,6 +153,9 @@ const Calendar = () => {
     }
   };
 
+  /**
+   * Günlük notu kaydeder
+   */
   const saveNote = async () => {
     if (selectedDay) {
       try {
@@ -136,6 +171,9 @@ const Calendar = () => {
     }
   };
 
+  /**
+   * Gün tıklandığında modal'ı açar ve notu yükler
+   */
   const handleDayPress = (day: number) => {
     setSelectedDay(day);
     const noteKey = `${year}-${currentMonth + 1}-${day}`;
@@ -143,11 +181,14 @@ const Calendar = () => {
     setIsModalVisible(true);
   };
 
+  /**
+   * Ay navigasyonu - önceki/sonraki aya geçer
+   */
   const navigateMonth = (direction: number) => {
     setCurrentMonth(prev => {
       const newMonth = prev + direction;
-      if (newMonth < 0) return 11;
-      if (newMonth > 11) return 0;
+      if (newMonth < 0) return 11; // Aralık'tan Kasım'a
+      if (newMonth > 11) return 0; // Ocak'tan Şubat'a
       return newMonth;
     });
   };
@@ -155,6 +196,10 @@ const Calendar = () => {
   // Ayın günlerini hesapla
   const days = daysInMonth(currentMonth, year);
 
+  /**
+   * Seçilen ilaç ve dozaja göre prospektüs linkini açar
+   * Her ilaç için farklı dozaj ve form kombinasyonlarına göre TİTCK linkleri
+   */
   const openProspectus = () => {
     if (selectedDrug === 'HUMİRA') {
       if (selectedDosage === '20mg/0.2ml') {

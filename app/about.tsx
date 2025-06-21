@@ -8,9 +8,11 @@ import { Calendar, DateData } from 'react-native-calendars';
 import { Database } from '../utils/database';
 import { commonStyles } from '../utils/styles';
 
-// Statik veri
+// Statik veri - Uygulama içinde kullanılan tüm seçenekler
 const MOCK_DATA = {
+  // Mevcut antikor seçenekleri
   antibodies: ['Adalimumab', 'Certolizumab Pegol', 'Golimumab', 'Infliximab', 'Canakinumab'],
+  // Her antikor için uygun hastalıklar
   diseases: {
     'Adalimumab': ['Romatoid Artrit', 'Ankilozan Spondilit', 'Psöriyatik Artrit', 'Crohn Hastalığı', 'Ülseratif Kolit', 'Üveit', 'Hidradenitis Suppurativa'],
     'Certolizumab Pegol': ['Romatoid Artrit', 'Ankilozan Spondilit', 'Psöriyatik Artrit', 'Crohn Hastalığı'],
@@ -18,6 +20,7 @@ const MOCK_DATA = {
     'Infliximab': ['Romatoid Artrit', 'Ankilozan Spondilit', 'Psöriyatik Artrit'],
     'Canakinumab': ['Gut Hastalığı']
   },
+  // Her hastalık için uygun ilaçlar
   drugs: {
     'Romatoid Artrit': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ', 'CIMZIA', 'SIMPONI', 'AVSOLA', 'IXIFI', 'REMICADE', 'TOLURİNE'],
     'Ankilozan Spondilit': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ', 'CIMZIA', 'SIMPONI', 'AVSOLA', 'IXIFI', 'REMICADE', 'TOLURİNE'],
@@ -28,6 +31,7 @@ const MOCK_DATA = {
     'Hidradenitis Suppurativa': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ'],
     'Gut Hastalığı': ['ILARIS']
   },
+  // Her ilaç için mevcut dozaj seçenekleri
   dosages: {
     'AMGEVİTA': ['20mg/0.4ml', '40mg/0.8ml'],
     'HUMİRA': ['20mg/0.2ml', '40mg/0.4ml', '40mg/0.8ml'],
@@ -40,41 +44,60 @@ const MOCK_DATA = {
     'TOLURİNE': ['100mg/10ml'],
     'ILARIS': ['150mg/1ml']
   },
+  // Her dozaj için doz sıklığı (gün cinsinden)
   frequencies: {
-    '40mg/0.4ml': 14,
-    '80mg/0.8ml': 28,
-    '200mg/1ml': 28,
-    '50mg/0.5ml': 28,
-    '100mg/1ml': 28,
-    '100mg/10ml': 56,
-    '150mg/1ml': 28
+    '40mg/0.4ml': 14,  // 14 günde bir
+    '80mg/0.8ml': 28,  // 28 günde bir
+    '200mg/1ml': 28,   // 28 günde bir
+    '50mg/0.5ml': 28,  // 28 günde bir
+    '100mg/1ml': 28,   // 28 günde bir
+    '100mg/10ml': 56,  // 56 günde bir
+    '150mg/1ml': 28    // 28 günde bir
   }
 };
 
+/**
+ * Tedavi bilgileri form ekranı bileşeni
+ * Kullanıcıdan kişisel bilgiler ve tedavi detaylarını alır
+ * Profil sayfasına yönlendirme yapar
+ */
 const AboutScreen = () => {
   const router = useRouter();
-  const [antibodies, setAntibodies] = useState<string[]>([]);
-  const [diseases, setDiseases] = useState<string[]>([]);
-  const [drugs, setDrugs] = useState<string[]>([]);
-  const [dosages, setDosages] = useState<string[]>([]);
+  
+  // Form state'leri - kullanıcı girişlerini saklar
+  const [antibodies, setAntibodies] = useState<string[]>([]); // Mevcut antikor listesi
+  const [diseases, setDiseases] = useState<string[]>([]); // Seçilen antikora göre hastalıklar
+  const [drugs, setDrugs] = useState<string[]>([]); // Seçilen hastalığa göre ilaçlar
+  const [dosages, setDosages] = useState<string[]>([]); // Seçilen ilaca göre dozajlar
+  
+  // Seçim state'leri - kullanıcının seçtiği değerler
   const [selectedAntibody, setSelectedAntibody] = useState<string>('');
   const [selectedDisease, setSelectedDisease] = useState<string>('');
   const [selectedDrug, setSelectedDrug] = useState<string>('');
   const [selectedDosage, setSelectedDosage] = useState<string>('');
   const [selectedFrequency, setSelectedFrequency] = useState<number>(0);
+  
+  // Kişisel bilgi state'leri
   const [name, setName] = useState<string>('');
   const [surname, setSurname] = useState<string>('');
   const [age, setAge] = useState<string>('');
+  
+  // Süre bilgileri state'leri
   const [diseaseDuration, setDiseaseDuration] = useState<string>('');
   const [diseaseDurationType, setDiseaseDurationType] = useState<'year' | 'month' | 'week'>('week');
   const [drugDuration, setDrugDuration] = useState<string>('');
   const [drugDurationType, setDrugDurationType] = useState<'year' | 'month' | 'week'>('week');
+  
+  // Tarih seçimi state'leri
   const [isCalendarVisible, setIsCalendarVisible] = useState<boolean>(false);
   const [selectedStartDate, setSelectedStartDate] = useState<string>('');
   const [startDate, setStartDate] = useState<Date>(new Date());
+  
+  // Form seçimi state'leri
   const [isFormSelectionVisible, setIsFormSelectionVisible] = useState<boolean>(false);
   const [selectedForm, setSelectedForm] = useState<string>('');
 
+  // Component yüklendiğinde veritabanından antikor listesini yükle
   useEffect(() => {
     const initializeData = async () => {
       try {
@@ -93,6 +116,9 @@ const AboutScreen = () => {
     initializeData();
   }, []);
 
+  /**
+   * Yaş girişini kontrol eder - sadece 1-99 arası değer kabul eder
+   */
   const handleAgeChange = (text: string) => {
     const num = parseInt(text);
     if (text === '' || (num >= 1 && num <= 99)) {
@@ -100,6 +126,10 @@ const AboutScreen = () => {
     }
   };
 
+  /**
+   * Hastalık süresi girişini kontrol eder
+   * Seçilen süre tipine göre geçerli aralıkları kontrol eder
+   */
   const handleDurationChange = (text: string) => {
     const num = parseInt(text);
     if (text === '') {
@@ -110,13 +140,13 @@ const AboutScreen = () => {
     let isValid = false;
     switch (diseaseDurationType) {
       case 'year':
-        isValid = num >= 1 && num <= 99;
+        isValid = num >= 1 && num <= 99; // 1-99 yıl
         break;
       case 'month':
-        isValid = num >= 1 && num <= 12;
+        isValid = num >= 1 && num <= 12; // 1-12 ay
         break;
       case 'week':
-        isValid = num >= 0 && num <= 52;
+        isValid = num >= 0 && num <= 52; // 0-52 hafta
         break;
     }
 
@@ -125,6 +155,10 @@ const AboutScreen = () => {
     }
   };
 
+  /**
+   * İlaç kullanım süresi girişini kontrol eder
+   * Hastalık süresinden fazla olamaz kontrolü yapar
+   */
   const handleDrugDurationChange = (text: string) => {
     const num = parseInt(text);
     if (text === '') {
@@ -187,6 +221,10 @@ const AboutScreen = () => {
     }
   };
 
+  /**
+   * Antikor seçimi değiştiğinde bağımlı alanları sıfırlar
+   * Seçilen antikora göre hastalık listesini günceller
+   */
   const handleAntibodyChange = (value: string) => {
     setSelectedAntibody(value);
     setSelectedDisease('');
@@ -200,6 +238,10 @@ const AboutScreen = () => {
     }
   };
 
+  /**
+   * Hastalık seçimi değiştiğinde bağımlı alanları sıfırlar
+   * Seçilen hastalığa göre ilaç listesini günceller
+   */
   const handleDiseaseChange = (value: string) => {
     setSelectedDisease(value);
     setSelectedDrug('');
@@ -215,6 +257,10 @@ const AboutScreen = () => {
     }
   };
 
+  /**
+   * İlaç seçimi değiştiğinde bağımlı alanları sıfırlar
+   * Seçilen ilaca göre dozaj listesini günceller
+   */
   const handleDrugChange = async (value: string) => {
     setSelectedDrug(value);
     setSelectedDosage('');
@@ -226,6 +272,10 @@ const AboutScreen = () => {
     }
   };
 
+  /**
+   * Dozaj seçimi değiştiğinde doz sıklığını hesaplar
+   * Form seçimi gerektiren ilaçlar için kontrol yapar
+   */
   const handleDosageChange = (value: string) => {
     setSelectedDosage(value);
     if (value) {
@@ -252,6 +302,9 @@ const AboutScreen = () => {
     }
   };
 
+  /**
+   * Form gönderimi - tüm alanları kontrol eder ve profil sayfasına yönlendirir
+   */
   const handleSubmit = async () => {
     if (!name || !surname || !age || !selectedAntibody || !selectedDisease || 
         !selectedDrug || !selectedDosage || !diseaseDuration || !drugDuration || !selectedStartDate) {
@@ -298,18 +351,27 @@ const AboutScreen = () => {
     }
   };
 
+  /**
+   * Tarih formatını değiştirir (YYYY-MM-DD -> DD/MM/YYYY)
+   */
   const formatDate = (date: string) => {
     if (!date) return '';
     const [year, month, day] = date.split('-');
     return `${day}/${month}/${year}`;
   };
 
+  /**
+   * Takvim için minimum tarih - bugünden 3 ay öncesi
+   */
   const getMinDate = () => {
     const date = new Date();
     date.setMonth(date.getMonth() - 3);
     return date.toISOString().split('T')[0];
   };
 
+  /**
+   * Takvim için maksimum tarih - bugünden 10 yıl sonrası
+   */
   const getMaxDate = () => {
     const date = new Date();
     date.setFullYear(date.getFullYear() + 10); // 10 yıl ileriye kadar seçilebilir
