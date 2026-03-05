@@ -1,0 +1,1951 @@
+{
+  "antibodies": [
+    {
+      "label": "Adalimumab",
+      "mechanism": "TNF-alfa inhibitörü",
+      "mechanismDetail": "TNF-alfa'ya bağlanarak p55 ve p75 hücre yüzeyi TNF reseptörleri ile etkileşimini engeller. CRP, ESH ve MMP-1/MMP-3 düzeylerini azaltır.",
+      "blackBoxWarning": "Adalimumab kullanan hastalar tüberküloz dahil ciddi enfeksiyon riski altındadır. Tedavi öncesi latent TB taraması zorunludur. Pediatrik ve adolesan hastalarda lenfoma dahil malignite riski artmıştır.",
+      "diseases": [
+        "Romatoid Artrit",
+        "Ankilozan Spondilit",
+        "Psöriyatik Artrit",
+        "Crohn Hastalığı",
+        "Ülseratif Kolit",
+        "Üveit",
+        "Hidradenitis Suppurativa",
+        "Plak Psoriasis",
+        "Jüvenil İdiopatik Artrit"
+      ],
+      "majorWarnings": [
+        "Tedaviye başlamadan önce tüberküloz (TB) taraması yaptırın; latent TB varsa önce TB tedavisini tamamlayın.",
+        "Aktif enfeksiyon (lokal dahil) varken ilacı uygulamayın.",
+        "Canlı aşı almayın; tedavi süresince aşı takviminizi doktorunuzla gözden geçirin.",
+        "Konjestif kalp yetmezliği (KKY) başlaması veya kötüleşmesi bildirilmiştir; kalp yetmezliği belirtilerini izleyin.",
+        "Lenfoma, lösemi ve cilt kanserleri dahil malignite riski artmıştır.",
+        "Hepatit B taşıyıcısıysanız reaktivasyon riski nedeniyle tedavi boyunca izlenmeniz gerekir.",
+        "Lupus benzeri sendrom (artralji, döküntü, yorgunluk) belirtileri gelişirse tedaviyi kesin."
+      ],
+      "drugInteractions": [
+        { "drug": "Anakinra", "severity": "Major", "note": "Ciddi enfeksiyon riskini artırır. Birlikte kullanmayın." },
+        { "drug": "Abatacept", "severity": "Major", "note": "Enfeksiyon riskini artırır. Birlikte kullanmayın." },
+        { "drug": "Baricitinib", "severity": "Major", "note": "Enfeksiyon riskini artırır. Birlikte kullanmayın." },
+        { "drug": "Diğer TNF blokerleri (Vedolizumab dahil)", "severity": "Major", "note": "Enfeksiyon ve farmakolojik etkileşim riski artar." },
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Canlı aşıdan kaynaklanan enfeksiyon riski artar." },
+        { "drug": "Metotreksat", "severity": "Major", "note": "Metotreksat maruziyeti ve ciddi yan etki riski artabilir." },
+        { "drug": "Siklosporin", "severity": "Major", "note": "Siklosporin maruziyeti değişebilir; kan düzeyini izleyin." },
+        { "drug": "Warfarin", "severity": "Major", "note": "Warfarin maruziyeti değişebilir; INR takibi yapın." },
+        { "drug": "Teofilin", "severity": "Major", "note": "Teofilin maruziyeti değişebilir; kan düzeyini izleyin." },
+        { "drug": "Anifrolumab", "severity": "Major", "note": "Biyolojik ajanların birlikte kullanımında etki katlanması oluşabilir." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın doz gününüz. Ateş, öksürük, enfeksiyon belirtisi varsa ilacı uygulamadan önce doktorunuzu arayın. İlacı buzdolabından çıkarıp 15-30 dakika oda sıcaklığına bırakın (kapağı çıkarmayın).",
+        "doseDay": "Doz gününüz. Enjeksiyondan önce enfeksiyon belirtilerini kontrol edin. Enjeksiyon bölgesini (uyluk veya karın) 24 saat ıslatmayın. Her seferinde bölgeyi değiştirin.",
+        "day1": "Enjeksiyon bölgesini bugün de su ile temas ettirmemeye özen gösterin. Kızarıklık veya şişlik normaldir; aşırıysa not alın.",
+        "day2": "Kalabalık, kapalı ortamlardan (toplu taşıma, AVM) kaçının; bağışıklık sisteminiz zayıflamış olabilir.",
+        "day3": "Sigara içmeyin. Sigara, tedavinin etkinliğini ve enfeksiyon direncini olumsuz etkiler.",
+        "day4": "Alkol tüketiminden kaçının; bağışıklık sisteminizi zayıflatır ve karaciğer üzerindeki yükü artırır.",
+        "day5": "Dengeli ve sağlıklı beslenmeye devam edin. İşlenmiş gıdalardan kaçının.",
+        "day6": "Eklem ağrısı, sabah tutukluğu, cilt lezyonları veya diğer hastalık belirtilerinizdeki değişimleri kaydedin.",
+        "generalMonitoring": [
+          "Kronik öksürük, gece terlemeleri, açıklanamayan kilo kaybı TB belirtisi olabilir; hemen doktorunuzu arayın.",
+          "Tedavi süresince canlı aşı (kızamık, suçiçeği, BCG vb.) uygulatmayın.",
+          "Kalp yetmezliği belirtileri (nefes darlığı, ayaklarda ödem) gelişirse doktorunuzu arayın.",
+          "Gece terlemeleri, büyümüş lenf bezleri veya ateşin devam etmesi malignite işareti olabilir.",
+          "Düzenli doktor kontrollerinizi ve kan tahlillerinizi aksatmayın."
+        ]
+      },
+      "monitoring": [
+        "Tedavi öncesi TB taraması (tüberkülin deri testi ve akciğer grafisi)",
+        "Tedavi öncesi Hepatit B taraması",
+        "Karaciğer enzim takibi",
+        "Tedavi boyunca enfeksiyon belirtilerinin izlenmesi",
+        "Periyodik deri kanseri taraması",
+        "Romatoid artrit: Her 6 ayda bir serum adalimumab düzeyi",
+        "Crohn/ÜK: İndüksiyon sonrası serum ilaç düzeyi takibi (hedef trough ≥7.5 mcg/mL)"
+      ]
+    },
+
+    {
+      "label": "Certolizumab Pegol",
+      "mechanism": "TNF-alfa inhibitörü",
+      "mechanismDetail": "PEGile edilmiş Fab fragmanı olup TNF-alfa'yı selektif olarak nötralize eder. Fc bölgesi bulunmaz; kompleman bağlamaz, ADCC'ye yol açmaz. Plasentayı sınırlı geçer.",
+      "blackBoxWarning": "Tüberküloz dahil ciddi enfeksiyon ve lenfoma dahil malignite riski artmıştır.",
+      "diseases": [
+        "Romatoid Artrit",
+        "Ankilozan Spondilit",
+        "Psöriyatik Artrit",
+        "Crohn Hastalığı",
+        "Non-radyografik Aksiyel Spondiloartrit",
+        "Plak Psoriasis",
+        "Jüvenil İdiopatik Artrit"
+      ],
+      "majorWarnings": [
+        "Tedaviye başlamadan önce tüberküloz (TB) taraması yaptırın.",
+        "Aktif enfeksiyon varken ilacı uygulamayın.",
+        "Canlı aşı almayın.",
+        "Kalp yetmezliği belirtilerini izleyin.",
+        "aPTT testinde yanlış yüksek sonuç çıkabilir; laboratuara ilaç kullandığınızı bildirin.",
+        "Hepatit B taşıyıcısıysanız reaktivasyon riski nedeniyle izlenmeniz gerekir."
+      ],
+      "drugInteractions": [
+        { "drug": "Natalizumab", "severity": "Major", "note": "Ciddi enfeksiyon riskini artırır. Birlikte kullanmayın." },
+        { "drug": "Anakinra", "severity": "Major", "note": "Ciddi enfeksiyon riskini artırır. Birlikte kullanmayın." },
+        { "drug": "Abatacept", "severity": "Major", "note": "Enfeksiyon riskini artırır." },
+        { "drug": "Rituximab", "severity": "Major", "note": "Ciddi enfeksiyon riskini artırır." },
+        { "drug": "Baricitinib", "severity": "Major", "note": "Enfeksiyon riskini artırır." },
+        { "drug": "Diğer TNF blokerleri", "severity": "Major", "note": "Enfeksiyon ve farmakolojik etkileşim riski artar." },
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Canlı aşıdan kaynaklanan enfeksiyon riski artar." },
+        { "drug": "Anifrolumab", "severity": "Major", "note": "Biyolojik ajanların birlikte kullanımında etki katlanması." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın doz gününüz. Ateş, öksürük gibi enfeksiyon belirtisi varsa doktorunuzu arayın. Prefilled şırıngayı buzdolabından çıkarıp oda sıcaklığına getirin. Oda sıcaklığında en fazla 7 gün bekletilebilir, buzdolabına geri koymayın.",
+        "doseDay": "Doz gününüz. Enjeksiyondan önce enfeksiyon belirtilerini kontrol edin. Enjeksiyon bölgesini (uyluk veya karın) 24 saat ıslatmayın; göbek deliğinin 5 cm yakınına enjekte etmeyin.",
+        "day1": "Enjeksiyon bölgesini su ile temas ettirmemeye özen gösterin.",
+        "day2": "Kalabalık ortamlardan kaçının.",
+        "day3": "Sigara içmeyin.",
+        "day4": "Alkol tüketiminden kaçının.",
+        "day5": "Sağlıklı beslenmeye devam edin.",
+        "day6": "Hastalık belirtilerinizdeki değişimleri kaydedin.",
+        "generalMonitoring": [
+          "Kronik öksürük, gece terlemeleri TB belirtisi olabilir; hemen doktorunuzu arayın.",
+          "Tedavi süresince canlı aşı uygulatmayın.",
+          "Kan pıhtılaşma testi (aPTT) yaptıracaksanız doktorunuzu CIMZIA kullandığınız konusunda bilgilendirin.",
+          "Düzenli doktor kontrollerinizi aksatmayın."
+        ]
+      },
+      "monitoring": [
+        "Tedavi öncesi TB taraması",
+        "Tedavi öncesi Hepatit B taraması",
+        "Tedavi boyunca enfeksiyon belirtilerinin izlenmesi",
+        "Crohn: Serum ilaç düzeyi (idame hedefi: trough ≥20 mcg/mL)",
+        "Periyodik deri kanseri taraması"
+      ]
+    },
+
+    {
+      "label": "Golimumab",
+      "mechanism": "TNF-alfa inhibitörü",
+      "mechanismDetail": "TNF-alfa'nın hem soluble hem de transmembran formlarına bağlanarak biyolojik aktivitesini inhibe eden tam insan IgG1 monoklonal antikorudur.",
+      "blackBoxWarning": "Tüberküloz dahil ciddi enfeksiyon ve malignite riski artmıştır.",
+      "diseases": [
+        "Romatoid Artrit",
+        "Ankilozan Spondilit",
+        "Psöriyatik Artrit",
+        "Ülseratif Kolit",
+        "Jüvenil İdiopatik Artrit"
+      ],
+      "majorWarnings": [
+        "Tedaviye başlamadan önce tüberküloz ve Hepatit B taraması yaptırın.",
+        "Aktif enfeksiyon varken ilacı uygulamayın.",
+        "Canlı aşı almayın.",
+        "Kalp yetmezliği (KKY) başlaması veya kötüleşmesi bildirilmiştir; kalp bulguları için izleme yapın.",
+        "65 yaş üstü hastalarda ciddi enfeksiyon riski daha yüksektir."
+      ],
+      "drugInteractions": [
+        { "drug": "Anakinra", "severity": "Major", "note": "Ciddi enfeksiyon ve nötropeni riskini artırır. Birlikte kullanmayın." },
+        { "drug": "Abatacept", "severity": "Major", "note": "Enfeksiyon riskini artırır." },
+        { "drug": "Baricitinib", "severity": "Major", "note": "Enfeksiyon riskini artırır." },
+        { "drug": "Diğer TNF blokerleri", "severity": "Major", "note": "Enfeksiyon riski artar." },
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Enfeksiyon riski artar." },
+        { "drug": "Metotreksat", "severity": "Major", "note": "Metotreksat toksisitesi artabilir; karaciğer enzimlerini izleyin." },
+        { "drug": "Anifrolumab", "severity": "Major", "note": "Biyolojik ajanların birlikte kullanımında etki katlanması." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın doz gününüz. Ateş veya enfeksiyon belirtisi varsa doktorunuzu arayın. SIMPONI kalem/şırıngayı buzdolabından çıkarıp en az 30 dakika oda sıcaklığına bırakın.",
+        "doseDay": "Doz gününüz. Enjeksiyondan önce enfeksiyon belirtilerini kontrol edin. Enjeksiyon bölgesini 24 saat ıslatmayın. Her seferinde enjeksiyon bölgesini (karın veya uyluk) değiştirin.",
+        "day1": "Enjeksiyon bölgesini su ile temas ettirmemeye özen gösterin.",
+        "day2": "Kalabalık ortamlardan kaçının.",
+        "day3": "Sigara içmeyin.",
+        "day4": "Alkol tüketiminden kaçının.",
+        "day5": "Sağlıklı beslenmeye devam edin.",
+        "day6": "Eklem ağrısı ve diğer hastalık belirtilerinizdeki değişimleri kaydedin.",
+        "generalMonitoring": [
+          "Kronik öksürük, gece terlemeleri TB belirtisi olabilir.",
+          "Tedavi süresince canlı aşı uygulatmayın.",
+          "Nefes darlığı, ayaklarda ödem gibi kalp yetmezliği belirtileri gelişirse doktorunuzu arayın.",
+          "Gece terlemeleri, büyümüş lenf bezleri malignite işareti olabilir."
+        ]
+      },
+      "monitoring": [
+        "Tedavi öncesi TB taraması",
+        "Tedavi öncesi Hepatit B taraması",
+        "Tedavi boyunca enfeksiyon belirtilerinin izlenmesi",
+        "Ülseratif kolit hastalarında displazi taraması",
+        "Periyodik deri kanseri taraması"
+      ]
+    },
+
+    {
+      "label": "Infliximab",
+      "mechanism": "TNF-alfa inhibitörü",
+      "mechanismDetail": "Kimerik (insan/fare) IgG1 kappa monoklonal antikordur. TNF-alfa'ya yüksek affinite ile bağlanarak aktivitesini nötralize eder. IV infüzyon olarak uygulanır.",
+      "blackBoxWarning": "Tüberküloz dahil ciddi enfeksiyon ve malignite riski artmıştır. Orta-ağır kalp yetmezliği olan hastalarda 5 mg/kg üzeri doz uygulamayın.",
+      "diseases": [
+        "Romatoid Artrit",
+        "Ankilozan Spondilit",
+        "Psöriyatik Artrit",
+        "Crohn Hastalığı",
+        "Ülseratif Kolit",
+        "Plak Psoriasis"
+      ],
+      "majorWarnings": [
+        "Tedaviye başlamadan önce tüberküloz ve Hepatit B taraması yaptırın.",
+        "Orta-ağır kalp yetmezliğinde kullanmayın.",
+        "İnfüzyon reaksiyonu (anafilaksi, hipotansiyon) gelişirse infüzyonu hemen durdurun.",
+        "Canlı aşı almayın.",
+        "Murin proteinine aşırı duyarlılığı olan hastalarda kullanmayın.",
+        "Murin kaynaklı olduğundan (kimerik antikor) immunojenite riski daha yüksektir."
+      ],
+      "drugInteractions": [
+        { "drug": "Anakinra", "severity": "Major", "note": "Ciddi enfeksiyon ve nötropeni riski artar. Birlikte kullanmayın." },
+        { "drug": "Abatacept", "severity": "Major", "note": "Enfeksiyon riskini artırır." },
+        { "drug": "Tocilizumab", "severity": "Major", "note": "Bağışıklık baskılanması ve enfeksiyon riski artar. Birlikte kullanmayın." },
+        { "drug": "Baricitinib", "severity": "Major", "note": "Enfeksiyon riskini artırır." },
+        { "drug": "Rilonacept", "severity": "Major", "note": "Ciddi enfeksiyon riski artar." },
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Enfeksiyon riski artar." },
+        { "drug": "Metotreksat", "severity": "Major", "note": "Metotreksat maruziyeti ve toksisitesi artabilir." },
+        { "drug": "Warfarin", "severity": "Major", "note": "Warfarin maruziyeti azalabilir; INR takibi yapın." },
+        { "drug": "Teofilin", "severity": "Major", "note": "Teofilin düzeyi azalabilir; kan düzeyini izleyin." },
+        { "drug": "Siklosporin", "severity": "Major", "note": "Siklosporin düzeyi azalabilir; kan düzeyini izleyin." },
+        { "drug": "Takrolimus", "severity": "Major", "note": "Takrolimus plazma konsantrasyonu azalabilir." },
+        { "drug": "Fenitoin", "severity": "Major", "note": "Fenitoin düzeyi azalabilir; nöbet riskine karşı izleyin." },
+        { "drug": "Fentanil", "severity": "Moderate", "note": "Fentanil plazma konsantrasyonu azalabilir." },
+        { "drug": "Paklitaksel", "severity": "Major", "note": "Paklitaksel düzeyi azalabilir." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın infüzyon gününüz. Ateş veya enfeksiyon belirtisi varsa doktorunuzu arayın ve infüzyonu erteleyin. İnfüzyon öncesi hafif bir şeyler yiyin; aç kalmayın.",
+        "doseDay": "İnfüzyon gününüz. İnfüzyon en az 2 saat sürer; yanınızda kitap veya müzik bulundurun. İnfüzyon sırasında ve sonrasında 2 saat boyunca kaşıntı, nefes darlığı, baş ağrısı gibi reaksiyon belirtilerini izleyin. İnfüzyon sonrası bol sıvı alın.",
+        "day1": "İnfüzyon reaksiyonu (ciltte kaşıntı, döküntü, ateş, yorgunluk) gelişirse doktorunuzu arayın.",
+        "day2": "Kalabalık ortamlardan kaçının.",
+        "day3": "Sigara içmeyin.",
+        "day4": "Alkol tüketiminden kaçının.",
+        "day5": "Sağlıklı beslenmeye devam edin.",
+        "day6": "Hastalık belirtilerinizdeki değişimleri kaydedin; bir sonraki infüzyondan önce doktorunuza bildirin.",
+        "generalMonitoring": [
+          "Kronik öksürük, gece terlemeleri TB belirtisi olabilir.",
+          "Tedavi süresince canlı aşı uygulatmayın.",
+          "Nefes darlığı, ayaklarda şişme gibi kalp yetmezliği belirtileri gelişirse doktorunuzu arayın.",
+          "Lupus benzeri sendrom (eklem ağrısı, döküntü, yorgunluk) belirtileri gelişirse doktorunuzu arayın.",
+          "Sarılık veya karın ağrısı gelişirse hemen doktorunuzu arayın (karaciğer reaksiyonu)."
+        ]
+      },
+      "monitoring": [
+        "Tedavi öncesi TB taraması",
+        "Tedavi öncesi Hepatit B taraması",
+        "Karaciğer enzim takibi",
+        "Tedavi boyunca enfeksiyon belirtilerinin izlenmesi",
+        "Periyodik deri kanseri taraması",
+        "Crohn/ÜK: Serum ilaç düzeyi (idame hedefi: trough 5-10 mcg/mL)",
+        "İnfüzyon sırasında kardiyovasküler izlem"
+      ]
+    },
+
+    {
+      "label": "Canakinumab",
+      "mechanism": "IL-1β inhibitörü",
+      "mechanismDetail": "İnsan IL-1β'ya bağlanarak IL-1 reseptör etkileşimini engeller ve aşırı aktif IL-1β aktivitesini nötralize eder. IL-1α veya IL-1 reseptör antagonistine bağlanmaz.",
+      "blackBoxWarning": null,
+      "diseases": [
+        "Gut Hastalığı",
+        "Ailevi Akdeniz Ateşi",
+        "Sistemik Jüvenil İdiopatik Artrit",
+        "Kryopirin İlişkili Periyodik Sendromlar",
+        "TRAPS",
+        "Erişkin Still Hastalığı",
+        "Mevalonat Kinaz Eksikliği"
+      ],
+      "majorWarnings": [
+        "Tedaviye başlamadan önce tüberküloz taraması yaptırın.",
+        "Aktif enfeksiyon varken ilacı uygulamayın.",
+        "Canlı aşı almayın; tedavi öncesinde pnömokok ve inaktif grip aşılarını yaptırmanız önerilir.",
+        "Sistemik JIA ve Still hastalığı olan hastalarda makrofaj aktivasyon sendromu (MAS) riski vardır.",
+        "TNF inhibitörleri ile birlikte kullanmayın.",
+        "Hipersentivitesi onaylanmış hastalarda kontrendikedir."
+      ],
+      "drugInteractions": [
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Aşı etkinliği azalır ve enfeksiyon riski artar. Tedavi süresince canlı aşı uygulatmayın." },
+        { "drug": "TNF inhibitörleri", "severity": "Major", "note": "Birlikte kullanım önerilmez; enfeksiyon riski artar." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın doz gününüz. Ateş veya aktif enfeksiyon belirtisi varsa doktorunuzu arayın. İlacı buzdolabından çıkarıp oda sıcaklığına getirin.",
+        "doseDay": "Doz gününüz. Enjeksiyondan önce aktif enfeksiyon belirtilerini kontrol edin. Skar dokusuna enjekte etmeyin. Enjeksiyon bölgesini 24 saat ıslatmayın.",
+        "day1": "Enjeksiyon bölgesini su ile temas ettirmemeye özen gösterin.",
+        "day2": "Kalabalık ortamlardan kaçının.",
+        "day3": "Sigara içmeyin.",
+        "day4": "Alkol tüketiminden kaçının. Gut hastalarıysanız alkol gut ataklarını tetikleyebilir.",
+        "day5": "Gut hastalarıysanız purin içeriği yüksek gıdalardan (organ etleri, midye, hamsi) kaçının. Bol su için.",
+        "day6": "Genel sağlık durumunuzu ve hastalık belirtilerinizdeki değişimleri kaydedin.",
+        "generalMonitoring": [
+          "Yüksek ateş, döküntü, bilinç değişikliği gibi makrofaj aktivasyon sendromu (MAS) belirtileri için dikkatli olun; hemen hastaneye gidin.",
+          "Kronik öksürük, gece terlemeleri TB belirtisi olabilir.",
+          "Tedavi süresince canlı aşı uygulatmayın.",
+          "Gut hastalarıysanız: bol su içmeye, düşük purinli beslenmeye ve alkol tüketimini sınırlamaya devam edin."
+        ]
+      },
+      "monitoring": [
+        "Tedavi öncesi TB taraması",
+        "Serum CRP ve SAA düzeylerinin takibi",
+        "Enfeksiyon belirtilerinin izlenmesi",
+        "Sistemik JIA hastalarında MAS belirtilerinin izlenmesi (ateş, döküntü, serozit, nöropsikiyatrik bulgular)"
+      ]
+    },
+
+    {
+      "label": "Abatacept",
+      "mechanism": "T hücre kostimülasyon blokörü (CTLA-4 Ig)",
+      "mechanismDetail": "Rekombinant füzyon proteinidir. CTLA-4'ün ekstrasellüler domaini ile IgG1'in Fc bölgesinden oluşur. Antijen sunan hücrelerin yüzeyindeki CD80/CD86'ya bağlanarak T hücrelerinin aktivasyonu için gerekli kostimülatör sinyali (CD28 yolağı) engeller. Böylece T hücre aktivasyonu aşağı regüle edilir ve inflamatuar yanıt baskılanır.",
+      "blackBoxWarning": null,
+      "diseases": [
+        "Romatoid Artrit",
+        "Psöriyatik Artrit",
+        "Jüvenil İdiopatik Artrit",
+        "Akut GvHD Profilaksisi"
+      ],
+      "majorWarnings": [
+        "Tedaviye başlamadan önce tüberküloz taraması yaptırın.",
+        "Aktif enfeksiyon varken ilacı uygulamayın.",
+        "Canlı aşı almayın.",
+        "Diğer biyolojik ilaçlarla (özellikle TNF blokerleri, anakinra) eş zamanlı kullanmayın.",
+        "KOAH olan hastalarda pulmoner enfeksiyon riski artmıştır.",
+        "Diyabet hastalarında ve yüksek enfeksiyon riskli grupta dikkatli olun."
+      ],
+      "drugInteractions": [
+        { "drug": "TNF inhibitörleri", "severity": "Major", "note": "Ciddi enfeksiyon riski artar. Birlikte kullanmayın." },
+        { "drug": "Anakinra", "severity": "Major", "note": "Ciddi enfeksiyon riski artar. Birlikte kullanmayın." },
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Canlı aşıdan kaynaklanan enfeksiyon riski artar." },
+        { "drug": "Belimumab", "severity": "Major", "note": "Bağışıklık baskılanması riski artar." },
+        { "drug": "JAK inhibitörleri", "severity": "Major", "note": "Enfeksiyon ve malignite riski artabilir." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın doz gününüz (subkütan formsa). Ateş veya enfeksiyon belirtisi varsa doktorunuzu arayın. ORENCIA enjektörü buzdolabından çıkarıp 30-60 dakika oda sıcaklığında bekletin.",
+        "doseDay": "Doz gününüz. Enjeksiyon bölgesini 24 saat ıslatmayın. Her seferinde bölgeyi (karın, uyluk, kol arkası) değiştirin. IV formsanız infüzyon merkezine gidin; bol sıvı alın.",
+        "day1": "Enjeksiyon bölgesini su ile temas ettirmemeye özen gösterin.",
+        "day2": "KOAH hastalarıysanız nefes darlığı artışına dikkat edin.",
+        "day3": "Sigara içmeyin; KOAH ve ORENCIA kombinasyonunda pulmoner enfeksiyon riski daha yüksektir.",
+        "day4": "Alkol tüketiminden kaçının.",
+        "day5": "Sağlıklı beslenin; bağışıklık sisteminizi destekleyin.",
+        "day6": "Eklem hareketliliğinizi ve sabah tutukluğunuzu kaydedin.",
+        "generalMonitoring": [
+          "Kronik öksürük veya nefes güçlüğü TB ya da pulmoner enfeksiyon belirtisi olabilir; doktorunuzu arayın.",
+          "KOAH hastalarında pulmoner komplikasyon riski artmıştır; nefes darlığını izleyin.",
+          "Tedavi süresince canlı aşı uygulatmayın.",
+          "Düzenli kan tahlillerinizi aksatmayın."
+        ]
+      },
+      "monitoring": [
+        "Tedavi öncesi TB taraması",
+        "Tedavi öncesi Hepatit B taraması",
+        "Enfeksiyon belirtilerinin takibi",
+        "KOAH hastalarında pulmoner fonksiyon izlemi",
+        "Periyodik tam kan sayımı"
+      ]
+    },
+
+    {
+      "label": "Alemtuzumab",
+      "mechanism": "Anti-CD52 monoklonal antikoru (T ve B lenfosit deplesyonu)",
+      "mechanismDetail": "CD52 glikoproteinini hedef alan rekombinant humanize IgG1 kappa monoklonal antikorudur. CD52, T ve B lenfositlerinde, NK hücrelerinde ve monosit/makrofajlarda yoğun biçimde eksprese edilir. Bağlanma sonrası ADCC ve kompleman aracılı sitoliz ile bu hücreleri deplete eder. MS tedavisinde immün sistem yeniden düzenlenmesi sağlar.",
+      "blackBoxWarning": "LEMTRADA (MS): Ciddi otoimmün hastalıklar (immün trombositopeni, nefropati, tiroid hastalıkları), yaşamı tehdit eden infüzyon reaksiyonları, inme ve arteriyel diseksiyon riski mevcuttur. REMS programı kapsamında yalnızca sertifikalı merkezlerde kullanılabilir. CAMPATH (KLL): Ciddi sitopeniler, ciddi enfeksiyonlar ve ciddi kardiyovasküler olaylar bildirmiştir.",
+      "diseases": [
+        "Relapsing-Remitting Multipl Skleroz",
+        "Kronik Lenfositik Lösemi"
+      ],
+      "majorWarnings": [
+        "İnfüzyon reaksiyonlarını önlemek için premedikasyon (kortikosteroid, antihistaminik, antipiretik) uygulayın.",
+        "Tedavi sonrası yıllarca otoimmün hastalık (ITP, nefropati, tiroid) gelişebilir; uzun süreli izlem şarttır.",
+        "İnme ve arteriyel diseksiyon riski; baş/boyun ağrısı, yüzde sarkma, kol/bacak güçsüzlüğü gibi belirtileri hemen bildirin.",
+        "Aktif enfeksiyon varken tedaviyi erteleyin.",
+        "Herpes profilaksisi (asiklovir) tedavi süresince ve sonrasında uygulanmalıdır.",
+        "Tedavi öncesi ve sonrasında tiroid fonksiyonları, tam kan sayımı ve idrar tetkiki düzenli yapılmalıdır.",
+        "Canlı aşı vermeyiniz."
+      ],
+      "drugInteractions": [
+        { "drug": "Antineoplastik ilaçlar", "severity": "Major", "note": "Aditif immünosüpresyon; önceki immünosüpresif tedaviden yeterli arınma sağlanmalıdır." },
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Canlı aşıdan kaynaklanan enfeksiyon riski artar; tedavi süresince vermeyiniz." },
+        { "drug": "Diğer immünosüpresifler", "severity": "Major", "note": "Ciddi bağışıklık baskılanması riski artar." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın infüzyon gününüz. Ateş veya aktif enfeksiyon varsa kliniğinizi arayın. İnfüzyon öncesi steroid, antihistaminik ve antipiretik premedikasyonu unutmayın.",
+        "doseDay": "İnfüzyon gününüz. İnfüzyon 4+ saat sürebilir; sabah hafif yiyin. İnfüzyon reaksiyonu (döküntü, nefes darlığı, göğüs ağrısı) gelişirse hemşireyi hemen uyarın. İnfüzyon sonrası 2 saat gözlem altında kalın.",
+        "day1": "İnfüzyon bölgesi veya genel vücutta döküntü, ateş gelişirse kliniğinizi arayın.",
+        "day2": "Baş ağrısı, boyun tutulması, konuşma güçlüğü veya bacak güçsüzlüğü gelişirse acile gidin (inme belirtisi).",
+        "day3": "Herpetik lezyonları (dudak, genital bölge) fark ederseniz doktorunuzu arayın. Asiklovir kullanıyorsanız aksatmayın.",
+        "day4": "Çok fazla yorgunluk veya nefes darlığı gelişirse kan sayımı yapılması için kliniğinizi arayın (sitopeni).",
+        "day5": "İdrarınızın rengini izleyin; kahverengi veya pembe idrar renal komplikasyon işareti olabilir.",
+        "day6": "Tiroid bezinizde şişlik, çarpıntı veya aşırı yorgunluk fark ederseniz doktorunuzu arayın.",
+        "generalMonitoring": [
+          "Tedaviden sonra 48 ay boyunca aylık tam kan sayımı, kreatinin ve idrar tetkiki yapılmalıdır.",
+          "Her 3 ayda bir tiroid fonksiyon testleri.",
+          "Herpes için profilaktik asiklovir 200 mg günde 2 kez, infüzyondan 1 gün önce başlayıp 1 ay süreyle kullanılmalıdır.",
+          "Canlı aşılar tedavi sonrasında en az 6 ay verilmemelidir.",
+          "HPV aşısı tedaviden önce tamamlanmalıdır."
+        ]
+      },
+      "monitoring": [
+        "Aylık tam kan sayımı (tedaviden sonra 48 ay)",
+        "Aylık serum kreatinin ve idrar tetkiki",
+        "Her 3 ayda bir tiroid fonksiyon testleri",
+        "Periyodik deri muayenesi (melanom riski)",
+        "Tedavi öncesi CMV, EBV, VZV, HSV serolojisi",
+        "Tedavi öncesi Hepatit B ve C taraması"
+      ]
+    },
+
+    {
+      "label": "Anakinra",
+      "mechanism": "IL-1 reseptör antagonisti",
+      "mechanismDetail": "İnsan IL-1 reseptör antagonistinin (IL-1Ra) rekombinant, non-glikozile formudur. IL-1α ve IL-1β'nın IL-1 tip I reseptörüne bağlanmasını kompetitif inhibisyon ile engeller. Böylece IL-1 aracılı inflamasyonu, eklem yıkımını ve ateş yanıtını baskılar.",
+      "blackBoxWarning": null,
+      "diseases": [
+        "Romatoid Artrit",
+        "Kryopirin İlişkili Periyodik Sendromlar",
+        "Erişkin Still Hastalığı",
+        "Sistemik Jüvenil İdiopatik Artrit",
+        "Tekrarlayan Perikardit",
+        "Ailevi Akdeniz Ateşi"
+      ],
+      "majorWarnings": [
+        "Aktif enfeksiyon varken tedaviyi başlatmayın.",
+        "TNF inhibitörleriyle birlikte kullanmayın; ciddi enfeksiyon ve nötropeni riski artar.",
+        "Nötropeni (ANC <1500/mm³) gelişirse tedaviyi durdurun.",
+        "Lateks alerjisi olanlarda dikkatli olun; kapak içerdiği bilinmektedir.",
+        "Canlı aşı almayın.",
+        "Renal yetmezliği olan hastalarda doz ayarlaması gerekebilir."
+      ],
+      "drugInteractions": [
+        { "drug": "TNF inhibitörleri", "severity": "Major", "note": "Ciddi enfeksiyon ve nötropeni riski artar. Birlikte kullanmayın." },
+        { "drug": "Etanercept", "severity": "Major", "note": "Klinik çalışmalarda ciddi enfeksiyon ve nötropeni görülmüştür." },
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Enfeksiyon riski artar." },
+        { "drug": "Diğer biyolojik ilaçlar", "severity": "Major", "note": "Aditif immünosüpresyon riski." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın doz gününüz. KİNERET'i günlük enjekte etmeniz gerekiyor. Ateş, enfeksiyon veya enjeksiyon bölgesinde aşırı reaksiyon varsa doktorunuzu arayın. İlacı buzdolabından çıkarın, 30 dk oda ısısında bekletin.",
+        "doseDay": "Günlük enjeksiyonunuz. Karın, uyluk veya üst kol arkasına subkütan enjekte edin. Bölgeyi her gün değiştirin. Enjeksiyon bölgesini 12 saat ıslatmayın.",
+        "day1": "Enjeksiyon bölgesinde kızarıklık, şişlik veya ağrı olabilir; bu normaldir. Aşırıysa doktorunuzu arayın.",
+        "day2": "Kalabalık ortamlardan kaçının; nötropeni nedeniyle enfeksiyon kapma riskiniz artmış olabilir.",
+        "day3": "Sigara içmeyin.",
+        "day4": "Alkol tüketiminden kaçının.",
+        "day5": "Yeterli sıvı alın; böbrek fonksiyonunuz için önemlidir.",
+        "day6": "Eklem ağrısı veya ateş epizodlarını kaydedin.",
+        "generalMonitoring": [
+          "İlk 3 ay aylık, sonra her 3 ayda bir nötrofil sayısı ölçtürün.",
+          "Tedavi süresince canlı aşı uygulatmayın.",
+          "Enjeksiyon bölgesi reaksiyonları (sertlik, kızarıklık) sık görülür ve genellikle hafiftir.",
+          "Tekrarlayan perikardit hastalarında ateş ve göğüs ağrısını hemen bildirin."
+        ]
+      },
+      "monitoring": [
+        "İlk 3 ay aylık nötrofil sayımı",
+        "Sonraki dönemde 3 ayda bir nötrofil sayımı",
+        "Renal fonksiyon takibi",
+        "Enfeksiyon belirtilerinin izlenmesi"
+      ]
+    },
+
+    {
+      "label": "Basiliximab",
+      "mechanism": "Anti-CD25 (IL-2 reseptör alfa alt birimi) monoklonal antikoru",
+      "mechanismDetail": "Aktive T lenfositlerinin yüzeyindeki IL-2 reseptörünün alfa alt birimine (CD25) selektif olarak bağlanan kimerik (insan/fare) IgG1 kappa monoklonal antikorudur. IL-2'nin reseptörüne bağlanmasını ve lenfosit proliferasyonunu engeller.",
+      "blackBoxWarning": "Yalnızca transplant alanında deneyimli hekimler tarafından uygulanmalıdır. Ciddi akut aşırı duyarlılık reaksiyonları (anafilaksi dahil) bildirilmiştir. İkinci doz verilmemeli veya dikkatle değerlendirilmelidir.",
+      "diseases": [
+        "Renal Transplant Reddi Profilaksisi"
+      ],
+      "majorWarnings": [
+        "Sadece transplant deneyimli hekimler tarafından uygulanmalıdır.",
+        "İlk veya ikinci dozdan sonra anafilaksi gelişebilir; resüsitasyon ekipmanı hazır bulundurulmalıdır.",
+        "Daha önce basiliximab kullandıktan sonra ciddi reaksiyon gelişmişse ikinci kez vermeyiniz.",
+        "Canlı aşı almayın.",
+        "Hamilelik ve emzirme döneminde dikkatli kullanın."
+      ],
+      "drugInteractions": [
+        { "drug": "Siklosporin", "severity": "Moderate", "note": "Kombinasyon standart rejimin bir parçasıdır; terapötik izlem yapın." },
+        { "drug": "Takrolimus", "severity": "Moderate", "note": "Aditif immünosüpresyon; kan düzeyini izleyin." },
+        { "drug": "Mikofenolat mofetil", "severity": "Moderate", "note": "Standart kombinasyon rejiminin parçası." },
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Canlı aşı enfeksiyonu riski artar." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın infüzyon gününüz (nakil cerrahisi öncesi veya sonrası). Ateş, döküntü veya nefes darlığı varsa nakilden sorumlu hekiminizi bilgilendirin.",
+        "doseDay": "İnfüzyon gününüz. İnfüzyon 20-30 dakika sürer. İnfüzyon sırasında ve sonrasında 30 dakika boyunca döküntü, kaşıntı, nefes darlığı gibi reaksiyon belirtilerini izleyin.",
+        "day1": "İnfüzyon sonrası döküntü, ateş veya nefes darlığı gelişirse nakil kliniğinizi arayın.",
+        "day2": "Oral sıvı alımını artırın; nakil sonrası böbrek fonksiyonu için önemlidir.",
+        "day3": "Enfeksiyon belirtilerini (ateş, öksürük, yanma hissi) dikkatle izleyin.",
+        "day4": "İmmünosüpresif ilaçlarınızı (siklosporin/takrolimus) düzenli saatlerinde alın; hiç atlamayın.",
+        "day5": "Tuz ve sıvı alımınızı doktorunuzun önerdiği düzeyde tutun.",
+        "day6": "Genel sağlık durumunuzu ve fonksiyon testlerinizi takip edin.",
+        "generalMonitoring": [
+          "Nakil reddi belirtilerini (idrar azlığı, ödem, ateş, yara ağrısı) günlük izleyin.",
+          "Siklosporin veya takrolimus kan düzeyi takibi aksatılmamalıdır.",
+          "Tedavi süresince canlı aşı uygulatmayın.",
+          "CMV profilaksisi doktorunuzun önerdiği sürede devam edilmelidir."
+        ]
+      },
+      "monitoring": [
+        "Renal fonksiyon testleri (kreatinin, BUN)",
+        "Siklosporin veya takrolimus kan düzeyleri",
+        "Hemogram ve karaciğer fonksiyon testleri",
+        "CMV, EBV infeksiyonu için klinik izlem"
+      ]
+    },
+
+    {
+      "label": "Belatacept",
+      "mechanism": "Selektif T hücre kostimülasyon blokörü (CTLA-4 Ig, 2. kuşak)",
+      "mechanismDetail": "CTLA-4'ün ekstrasellüler domaini ile IgG1 Fc bölgesinin füzyon proteinidir (2. kuşak). Abatacepte göre CD80/CD86'ya daha yüksek afinite ile bağlanır. T hücre aktivasyonu için gerekli ikinci sinyali (CD28-CD80/86) bloke ederek T hücre aktivasyonunu ve allograft reddini engeller.",
+      "blackBoxWarning": "EBV seronegatif transplant alıcılarında post-transplant lenfoproliferatif hastalık (PTLD) riski artmıştır. Sadece EBV seropozitif hastalarda kullanın. Malignite ve ciddi enfeksiyon riski mevcuttur. Karaciğer nakli için onaylı değildir.",
+      "diseases": [
+        "Renal Transplant Reddi Profilaksisi"
+      ],
+      "majorWarnings": [
+        "Yalnızca EBV seropozitif hastalarda kullanın.",
+        "EBV seronegatif ve serolojisi bilinmeyen hastalarda kullanmayın.",
+        "Karaciğer transplantında kullanmayın.",
+        "PML (Progresif Multifokal Lökoensefalopati) riski mevcuttur.",
+        "Canlı aşı almayın.",
+        "Aktif enfeksiyon varken infüzyonu erteleyin."
+      ],
+      "drugInteractions": [
+        { "drug": "Mikofenolat mofetil", "severity": "Moderate", "note": "Standart kombinasyon rejiminin parçasıdır." },
+        { "drug": "Kortikosteroidler", "severity": "Moderate", "note": "Standart immünosüpresif rejim parçası." },
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Canlı aşı enfeksiyonu riski artar." },
+        { "drug": "Siklosporin", "severity": "Major", "note": "Belatacept ile birlikte kullanmayın; renal toksisite artar." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın infüzyon gününüz (NULOJİX). Ateş veya enfeksiyon belirtisi varsa nakil kliniğinizi arayın.",
+        "doseDay": "İnfüzyon gününüz. Yaklaşık 30 dakika sürer. İnfüzyon reaksiyonlarını (döküntü, nefes darlığı) izleyin. İnfüzyon sonrası bol su için.",
+        "day1": "İnfüzyon sonrası döküntü veya ateş gelişirse nakil kliniğinizi arayın.",
+        "day2": "Enfeksiyon belirtilerini dikkatle izleyin.",
+        "day3": "Sinir sistemini etkileyen belirtiler (hafıza kaybı, konuşma güçlüğü, yürüme bozukluğu) PML işareti olabilir; acile gidin.",
+        "day4": "İmmünosüpresif ilaçlarınızı düzenli alın.",
+        "day5": "Yeterli sıvı alın.",
+        "day6": "Genel sağlık durumunuzu ve fonksiyon testlerini takip edin.",
+        "generalMonitoring": [
+          "PTLD riski nedeniyle lenf bezi büyümesini ve açıklanamayan ateşi hemen bildirin.",
+          "PML belirtilerini (bilinç değişikliği, konuşma bozukluğu, görme sorunları) izleyin.",
+          "Nakil reddi belirtilerini günlük izleyin.",
+          "Tedavi süresince canlı aşı uygulatmayın."
+        ]
+      },
+      "monitoring": [
+        "Renal fonksiyon testleri",
+        "EBV serologi takibi",
+        "Hemogram ve karaciğer enzim takibi",
+        "PTLD için klinik izlem",
+        "CMV profilaksisi ve izlemi"
+      ]
+    },
+
+    {
+      "label": "Belimumab",
+      "mechanism": "Anti-BLyS (B lenfosit stimülatör) monoklonal antikoru",
+      "mechanismDetail": "BLyS (B lenfosit stimülatör, BAFF olarak da bilinir) proteinini hedef alan IgG1 lambda tam insan monoklonal antikorudur. BLyS'e bağlanarak B hücrelerinin hayatta kalması ve olgunlaşmasını inhibe eder, otoimmün B hücrelerinin eliminasyonunu destekler.",
+      "blackBoxWarning": null,
+      "diseases": [
+        "Sistemik Lupus Eritematozus",
+        "Lupus Nefriti"
+      ],
+      "majorWarnings": [
+        "Aktif ciddi lupus nefritiyle ya da aktif MSS lupusuyla başlanan klinik veriler yetersizdir.",
+        "Aktif enfeksiyon varken tedaviyi başlatmayın.",
+        "Canlı aşı almayın (son 30 gün içinde almış olanlarda da dikkatli olun).",
+        "Depresyon ve intihar düşüncesi bildirilen vakalarda ruh sağlığını izleyin.",
+        "İnfüzyon reaksiyonları ve geç aşırı duyarlılık reaksiyonları gelişebilir.",
+        "Nöromiyeltitis optika hastalarında kullanmayın (kötüleşme riski)."
+      ],
+      "drugInteractions": [
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Aşı etkinliği azalır, enfeksiyon riski artar." },
+        { "drug": "Abatacept", "severity": "Major", "note": "Aditif immünosüpresyon riski." },
+        { "drug": "Diğer biyolojik ilaçlar", "severity": "Major", "note": "Birlikte kullanılmamalıdır." },
+        { "drug": "Siklofosfamid (IV)", "severity": "Major", "note": "Birlikte kullanılması önerilmez; ciddi enfeksiyon riski artar." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın doz gününüz (subkütan/haftalık ya da IV/aylık). Ateş veya aktif enfeksiyon belirtisi varsa doktorunuzu arayın. BENLYSTA enjektörünü buzdolabından çıkarın, 30 dk bekletin.",
+        "doseDay": "Doz gününüz. Subkütan ise karın veya uyluğa enjekte edin; bölgeyi değiştirin. IV ise infüzyon reaksiyonlarını izleyin.",
+        "day1": "Enjeksiyon/infüzyon sonrası döküntü veya kaşıntı gelişirse doktorunuzu arayın.",
+        "day2": "Yeterli güneş korunması sağlayın; SLE'de UV ışığından kaçının.",
+        "day3": "Psikolojik durumunuzu izleyin; depresyon veya intihar düşüncesi gelişirse psikiyatri desteği alın.",
+        "day4": "Alkol tüketiminden kaçının; SLE'yi tetikleyebilir.",
+        "day5": "Dengeli beslenin; işlenmiş, yüksek tuzlu gıdalardan kaçının.",
+        "day6": "SLE belirtilerinizdeki değişimleri (döküntü, eklem ağrısı, ödem) kaydedin.",
+        "generalMonitoring": [
+          "UV ışığından korunun; güneş kremi ve koruyucu kıyafet kullanın.",
+          "Düzenli ANA, anti-dsDNA, C3/C4 takibi yapılmalıdır.",
+          "İdrar tetkiki ile renal tutulumu izleyin.",
+          "Psikolojik durum değişikliklerini (depresyon, anksiyete) hekiminize bildirin.",
+          "Canlı aşılar tedavi süresince verilmemelidir."
+        ]
+      },
+      "monitoring": [
+        "ANA ve anti-dsDNA antikor düzeyleri",
+        "Kompleman düzeyleri (C3/C4)",
+        "İdrar tetkiki ve proteinüri takibi",
+        "Tam kan sayımı",
+        "Enfeksiyon belirtilerinin izlenmesi",
+        "Psikiyatrik durum takibi"
+      ]
+    },
+
+    {
+      "label": "Bevacizumab",
+      "mechanism": "Anti-VEGF monoklonal antikoru (anjiogenez inhibitörü)",
+      "mechanismDetail": "VEGF-A'ya (vasküler endotel büyüme faktörü) bağlanan rekombinant humanize IgG1 monoklonal antikorudur. VEGF'nin Flt-1 (VEGFR-1) ve KDR (VEGFR-2) reseptörlerine bağlanmasını engeller, tümör anjiyogenezini bloke eder ve tümörün beslenme damarlarını bozar.",
+      "blackBoxWarning": null,
+      "diseases": [
+        "Kolorektal Kanser",
+        "Küçük Hücreli Olmayan Akciğer Kanseri",
+        "Glioblastom",
+        "Meme Kanseri",
+        "Renal Hücreli Karsinom",
+        "Serviks Kanseri",
+        "Over Kanseri",
+        "Hepatosellüler Karsinom"
+      ],
+      "majorWarnings": [
+        "Ciddi veya ölümcül kanama riski: beyin metastazı varlığında, GI fistül veya gastrointestinal perforasyon riski artmıştır.",
+        "Arteryel tromboembolik olaylar (inme, MI): 65 yaş üstü ve tromboembolik öyküsü olanlarda daha yüksek risk.",
+        "Yara iyileşmesini bozar; cerrahi operasyon öncesi en az 28 gün önce kesin, sonrasında en az 28 gün bekle.",
+        "Hipertansiyon gelişebilir veya kötüleşebilir; kan basıncını izleyin.",
+        "Proteinüri gelişirse idrar takibi yapın; nefrotik sendrom gelişirse tedaviyi kesin.",
+        "Posterior reversible ensefalopati sendromu (PRES) nadir de olsa görülebilir."
+      ],
+      "drugInteractions": [
+        { "drug": "Sunitinib", "severity": "Major", "note": "Mikroanjiopatik hemolitik anemi riski artar." },
+        { "drug": "Antihipertansif ilaçlar", "severity": "Moderate", "note": "Bevacizumab hipertansiyon yapabilir; antihipertansif dozunu ayarlamak gerekebilir." },
+        { "drug": "Antikoagülanlar (warfarin, heparin)", "severity": "Moderate", "note": "Kanama riski artabilir; INR takibi yapın." },
+        { "drug": "Kemoterapi (paklitaksel, kapesitabin vb.)", "severity": "Moderate", "note": "Kombine toksisiteyi izleyin." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın infüzyon gününüz. Tansiyon ölçümünüzü yapın; 150/100 mmHg'nın üzerindeyse kliniğinizi arayın. İnfüzyon öncesi hafif yiyin.",
+        "doseDay": "İnfüzyon gününüz (30-90 dakika). İnfüzyon sırasında baş ağrısı, göğüs ağrısı, nefes darlığı, ağız ve diş kanaması gelişirse hemşireyi uyarın. İnfüzyon sonrası tansiyon ölçümü yaptırın.",
+        "day1": "Burun kanaması veya beklenmedik kanama fark ederseniz kliniğinizi arayın.",
+        "day2": "Tansiyonunuzu günlük ölçün; kaydedin.",
+        "day3": "Yara veya cerrahi bölgenizde iyileşme gecikmesini izleyin.",
+        "day4": "Bacak ağrısı veya şişliği (DVT) gelişirse acile gidin.",
+        "day5": "Yeterli sıvı alın; böbrek fonksiyonunuz için önemlidir.",
+        "day6": "Genel sağlık durumunuzu, yorgunluk seviyenizi ve iştahınızı kaydedin.",
+        "generalMonitoring": [
+          "Her infüzyon öncesi kan basıncı ölçümü yapılmalıdır.",
+          "Proteinüri için düzenli idrar tetkiki yaptırın.",
+          "Beklenmedik kanama (burun, diş eti, idrar) hemen bildirilmelidir.",
+          "Yara iyileşmesi için bevacizumab ile cerrahi arasında en az 28 gün bırakın.",
+          "Görme kaybı, nöbet veya bilinç bozukluğu PRES belirtisi olabilir; acile gidin."
+        ]
+      },
+      "monitoring": [
+        "Her infüzyon öncesi kan basıncı",
+        "Düzenli idrar tetkiki (proteinüri için)",
+        "Tam kan sayımı ve karaciğer fonksiyon testleri",
+        "Tromboembolik olay belirtilerinin izlenmesi",
+        "GI perforasyon belirtilerinin izlenmesi (karın ağrısı, kusma)"
+      ]
+    },
+
+    {
+      "label": "Etanercept",
+      "mechanism": "TNF reseptör füzyon proteini (TNF-alfa ve TNF-beta inhibitörü)",
+      "mechanismDetail": "İnsan p75 TNF reseptörünün (TNFR2) iki ekstrasellüler ligand bağlayıcı domaininin IgG1 Fc bölgesiyle füzyonundan oluşan rekombinant bir proteindir. Hem TNF-alfa hem de lenfotoksin alfa'ya (TNF-beta) bağlanır. Solübl bir 'tuzak' görevi görerek TNF'in hücre yüzeyi reseptörlerine bağlanmasını engeller.",
+      "blackBoxWarning": "Tüberküloz dahil ciddi enfeksiyon riski artmıştır. Tedavi öncesi latent TB taraması zorunludur. Lenfoma dahil malignite riski artmıştır.",
+      "diseases": [
+        "Romatoid Artrit",
+        "Ankilozan Spondilit",
+        "Psöriyatik Artrit",
+        "Plak Psoriasis",
+        "Jüvenil İdiopatik Artrit"
+      ],
+      "majorWarnings": [
+        "Tedaviye başlamadan önce tüberküloz ve Hepatit B taraması yaptırın.",
+        "Aktif enfeksiyon varken ilacı uygulamayın.",
+        "Canlı aşı almayın.",
+        "Konjestif kalp yetmezliğini başlatabilir veya kötüleştirebilir; kardiyak bulguları izleyin.",
+        "Multipl skleroz gibi demiyelinizan hastalık gelişebilir veya kötüleşebilir.",
+        "Lenfoma, cilt kanserleri dahil malignite riski artmıştır.",
+        "Anakinra ile birlikte kullanmayın."
+      ],
+      "drugInteractions": [
+        { "drug": "Anakinra", "severity": "Major", "note": "Ciddi enfeksiyon ve nötropeni riski artar. Birlikte kullanmayın." },
+        { "drug": "Abatacept", "severity": "Major", "note": "Enfeksiyon riskini artırır." },
+        { "drug": "Siklofosfamid", "severity": "Major", "note": "Malignite riski artabilir." },
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Enfeksiyon riski artar." },
+        { "drug": "Warfarin", "severity": "Moderate", "note": "Warfarin etkisi değişebilir; INR takibi yapın." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın doz gününüz. Ateş, öksürük veya enfeksiyon belirtisi varsa doktorunuzu arayın. ENBREL'i buzdolabından çıkarıp 15-30 dakika oda sıcaklığında bekletin (kapağı açmayın).",
+        "doseDay": "Doz gününüz. Enjeksiyondan önce deri ve eklem belirtilerinizi kontrol edin. Enjeksiyon bölgesini (karın, uyluk, kol arkası) 24 saat ıslatmayın. Bölgeyi her seferinde değiştirin.",
+        "day1": "Enjeksiyon bölgesinde hafif kızarıklık normaldir; aşırı reaksiyon gelişirse doktorunuzu arayın.",
+        "day2": "Kalabalık ortamlardan kaçının.",
+        "day3": "Sigara içmeyin; etkinliği azaltır.",
+        "day4": "Alkol tüketiminden kaçının.",
+        "day5": "Eklem hareketliliği egzersizlerinizi yapın.",
+        "day6": "Deri lezyonlarındaki değişimi, eklem ağrısını, sabah tutukluğunu kaydedin.",
+        "generalMonitoring": [
+          "Kronik öksürük, gece terlemeleri TB belirtisi olabilir; hemen doktorunuzu arayın.",
+          "Görme bozukluğu, uyuşma veya güçsüzlük gelişirse nörolojik değerlendirme isteyin (demiyelinizasyon).",
+          "Tedavi süresince canlı aşı uygulatmayın.",
+          "Periyodik deri muayenesi önerilir.",
+          "Plak psoriasisli hastalar: deri lezyonlarındaki kötüleşmeyi kaydedin."
+        ]
+      },
+      "monitoring": [
+        "Tedavi öncesi TB taraması",
+        "Tedavi öncesi Hepatit B taraması",
+        "Karaciğer enzim takibi",
+        "Tam kan sayımı",
+        "Enfeksiyon belirtilerinin izlenmesi",
+        "Periyodik deri kanseri taraması"
+      ]
+    },
+
+    {
+      "label": "Natalizumab",
+      "mechanism": "Anti-α4-integrin monoklonal antikoru (lökosit göç inhibitörü)",
+      "mechanismDetail": "Lökositlerin yüzeyindeki α4-integrine (VLA-4) selektif olarak bağlanan rekombinant humanize IgG4 kappa monoklonal antikorudur. α4β1 ve α4β7 integrin heterodimerleriyle etkileşimi engelleyerek lökositlerin kan-beyin bariyerini geçmesini ve inflamasyon bölgelerine göç etmesini önler.",
+      "blackBoxWarning": "Progresif Multifokal Lökoensefalopati (PML) riski mevcuttur. PML, JC virüsünün fırsatçı enfeksiyonudur ve ölümcül veya ağır sakatlıkla sonuçlanabilir. REMS programı kapsamında yalnızca sertifikalı merkezlerde kullanılabilir.",
+      "diseases": [
+        "Relapsing-Remitting Multipl Skleroz",
+        "Crohn Hastalığı"
+      ],
+      "majorWarnings": [
+        "PML riski nedeniyle JC virüs antikor testi gereklidir; antikor indeksini izleyin.",
+        "Sadece TOUCH kayıt sistemi (veya ülke REMS'i) kapsamında kullanılabilir.",
+        "Diğer immünosüpresiflerle birlikte kullanmayın (özellikle beta-interferon, mitoksantron).",
+        "İmmün rekonstitüsyon inflamatuar sendromu (IRIS) bildirilmiştir.",
+        "Canlı aşı almayın.",
+        "Ciddi alerjik reaksiyonlar (anafilaksi) bildirilmiştir; premedikasyon değerlendirin."
+      ],
+      "drugInteractions": [
+        { "drug": "İmmünosüpresif ilaçlar", "severity": "Major", "note": "PML ve ciddi enfeksiyon riski artar. Birlikte kullanmayın." },
+        { "drug": "Beta-interferon", "severity": "Major", "note": "Kombinasyon PML riskini artırabilir." },
+        { "drug": "Kortikosteroidler (kısa süreli)", "severity": "Moderate", "note": "Relaps tedavisi için kabul edilebilir; uzun süreli kullanmayın." },
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Enfeksiyon riski artar." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın infüzyon gününüz (TYSABRI, aylık). Yeni nörolojik belirti (hafıza kaybı, konuşma güçlüğü, görme bozukluğu, yürüme bozukluğu) gelişmişse kliniğinizi arayın; PML şüphesiyle infüzyon erteleyin.",
+        "doseDay": "İnfüzyon gününüz. Yaklaşık 1 saat sürer. İnfüzyon sırasında ve 1 saat sonrasında baş ağrısı, sersemlik, nefes darlığı gelişirse hemşireyi uyarın. İnfüzyon sonrası bol su için.",
+        "day1": "Yeni nörolojik belirtileri (görme bozukluğu, bacak güçsüzlüğü, konuşma güçlüğü) günlük izleyin.",
+        "day2": "Kalabalık ortamlardan kaçının.",
+        "day3": "Düzenli uyku alın; MS semptomu olan yorgunluk sık görülür.",
+        "day4": "Alkol tüketiminden kaçının.",
+        "day5": "B vitamini, D vitamini seviyenizi kontrol ettirin.",
+        "day6": "Genel MS semptomlarınızı (görme, güç, yürüme) kaydedin.",
+        "generalMonitoring": [
+          "Yeni bilişsel değişiklikler, görme bozukluğu, güçsüzlük veya yürüme bozukluğu PML belirtisi olabilir; acilen kliniğinizi arayın.",
+          "JC virüs antikoru ve indeksi her 6 ayda bir ölçülmelidir.",
+          "Tedavi süresince canlı aşı uygulatmayın.",
+          "Tedaviye başlamadan önce standart MS aşılarını tamamlayın."
+        ]
+      },
+      "monitoring": [
+        "Her 6 ayda bir JC virüs antikoru testi",
+        "MRI (MS plakları ve PML şüphesi için)",
+        "Nörolojik muayene her ziyarette",
+        "Karaciğer enzim takibi",
+        "Tam kan sayımı"
+      ]
+    },
+
+    {
+      "label": "Nivolumab",
+      "mechanism": "Anti-PD-1 immün kontrol noktası inhibitörü",
+      "mechanismDetail": "Programlanmış hücre ölümü proteini 1 (PD-1) reseptörüne selektif olarak bağlanan tam insan IgG4 monoklonal antikorudur. PD-1 ile PD-L1/PD-L2 ligandları arasındaki etkileşimi bloke ederek T hücrelerinin tümör hücrelerini tanıyıp öldürmesini yeniden aktive eder.",
+      "blackBoxWarning": null,
+      "diseases": [
+        "Melanom",
+        "Küçük Hücreli Olmayan Akciğer Kanseri",
+        "Hodgkin Lenfoma",
+        "Mesane/Ürotelyal Kanser",
+        "Kolorektal Kanser",
+        "Hepatosellüler Karsinom",
+        "Renal Hücreli Karsinom",
+        "Özefagus Kanseri",
+        "Mide Kanseri",
+        "Plevral Mezotelyoma"
+      ],
+      "majorWarnings": [
+        "İmmün aracılı pnömoni gelişebilir; nefes darlığı veya yeni öksürük başlarsa hemen bildirin.",
+        "İmmün aracılı kolit; ishal, kanlı dışkı gelişirse tedaviyi kesin ve steroid başlayın.",
+        "İmmün aracılı hepatit; AST/ALT artışını izleyin.",
+        "İmmün aracılı endokrinopati (tiroid, adrenal, hipofiz); yorgunluk, kilo kaybı, baş ağrısını izleyin.",
+        "İmmün aracılı nefrit; kreatinin artışını izleyin.",
+        "Demiyelinizasyon, myasteni gravis benzeri sendrom bildirilmiştir.",
+        "İpilimumab kombinasyonunda immün yan etkiler daha şiddetli olabilir."
+      ],
+      "drugInteractions": [
+        { "drug": "Kortikosteroidler", "severity": "Moderate", "note": "İmmün ilişkili yan etkiler için kullanılır; immunosupresif dozda ise immünoterapi etkinliğini azaltabilir." },
+        { "drug": "İpilimumab", "severity": "Major", "note": "Kombinasyon immün yan etkileri artırır; sıkı izlem gerektirir." },
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Enfeksiyon riski artabilir." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın infüzyon gününüz. Yeni nefes darlığı, ishal, sarılık, hormonal bozukluk belirtisi varsa kliniğinizi arayın; infüzyon ertelenebilir.",
+        "doseDay": "İnfüzyon gününüz (30-60 dakika). İnfüzyon sırasında döküntü, nefes darlığı, ateş gelişirse hemşireyi uyarın. İnfüzyon sonrası bol su için.",
+        "day1": "Nefes darlığı veya yeni öksürük başlarsa immün pnömoni şüphesiyle acilen kliniğinizi arayın.",
+        "day2": "İshal (günde 3'ten fazla dışkılama) veya kanlı dışkı başlarsa hemen bildirin.",
+        "day3": "Cilt döküntüsü veya kaşıntı gelişirse not alın ve kliniğinizi arayın.",
+        "day4": "Aşırı yorgunluk, kilo kaybı veya baş ağrısı endokrin sorun işareti olabilir; doktorunuzu arayın.",
+        "day5": "Sağlıklı ve dengeli beslenin; protein alımına özen gösterin.",
+        "day6": "Genel sağlık durumunuzu ve yan etkileri kaydedin.",
+        "generalMonitoring": [
+          "Her infüzyon öncesi karaciğer enzimleri, kreatinin, tiroid fonksiyonları kontrol edilmelidir.",
+          "Yeni veya kötüleşen solunum, GI, endokrin ve nörolojik bulgular hemen bildirilmelidir.",
+          "İmmün ilişkili yan etkilerin çoğu steroid ile tedavi edilebilir; kendi başınıza ilaç almayın.",
+          "Canlı aşı tedavi süresince verilmemelidir."
+        ]
+      },
+      "monitoring": [
+        "Her infüzyon öncesi karaciğer enzim ve kreatinin",
+        "Tiroid fonksiyon testleri (her 6-12 haftada bir)",
+        "Akciğer fonksiyonu ve solunum belirtileri",
+        "Kan şekeri ve adrenal fonksiyon",
+        "Hemogram ve inflamasyon belirteçleri"
+      ]
+    },
+
+    {
+      "label": "Ocrelizumab",
+      "mechanism": "Anti-CD20 monoklonal antikoru (B hücre deplesyonu)",
+      "mechanismDetail": "CD20 hücre yüzey antijenini hedef alan humanize IgG1 monoklonal antikorudur. Antikor bağımlı hücresel sitotoksisite (ADCC), kompleman bağımlı sitotoksisite (CDC) ve apoptoz aracılığıyla CD20+ B lenfositlerini deplete eder. Prekursor B hücrelerini ve matür B hücrelerini etkiler; kök hücreleri ve plazma hücrelerini etkilemez.",
+      "blackBoxWarning": null,
+      "diseases": [
+        "Relapsing Multipl Skleroz",
+        "Primer Progresif Multipl Skleroz"
+      ],
+      "majorWarnings": [
+        "İnfüzyon reaksiyonlarını azaltmak için premedikasyon (metilprednizolon, antihistaminik, antipiretik) gereklidir.",
+        "Aktif enfeksiyon varken infüzyonu erteleyin.",
+        "Hepatit B reaktivasyonu bildirilmiştir; tedavi öncesi HBsAg ve anti-HBc taraması yapın.",
+        "Progresif Multifokal Lökoensefalopati (PML) vakası bildirilmiştir; JC virüs antikoru izleyin.",
+        "Malignite (meme kanseri dahil) riski bildirilmiştir; mamografik tarama önerilir.",
+        "Canlı aşı almayın; tedaviden önce gerekli aşıları tamamlayın.",
+        "Gebelikte kullanımından kaçının; fetal B hücre deplesyonu yapabilir."
+      ],
+      "drugInteractions": [
+        { "drug": "İmmünosüpresif ilaçlar", "severity": "Major", "note": "Aditif immünosüpresyon; enfeksiyon riski artar." },
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Enfeksiyon riski artar." },
+        { "drug": "Kortikosteroidler", "severity": "Moderate", "note": "İnfüzyon reaksiyonu premedikasyonu için gereklidir." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın infüzyon gününüz (OCREVUS, 6 ayda bir). Ateş veya aktif enfeksiyon varsa kliniğinizi arayın. İnfüzyon yaklaşık 3.5 saat sürecektir; hazırlıklı olun.",
+        "doseDay": "İnfüzyon gününüz. Steroid, antihistaminik ve ateş düşürücü premedikasyon uygulanacaktır. İnfüzyon sırasında kaşıntı, göğüs ağrısı veya nefes darlığı hissederseniz hemşireyi hemen uyarın.",
+        "day1": "İnfüzyon sonrası yorgunluk, döküntü veya ateş gelişirse kliniğinizi arayın.",
+        "day2": "Yeni nörolojik belirtiler (görme bozukluğu, güçsüzlük) MS relapsı veya PML işareti olabilir.",
+        "day3": "Oral hijyene dikkat edin; bağışıklık baskılanması ağız infeksiyonlarına zemin hazırlayabilir.",
+        "day4": "Yorgunluğunuzu ve enerji düzeyinizi kaydedin.",
+        "day5": "D vitamini düzeyinizi kontrol ettirin; MS'de önemlidir.",
+        "day6": "Genel MS semptomlarınızı (spastisite, yorgunluk, denge) kaydedin.",
+        "generalMonitoring": [
+          "Tedavi öncesi hepatit B taraması zorunludur.",
+          "Meme kanseri taraması önerilir.",
+          "JC virüs antikoru takibi yapılmalıdır.",
+          "Canlı aşılar tedavi öncesinde en az 4-6 hafta önce tamamlanmalıdır.",
+          "COVID-19 aşısı gibi inaktif aşılar B hücre rekonstitüsyonunu bekleyerek yapılmalıdır."
+        ]
+      },
+      "monitoring": [
+        "Tedavi öncesi hepatit B taraması (HBsAg, anti-HBc)",
+        "Tam kan sayımı ve lenfosit sayısı",
+        "JC virüs antikoru",
+        "Her 6 ayda bir MRI (relaps ve PML şüphesi)",
+        "Tiroid fonksiyon testleri",
+        "Nörolojik değerlendirme"
+      ]
+    },
+
+    {
+      "label": "Omalizumab",
+      "mechanism": "Anti-IgE monoklonal antikoru",
+      "mechanismDetail": "İnsan IgE antikoruna bağlanan rekombinant humanize IgG1 kappa monoklonal antikorudur. IgE'nin yüksek afiniteli reseptörüne (FcεRI) bağlanma noktasını bloke ederek mast hücreleri ve bazofiller üzerindeki FcεRI ekspresyonunu düşürür. Böylece allerjen maruziyetine karşı inflamatuar yanıtı baskılar.",
+      "blackBoxWarning": null,
+      "diseases": [
+        "Alerjik Astım",
+        "Kronik İdiopatik Ürtiker",
+        "Besin Alerjisi",
+        "Alerjik Rinit"
+      ],
+      "majorWarnings": [
+        "Anafilaksi riski vardır; her enjeksiyondan sonra 30 dakika gözlem yapılmalıdır.",
+        "Anafilaksi tedavisi için epinefrin hazır bulundurulmalıdır.",
+        "İlk enjeksiyondan saatler sonra veya sonraki dozlarda da anafilaksi gelişebilir.",
+        "Helmint (parazit) enfeksiyonu riskini artırabilir; endemik bölgelerde dikkatli olun.",
+        "Malignite riski potansiyeli tam netlik kazanmamıştır; takip önerilir."
+      ],
+      "drugInteractions": [
+        { "drug": "Epinefrin", "severity": "Informative", "note": "Anafilaksi tedavisi için her zaman hazır bulundurulmalıdır." },
+        { "drug": "Sistemik kortikosteroidler", "severity": "Moderate", "note": "Kombinasyonda doz azaltımı mümkün olabilir." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın doz gününüz. Aktif ateş veya enfeksiyon varsa doktorunuzu arayın. XOLAIR'i buzdolabından çıkarın, 20 dakika oda ısısında bekletin.",
+        "doseDay": "Doz gününüz. Enjeksiyondan sonra 30 dakika klinikte bekleyin (anafilaksi izlemi). Enjeksiyon bölgesini 12 saat ıslatmayın.",
+        "day1": "Enjeksiyon bölgesinde hafif şişlik, kızarıklık normaldir. Nefes darlığı veya yüzde şişme acil durumdur; hemen arayın.",
+        "day2": "Tetikleyicilerden (toz, polenle temas) uzak durun.",
+        "day3": "İnhaler kullanımınızı düzenli sürdürün; omalizumab ataklarınızı azaltır ancak akut tedavi değildir.",
+        "day4": "Sigara içmeyin; astımı ve ürtikeri kötüleştirir.",
+        "day5": "Alerjik tetikleyicilerden uzak durarak ev ortamınızı temiz tutun.",
+        "day6": "Astım semptomlarınızı (öksürük, hırıltı, nefes darlığı) ve ürtiker belirtilerini kaydedin.",
+        "generalMonitoring": [
+          "Her enjeksiyondan sonra 30 dakika izlem zorunludur.",
+          "Anafilaksi durumunda epinefrin oto-enjektörünüzü yanınızda taşıyın.",
+          "Tedavi etkinliğini değerlendirmek için astım kontrol skorunu her ziyarette ölçtürün.",
+          "Serum IgE düzeyini düzenli ölçtürmeyin; tedavi sırasında yükseliyor gibi görünür (normal)."
+        ]
+      },
+      "monitoring": [
+        "Her enjeksiyon sonrası 30 dakika anafilaksi izlemi",
+        "Astım kontrol skoru takibi (ACT)",
+        "Akciğer fonksiyonları (FEV1)",
+        "İdrar analizi (renal izlem)",
+        "Malignite için klinik izlem"
+      ]
+    },
+
+    {
+      "label": "Pembrolizumab",
+      "mechanism": "Anti-PD-1 immün kontrol noktası inhibitörü",
+      "mechanismDetail": "PD-1 reseptörüne bağlanan humanize IgG4 kappa monoklonal antikorudur. PD-1 ile PD-L1/PD-L2 etkileşimini bloke ederek T hücrelerinin tümör hücrelerini tanıyıp eliminasyonunu yeniden aktive eder. FDA'nın tümörde yüksek mikrosatellit instabilitesi (MSI-H) veya TMB-H (yüksek tümör mutasyon yükü) durumuna bakılmaksızın tüm solid tümörlerde kullandığı ilk ilaçtır.",
+      "blackBoxWarning": null,
+      "diseases": [
+        "Melanom",
+        "Küçük Hücreli Olmayan Akciğer Kanseri",
+        "Hodgkin Lenfoma",
+        "Mesane/Ürotelyal Kanser",
+        "Kolorektal Kanser",
+        "Mide/Özefagus Kanseri",
+        "Serviks Kanseri",
+        "Hepatosellüler Karsinom",
+        "Renal Hücreli Karsinom",
+        "Meme Kanseri",
+        "Endometrium Kanseri",
+        "Baş Boyun Kanseri"
+      ],
+      "majorWarnings": [
+        "İmmün aracılı pnömoni: yeni nefes darlığı veya öksürük başlarsa hemen bildirin.",
+        "İmmün aracılı kolit: ishal, kanlı dışkı gelişirse tedaviyi kesin.",
+        "İmmün aracılı hepatit: karaciğer enzimlerini izleyin.",
+        "İmmün aracılı endokrinopati: tiroid, adrenal ve hipofiz fonksiyonlarını izleyin.",
+        "İmmün aracılı nefrit ve pnöromotor nöropati bildirilmiştir.",
+        "Ciddi deri reaksiyonları (SJS/TEN) nadir görülmektedir.",
+        "Miyo/perikardit bildirilmiştir; göğüs ağrısını acilen bildirin."
+      ],
+      "drugInteractions": [
+        { "drug": "Kortikosteroidler", "severity": "Moderate", "note": "İmmün yan etki tedavisinde kullanılır; immunosupresif dozda etkinliği azaltabilir." },
+        { "drug": "Diğer immün kontrol noktası inhibitörleri", "severity": "Major", "note": "Kombinasyon immün yan etkileri artırır." },
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Enfeksiyon riski artabilir." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın infüzyon gününüz (KEYTRUDA). Yeni nefes darlığı, ishal veya hormonal bozukluk belirtisi varsa kliniğinizi arayın. İnfüzyon öncesi hafif yiyin.",
+        "doseDay": "İnfüzyon gününüz (30 dakika). İnfüzyon sırasında nefes darlığı, döküntü veya ateş gelişirse hemşireyi hemen uyarın. İnfüzyon sonrası bol su için.",
+        "day1": "Yeni nefes darlığı veya öksürük başlarsa acilen kliniğinizi arayın (immün pnömoni).",
+        "day2": "İshal (günde 3'ten fazla) veya kanlı dışkı başlarsa hemen bildirin.",
+        "day3": "Cilt döküntüsü, kaşıntı veya kabarcık gelişirse not alın.",
+        "day4": "Yorgunluk, kilo kaybı, aşırı susama endokrin sorun işareti olabilir; doktorunuzu arayın.",
+        "day5": "Dengeli protein alımı ve yeterli sıvı tüketin.",
+        "day6": "Tüm yan etkileri ve genel sağlık durumunuzu kaydedin.",
+        "generalMonitoring": [
+          "Her infüzyon öncesi karaciğer enzimleri, kreatinin ve tiroid fonksiyonları.",
+          "İmmün ilişkili yan etkiler erken fark edilirse steroid ile başarıyla tedavi edilebilir.",
+          "Göğüs ağrısı veya nefes darlığı acil değerlendirme gerektirir (miyokardit).",
+          "Canlı aşılar tedavi süresince verilmemelidir."
+        ]
+      },
+      "monitoring": [
+        "Her infüzyon öncesi karaciğer enzim, kreatinin, tiroid fonksiyonu",
+        "Akciğer değerlendirmesi (nefes darlığı için)",
+        "Kan şekeri ve adrenal fonksiyon",
+        "Hemogram ve CRP",
+        "Kardiyak enzimler (miyokardit şüphesinde)"
+      ]
+    },
+
+    {
+      "label": "Rituximab",
+      "mechanism": "Anti-CD20 monoklonal antikoru (kimerik, B hücre deplesyonu)",
+      "mechanismDetail": "CD20 antijenine bağlanan kimerik (insan/fare) IgG1 kappa monoklonal antikorudur. CD20+ B lenfositlerini ADCC, CDC ve apoptoz aracılığıyla deplete eder. Pre-B ve matür B hücrelerini etkiler; kök hücreleri ve plazma hücrelerini etkilemez.",
+      "blackBoxWarning": "Ciddi infüzyon reaksiyonları (ölümcül olabilir). Tümör lizis sendromu. Ciddi mukokutanöz reaksiyonlar (Stevens-Johnson sendromu). Progresif Multifokal Lökoensefalopati (PML).",
+      "diseases": [
+        "Non-Hodgkin Lenfoma",
+        "Kronik Lenfositik Lösemi",
+        "Romatoid Artrit",
+        "Granülomatozis Polianjitis",
+        "Mikroskopik Polianjitis",
+        "Pemfigus Vulgaris"
+      ],
+      "majorWarnings": [
+        "İnfüzyon reaksiyonlarını önlemek için premedikasyon (asetaminofen, antihistaminik, kortikosteroid) uygulayın.",
+        "İlk infüzyonda yavaş başlayın; reaksiyon gelişirse durdurun.",
+        "Tümör lizis sendromu: hızlı tümör hücre yıkımına bağlı; hidrasyonu iyi yapın.",
+        "Hepatit B reaktivasyonu risk altındadır; tedavi öncesi tarama zorunludur.",
+        "PML: JC virüsünün fırsatçı enfeksiyonu; nörolojik belirtileri izleyin.",
+        "Ciddi mukokutanöz reaksiyonlar bildirilmiştir; deri değişikliklerini hemen bildirin.",
+        "Kardiyak arrest vakaları infüzyon sırasında bildirilmiştir; kardiyak izlem yapın."
+      ],
+      "drugInteractions": [
+        { "drug": "Sisplatin", "severity": "Major", "note": "Böbrek toksisitesi artar." },
+        { "drug": "TNF inhibitörleri", "severity": "Major", "note": "Ciddi enfeksiyon riski artar." },
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Enfeksiyon riski artar." },
+        { "drug": "Antihipertansifler", "severity": "Moderate", "note": "İnfüzyon sırasında hipotansiyon gelişebilir; antihipertansif tedaviyi infüzyon günü askıya alın." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın infüzyon gününüz. Ateş veya aktif enfeksiyon varsa kliniğinizi arayın. İnfüzyon en az 4-6 saat sürer; hazırlıklı gidin. Antihipertansif ilaçlarınızı infüzyon günü sabah almayın (doktorunuz önermemişse).",
+        "doseDay": "İnfüzyon gününüz. Premedikasyon yapılacak. İnfüzyon sırasında ateş, titreme, nefes darlığı, göğüs ağrısı gelişirse hemşireyi hemen uyarın. Bol sıvı için.",
+        "day1": "İnfüzyon sonrası döküntü, ateş veya titreme devam ederse kliniğinizi arayın.",
+        "day2": "Tümör hastalarında karın ağrısı, mide bulantısı veya idrar azalması tümör lizis sendromu işareti olabilir.",
+        "day3": "Herhangi bir yeni deri lezyonu (kabarcık, soyulma) hemen bildirin.",
+        "day4": "Yeni nörolojik belirtiler (konuşma güçlüğü, görme bozukluğu) PML işareti olabilir; acile gidin.",
+        "day5": "Yeterli sıvı alın.",
+        "day6": "Genel durumunuzu ve enfeksiyon belirtilerini kaydedin.",
+        "generalMonitoring": [
+          "Tedavi öncesi hepatit B taraması (HBsAg, anti-HBc) zorunludur.",
+          "İlk infüzyondan önce kardiyak değerlendirme yapılmalıdır.",
+          "JC virüs antikoru ve PML belirtileri izlenmelidir.",
+          "Tedavi sonrasında B hücre sayımı ölçülmelidir.",
+          "Canlı aşılar B hücre rekonstitüsyonu tamamlanana kadar verilmemelidir."
+        ]
+      },
+      "monitoring": [
+        "Tedavi öncesi hepatit B taraması",
+        "Tam kan sayımı ve lenfosit sayısı",
+        "Elektrolit ve böbrek fonksiyon testleri (tümör lizis sendromu)",
+        "Kardiyak değerlendirme",
+        "JC virüs antikoru takibi",
+        "Karaciğer fonksiyon testleri"
+      ]
+    },
+
+    {
+      "label": "Sarilumab",
+      "mechanism": "Anti-IL-6 reseptör monoklonal antikoru",
+      "mechanismDetail": "IL-6 reseptörünün hem solübl hem de membran bağlı formlarına bağlanan tam insan IgG1 kappa monoklonal antikorudur. IL-6 mediated sinyal iletimini bloke ederek inflamatuar yanıtı, akut faz reaktanlarını ve romatoid artritte eklem hasarını baskılar.",
+      "blackBoxWarning": "Tüberküloz dahil ciddi enfeksiyon riski artmıştır.",
+      "diseases": [
+        "Romatoid Artrit",
+        "Polimiyalji Romatika",
+        "Poliartiküler Jüvenil İdiopatik Artrit"
+      ],
+      "majorWarnings": [
+        "Tedaviye başlamadan önce tüberküloz taraması yaptırın.",
+        "Aktif enfeksiyon varken tedaviyi başlatmayın.",
+        "Nötropeni, trombositopeni gelişebilir; kan sayımını izleyin.",
+        "Karaciğer enzim yüksekliği bildirilmiştir; ALT/AST takibi yapın.",
+        "GI perforasyon riski vardır; özellikle divertikülit öyküsü olanlarda dikkatli olun.",
+        "Canlı aşı almayın.",
+        "Dislipidemi gelişebilir; lipid profilini izleyin."
+      ],
+      "drugInteractions": [
+        { "drug": "TNF inhibitörleri", "severity": "Major", "note": "Ciddi enfeksiyon riski artar. Birlikte kullanmayın." },
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Enfeksiyon riski artar." },
+        { "drug": "Metotreksat", "severity": "Moderate", "note": "Standart kombinasyondur; hepatotoksisite açısından izleyin." },
+        { "drug": "Statinler / warfarin / siklosporin", "severity": "Moderate", "note": "IL-6 inhibisyonu CYP450 enzimlerini normalleştirir; bu ilaçların düzeyi değişebilir, takip edin." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın doz gününüz. Ateş veya enfeksiyon belirtisi varsa doktorunuzu arayın. KEVZARA'yı buzdolabından çıkarın, 30 dakika oda ısısında bekletin.",
+        "doseDay": "Doz gününüz. Karın, uyluk veya üst kola enjekte edin; bölgeyi değiştirin. Enjeksiyon bölgesini 24 saat ıslatmayın.",
+        "day1": "Enjeksiyon bölgesinde hafif kızarıklık normaldir.",
+        "day2": "Karın ağrısı veya bağırsak şikayetleri başlarsa (GI perforasyon riski) hemen doktorunuzu arayın.",
+        "day3": "Sigara içmeyin.",
+        "day4": "Alkol tüketiminden kaçının; karaciğer üzerindeki yükü artırır.",
+        "day5": "Yüksek yağlı gıdalardan kaçının; dislipidemi riski nedeniyle.",
+        "day6": "Eklem ağrısı, sabah tutukluğu, omuz/kalça ağrısı değişimlerini kaydedin.",
+        "generalMonitoring": [
+          "Her 4-8 haftada bir tam kan sayımı ve karaciğer enzimleri.",
+          "Lipid profili takibi (tedavi başlangıcından 4-8 hafta sonra).",
+          "GI perforasyon belirtilerini (şiddetli karın ağrısı, ateş) hemen bildirin.",
+          "Tedavi süresince canlı aşı uygulatmayın."
+        ]
+      },
+      "monitoring": [
+        "Tedavi öncesi TB taraması",
+        "Tedavi öncesi Hepatit B taraması",
+        "Her 4-8 haftada bir hemogram (nötropeni, trombositopeni)",
+        "ALT/AST takibi",
+        "Lipid profili (4-8 haftada bir başlangıçta)",
+        "GI perforasyon belirtilerinin klinik izlemi"
+      ]
+    },
+
+    {
+      "label": "Secukinumab",
+      "mechanism": "Anti-IL-17A monoklonal antikoru",
+      "mechanismDetail": "IL-17A'ya selektif bağlanan tam insan IgG1/kappa monoklonal antikorudur. IL-17A'nın IL-17 reseptörüyle etkileşimini engelleyerek nötrofil aktivasyonunu, keratinositlerde inflamatuar sitokin salınımını ve osteoklas aktivasyonunu baskılar.",
+      "blackBoxWarning": null,
+      "diseases": [
+        "Plak Psoriasis",
+        "Psöriyatik Artrit",
+        "Ankilozan Spondilit",
+        "Hidradenitis Suppurativa",
+        "Jüvenil İdiopatik Artrit"
+      ],
+      "majorWarnings": [
+        "Aktif enfeksiyon varken ilacı uygulamayın.",
+        "İnflamatuar bağırsak hastalığı (Crohn) olan ya da olası hastalarda dikkatli kullanın; kötüleşme bildirilmiştir.",
+        "Canlı aşı almayın.",
+        "Lateks alerjisi olanlarda ön yükleme kalemi içerdiğinden dikkatli olun.",
+        "Tüberküloz reaktivasyonu bildirilmiştir; tedavi öncesi tarama yapın."
+      ],
+      "drugInteractions": [
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Enfeksiyon riski artar." },
+        { "drug": "CYP450 substratları (warfarin, siklosporin, fenitoin)", "severity": "Moderate", "note": "IL-17A inhibisyonu CYP enzimlerini etkileyebilir; kan düzeylerini izleyin." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın doz gününüz. Aktif enfeksiyon veya ateş varsa doktorunuzu arayın. COSENTYX kalemini buzdolabından çıkarın, 15-30 dakika oda ısısında bekletin.",
+        "doseDay": "Doz gününüz. Karın, uyluk veya üst kola enjekte edin; bölgeyi değiştirin. Enjeksiyon bölgesini 24 saat ıslatmayın.",
+        "day1": "Enjeksiyon bölgesinde hafif kızarıklık normaldir.",
+        "day2": "Deri lezyonlarınızdaki iyileşmeyi veya kötüleşmeyi kaydedin.",
+        "day3": "Sigara içmeyin; psoriasis seyrini olumsuz etkiler.",
+        "day4": "Alkol tüketimini sınırlandırın; cilt ve eklem inflamasyonunu artırabilir.",
+        "day5": "İşlenmiş gıda, yüksek şeker ve kırmızı et tüketimini azaltın.",
+        "day6": "Karın ağrısı veya ishal gelişirse (Crohn kötüleşmesi) doktorunuzu arayın.",
+        "generalMonitoring": [
+          "Crohn hastalığı öyküsü varsa bağırsak belirtilerini yakından izleyin.",
+          "Deri lezyonlarındaki yanıtı 3-6 ayda bir değerlendirin.",
+          "Eklem ağrısı ve sabah tutukluğunu kaydedin.",
+          "Tedavi süresince canlı aşı uygulatmayın."
+        ]
+      },
+      "monitoring": [
+        "Tedavi öncesi TB taraması",
+        "Deri belirtilerinin izlenmesi",
+        "Eklem değerlendirmesi",
+        "Gastrointestinal belirtilerin izlenmesi (Crohn riski)",
+        "Enfeksiyon belirtilerinin izlenmesi"
+      ]
+    },
+
+    {
+      "label": "Tocilizumab",
+      "mechanism": "Anti-IL-6 reseptör monoklonal antikoru",
+      "mechanismDetail": "IL-6 reseptörünün hem solübl hem de membran bağlı formlarını inhibe eden humanize IgG1 kappa monoklonal antikorudur. IL-6 sinyal yolağını bloke ederek eklem inflamasyonu, ateş, akut faz yanıtı ve yıkımı baskılar. Sitokin salınım sendromunun tedavisinde CAR-T hücre tedavisi komplikasyonlarında da kullanılır.",
+      "blackBoxWarning": "Tüberküloz dahil ciddi enfeksiyon riski artmıştır.",
+      "diseases": [
+        "Romatoid Artrit",
+        "Jüvenil İdiopatik Artrit",
+        "Temporal Arterit",
+        "Sitokin Salınım Sendromu",
+        "Polimiyalji Romatika",
+        "SSc-ILD (Sistemik Skleroz-Bağlantılı İnterstisyel Akciğer Hastalığı)"
+      ],
+      "majorWarnings": [
+        "Tedaviye başlamadan önce tüberküloz taraması yaptırın.",
+        "Aktif enfeksiyon varken tedaviyi başlatmayın.",
+        "Nötropeni ve trombositopeni gelişebilir; kan sayımını izleyin.",
+        "GI perforasyon: özellikle divertikülit öyküsü olanlarda karın ağrısına dikkat edin.",
+        "Karaciğer enzim yüksekliği bildirilmiştir.",
+        "Dislipidemi: LDL ve total kolesterol artışı izlenmelidir.",
+        "Canlı aşı almayın.",
+        "Ateş ve CRP gibi inflamasyon belirteçleri enfeksiyonu maskeleyebilir."
+      ],
+      "drugInteractions": [
+        { "drug": "TNF inhibitörleri", "severity": "Major", "note": "Ciddi enfeksiyon riski artar. Birlikte kullanmayın." },
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Enfeksiyon riski artar." },
+        { "drug": "Warfarin / siklosporin / statinler / fenitoin", "severity": "Moderate", "note": "IL-6 inhibisyonu CYP3A4 normalizasyonu yoluyla bu ilaçların düzeyini değiştirebilir; takip edin." },
+        { "drug": "Metotreksat", "severity": "Moderate", "note": "Standart kombinasyondur; hepatotoksisite açısından izleyin." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın doz gününüz. Ateş veya enfeksiyon belirtisi varsa doktorunuzu arayın. ACTEMRA subkütan formsa enjektörü buzdolabından çıkarın.",
+        "doseDay": "Doz gününüz. Subkütan ise karın veya uyluğa enjekte edin; bölgeyi değiştirin. IV ise infüzyon reaksiyonlarını izleyin. Enjeksiyon bölgesini 24 saat ıslatmayın.",
+        "day1": "Karın ağrısı veya bağırsak şikayetleri başlarsa (GI perforasyon) hemen doktorunuzu arayın.",
+        "day2": "Tocilizumab ateşi maskeleyebilir; ateş olmasa bile enfeksiyon belirtilerini izleyin.",
+        "day3": "Sigara içmeyin.",
+        "day4": "Alkol tüketiminden kaçının; karaciğer enzimleri üzerindeki yükü artırır.",
+        "day5": "Yüksek yağlı gıdalardan kaçının; dislipidemi riskini artırabilir.",
+        "day6": "Eklem ağrısı, sabah tutukluğu ve genel durum değişimlerini kaydedin.",
+        "generalMonitoring": [
+          "Tocilizumab ateşi baskılayabilir; enfeksiyon için ateş olmasa da diğer belirtileri (yorgunluk, iştahsızlık) izleyin.",
+          "Her 4-8 haftada bir nötrofil sayısı, ALT/AST ve lipid profili.",
+          "GI perforasyon belirtileri (şiddetli karın ağrısı) hemen bildirilmelidir.",
+          "Tedavi süresince canlı aşı uygulatmayın."
+        ]
+      },
+      "monitoring": [
+        "Tedavi öncesi TB taraması",
+        "Tedavi öncesi Hepatit B taraması",
+        "Her 4-8 haftada bir hemogram (nötropeni, trombositopeni)",
+        "ALT/AST takibi",
+        "Lipid profili takibi",
+        "GI perforasyon belirtilerinin klinik izlemi"
+      ]
+    },
+
+    {
+      "label": "Trastuzumab",
+      "mechanism": "Anti-HER2 monoklonal antikoru",
+      "mechanismDetail": "HER2/neu (ErbB2) proteininin ekstrasellüler domain IV'üne selektif olarak bağlanan rekombinant humanize IgG1 kappa monoklonal antikorudur. HER2 sinyalizasyonunu engelleyerek tümör hücre proliferasyonunu baskılar ve antikor bağımlı hücresel sitotoksisite (ADCC) aracılığıyla tümör hücrelerini elimine eder.",
+      "blackBoxWarning": "Kardiyomiyopati ve sol ventrikül disfonksiyonu riski mevcuttur. İnfüzyon reaksiyonları (ölümcül olabilir). Pulmoner toksisite (pulmoner ödem, ARDS). Embriyo-fetal toksisite.",
+      "diseases": [
+        "HER2-pozitif Meme Kanseri",
+        "HER2-pozitif Mide/Gastroözefageal Kanser"
+      ],
+      "majorWarnings": [
+        "Kardiyomiyopati (LVEF azalması) gelişebilir; her 3 ayda bir kardiyak değerlendirme yapın.",
+        "İnfüzyon reaksiyonları (ateş, titreme, hipotansiyon, bronkospazm) gelişebilir; ilk infüzyonda izlem yapın.",
+        "Pulmoner toksisite: yeni nefes darlığı veya akciğer infiltratı gelişirse tedaviyi kesin.",
+        "Hamilelikte kullanmayın; oligohidramniyos ve fetal ölüm bildirilmiştir.",
+        "Antrasiklin ile kombinasyonda kardiyotoksisite riski daha yüksektir.",
+        "İnfüzyon öncesi premedikasyon uygulayın."
+      ],
+      "drugInteractions": [
+        { "drug": "Antrasiklin (doksorubisin, epirübisin)", "severity": "Major", "note": "Kardiyotoksisite riski belirgin artar; eş zamanlı kullanmayın; yıkama süresi gereklidir." },
+        { "drug": "Warfarin", "severity": "Moderate", "note": "Warfarin etkisi değişebilir; INR takibi yapın." },
+        { "drug": "Paklitaksel", "severity": "Moderate", "note": "Kombinasyon standart kullanımdır; kardiyak izlem yapın." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın infüzyon gününüz. Nefes darlığı, ayaklarda ödem veya çarpıntı gelişmişse kliniğinizi arayın (kardiyak bulgu). İnfüzyon öncesi premedikasyon gerekebilir.",
+        "doseDay": "İnfüzyon gününüz (90 dk ilk, 30 dk sonrakiler). İnfüzyon sırasında titreme, ateş, nefes darlığı veya göğüs ağrısı gelişirse hemşireyi hemen uyarın. İnfüzyon sonrası kardiyak belirtileri izleyin.",
+        "day1": "Nefes darlığı, ödem veya çarpıntı gelişirse hemen kliniğinizi arayın.",
+        "day2": "Ödem veya kilo artışını (2 kg/günden fazla) izleyin; kalp yetmezliği işareti olabilir.",
+        "day3": "Günlük hafif egzersiz yapın (kardiyak kondisyon için).",
+        "day4": "Tuz ve sıvı alımınızı dengede tutun.",
+        "day5": "Sigara içmeyin; kardiyak riski artırır.",
+        "day6": "Genel durumunuzu ve kardiyak belirtileri kaydedin.",
+        "generalMonitoring": [
+          "Her 3 ayda bir LVEF (ekokardiyografi veya MUGA) değerlendirmesi zorunludur.",
+          "LVEF %16 puan veya EF %50'nin altına düşerse tedaviyi değerlendirin.",
+          "İnfüzyon reaksiyonları için premedikasyon uygulayın.",
+          "Hamilelik testi yapın; tedavi süresince etkili kontrasepsiyon kullanın.",
+          "Nefes darlığı veya öksürük akciğer toksisitesi işareti olabilir."
+        ]
+      },
+      "monitoring": [
+        "Her 3 ayda bir LVEF (ekokardiyografi)",
+        "Tam kan sayımı ve karaciğer enzimleri",
+        "HER2 pozitifliğinin teyidi (IHC 3+ veya FISH amplifikasyon)",
+        "Pulmoner belirti takibi",
+        "Gebelik testi (hamilelik kontrolü)"
+      ]
+    },
+
+    {
+      "label": "Ustekinumab",
+      "mechanism": "Anti-IL-12/23 monoklonal antikoru (p40 alt birimi hedefli)",
+      "mechanismDetail": "İnsan interlökin-12 (IL-12) ve IL-23'ün paylaşılan p40 alt birimine selektif bağlanan tam insan IgG1 kappa monoklonal antikorudur. Her iki sitokin üzerinden hem Th1 hem Th17 hücre aktivasyonunu baskılar. IL-17, IL-22 ve TNF-alfa salınımını azaltır.",
+      "blackBoxWarning": null,
+      "diseases": [
+        "Plak Psoriasis",
+        "Psöriyatik Artrit",
+        "Crohn Hastalığı",
+        "Ülseratif Kolit"
+      ],
+      "majorWarnings": [
+        "Aktif enfeksiyon varken ilacı uygulamayın.",
+        "Tedaviye başlamadan önce tüberküloz taraması yaptırın.",
+        "Canlı aşı almayın.",
+        "Reversible posterior lökoensefalopati sendromu (RPLS) nadir bildirilmiştir; nörolojik belirtileri izleyin.",
+        "Malignite riski (lenfoma dahil) artmış olabilir."
+      ],
+      "drugInteractions": [
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Enfeksiyon riski artar." },
+        { "drug": "CYP450 substratları (warfarin, siklosporin)", "severity": "Moderate", "note": "IL-12/23 inhibisyonu normalleşme yoluyla bu ilaçların düzeyini etkileyebilir." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın doz gününüz. Ateş veya aktif enfeksiyon belirtisi varsa doktorunuzu arayın. STELARA'yı buzdolabından çıkarın, 30 dakika oda ısısında bekletin.",
+        "doseDay": "Doz gününüz (subkütan, 12 haftada bir). Karın veya uyluğa enjekte edin; bölgeyi değiştirin. Enjeksiyon bölgesini 24 saat ıslatmayın.",
+        "day1": "Enjeksiyon bölgesinde hafif kızarıklık normaldir.",
+        "day2": "Deri lezyonlarındaki iyileşmeyi takip edin.",
+        "day3": "Sigara içmeyin.",
+        "day4": "Alkol tüketimini sınırlandırın.",
+        "day5": "Crohn/ÜK hastalarıysanız bağırsak belirtilerini (ishal, karın ağrısı) kaydedin.",
+        "day6": "Psoriasis veya eklem belirtilerindeki değişimleri kaydedin.",
+        "generalMonitoring": [
+          "Deri lezyonları 12-16 haftada değerlendirilmelidir.",
+          "Eklem ağrısı ve hareket açıklığını izleyin.",
+          "Crohn/ÜK: bağırsak semptomlarını ve inflamasyon belirteçlerini takip edin.",
+          "Tedavi süresince canlı aşı uygulatmayın."
+        ]
+      },
+      "monitoring": [
+        "Tedavi öncesi TB taraması",
+        "Deri belirtilerinin izlenmesi (PASI skoru)",
+        "Eklem değerlendirmesi",
+        "Gastrointestinal belirtilerin izlenmesi",
+        "Enfeksiyon belirtilerinin izlenmesi"
+      ]
+    },
+
+    {
+      "label": "Vedolizumab",
+      "mechanism": "Anti-α4β7 integrin monoklonal antikoru (bağırsak seçici lökosit göç inhibitörü)",
+      "mechanismDetail": "α4β7 integrine selektif olarak bağlanan humanize IgG1 monoklonal antikorudur. α4β7 integrin-MAdCAM-1 etkileşimini bloke ederek lökositlerin gastrointestinal mukozaya göçünü inhibe eder. Etki gut-selektiftir; sistemik immünosüpresyon yapmaz.",
+      "blackBoxWarning": null,
+      "diseases": [
+        "Crohn Hastalığı",
+        "Ülseratif Kolit"
+      ],
+      "majorWarnings": [
+        "PML vakası bildirilmiştir; nörolojik belirtileri izleyin.",
+        "Aktif ciddi enfeksiyon varken tedaviyi başlatmayın.",
+        "Canlı aşı almayın.",
+        "İnfüzyon reaksiyonları bildirmiştir; premedikasyon gerekebilir.",
+        "Kronik aktif hepatit B: tedavi öncesi tarama yapın."
+      ],
+      "drugInteractions": [
+        { "drug": "Natalizumab", "severity": "Major", "note": "Aditif α4-integrin inhibisyonu; PML riski artabilir." },
+        { "drug": "TNF inhibitörleri", "severity": "Major", "note": "Birlikte kullanmayın; enfeksiyon riski artar." },
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Enfeksiyon riski artar." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın infüzyon gününüz (ENTYVİO). Karın ağrısı, ishal veya rektal kanama değişimini not edin. Ateş varsa kliniğinizi arayın.",
+        "doseDay": "İnfüzyon gününüz (30 dakika). İnfüzyon sırasında döküntü, nefes darlığı veya ateş gelişirse hemşireyi uyarın. İnfüzyon sonrası bol sıvı alın.",
+        "day1": "İnfüzyon reaksiyonu (döküntü, kaşıntı) gelişirse kliniğinizi arayın.",
+        "day2": "Bağırsak belirtilerinizi (ishal, karın ağrısı, kanama) kaydedin.",
+        "day3": "Sinir sistemi belirtileri (konuşma güçlüğü, görme bozukluğu) PML işareti olabilir; acile gidin.",
+        "day4": "Yeterli sıvı alın.",
+        "day5": "Tetikleyici gıdalardan (gluten, süt ürünleri, yüksek lifli gıdalar) kaçının (doktorunuzun önerisine göre).",
+        "day6": "Genel sağlık durumunuzu ve bağırsak belirtilerini kaydedin.",
+        "generalMonitoring": [
+          "Tedavi öncesi hepatit B taraması önerilir.",
+          "PML belirtilerini (bilişsel değişiklik, motor güçsüzlük) yakından izleyin.",
+          "Bağırsak semptomlarındaki değişimi düzenli kaydedin; endoskopik remisyon değerlendirmesi yapın.",
+          "Tedavi süresince canlı aşı uygulatmayın."
+        ]
+      },
+      "monitoring": [
+        "Tedavi öncesi hepatit B taraması",
+        "Bağırsak semptomlarının klinik değerlendirmesi",
+        "Endoskopik değerlendirme (6. ayda)",
+        "Karaciğer fonksiyon testleri",
+        "PML belirtilerinin nörolojik izlemi"
+      ]
+    },
+
+    {
+      "label": "Eculizumab",
+      "mechanism": "Anti-C5 kompleman inhibitörü monoklonal antikoru",
+      "mechanismDetail": "C5 kompleman proteinini hedef alan rekombinant humanize IgG2/4 monoklonal antikorudur. C5'in C5a ve C5b'ye bölünmesini engeller; terminal kompleman kompleksinin (TCC/MAC) oluşumunu bloke eder. Böylece komplemana bağlı intravasküler hemolizi, trombotik mikroanjiyopatileri ve nöromüsküler kavşak hasarını önler.",
+      "blackBoxWarning": "Meningokokal enfeksiyon riski ciddi biçimde artmıştır. Tedaviden en az 2 hafta önce meningokokal aşı (A, C, W, Y ve B serogrupları için) yapılmalıdır. Meningokokal hastalık ölümcül olabilir; ateş, baş ağrısı, boyun tutulması veya döküntü başlarsa hemen hastaneye gidin. REMS programı kapsamında kullanılmaktadır.",
+      "diseases": [
+        "Paroksismal Nokturnal Hemoglobinüri",
+        "Atipik Hemolitik Üremik Sendrom",
+        "Miyastenia Gravis",
+        "Nöromyelitis Optika Spektrum Bozukluğu"
+      ],
+      "majorWarnings": [
+        "Meningokokal aşı tedaviden 2 hafta önce yapılmalıdır; acil durumlarda tedaviyle eş zamanlı profilaktik antibiyotik başlanmalıdır.",
+        "Haemophilus influenzae tip b ve Streptococcus pneumoniae enfeksiyonu riski de artmıştır; ilgili aşıları yaptırın.",
+        "Tedaviyi ani kesmekten kaçının; PNH'de ciddi hemoliz, aHUS'te böbrek komplikasyonu gelişebilir.",
+        "Canlı aşı almayın.",
+        "Nadir: infüzyon reaksiyonu."
+      ],
+      "drugInteractions": [
+        { "drug": "Rituximab", "severity": "Moderate", "note": "Aditif immünosüpresyon; dikkatli kullanın." },
+        { "drug": "Siklofosfamid", "severity": "Moderate", "note": "Kombine kullanımda enfeksiyon riski artar." },
+        { "drug": "Meningokokal aşı", "severity": "Informative", "note": "Tedaviden önce zorunludur. Acil başlanıyorsa eş zamanlı profilaktik antibiyotik kullanın." }
+      ],
+      "calendarReminders": {
+        "preDose": "Yarın infüzyon gününüz (SOLİRİS). Ateş, baş ağrısı veya boyun tutulması varsa meningokoksemi riski açısından acile gidin; infüzyonu erteleyin. İnfüzyon öncesi laboratuvar testlerinizi yaptırın.",
+        "doseDay": "İnfüzyon gününüz (35-45 dakika). İnfüzyon sırasında döküntü, nefes darlığı veya sırt ağrısı gelişirse hemşireyi hemen uyarın. İnfüzyon sonrası bol sıvı alın.",
+        "day1": "Ateş, boyun tutulması veya baş ağrısı gelişirse hemen acile gidin (meningokoksemi).",
+        "day2": "PNH hastalarıysanız: idrar rengini (siyah/koyu) ve yorgunluk düzeyini izleyin.",
+        "day3": "aHUS hastalarıysanız: idrar miktarını, ödem ve kan basıncını izleyin.",
+        "day4": "Meningit kart/bileziğinizi yanınızda taşıyın (acil durumlarda hekim bilgilendirmesi için).",
+        "day5": "Yeterli sıvı alın.",
+        "day6": "Genel durumunuzu, yorgunluk ve semptom değişimlerini kaydedin.",
+        "generalMonitoring": [
+          "Her infüzyon öncesi LDH (hemoliz göstergesi), kreatinin, tam kan sayımı ölçülmelidir.",
+          "Meningokoksemi belirtilerine (ateş, döküntü, boyun tutulması) karşı her zaman tetikte olun.",
+          "Meningokokal aşı takviyesi: MenACWY her 3-5 yılda bir; MenB için doktorunuza danışın.",
+          "Tedaviyi doktor onayı olmadan asla kesmeyin.",
+          "Miyastenia gravis: kas güçsüzlüğü değişimlerini kaydedin."
+        ]
+      },
+      "monitoring": [
+        "Her infüzyon öncesi LDH, tam kan sayımı, kreatinin",
+        "Hemoglobin ve retikülosit sayısı (PNH)",
+        "İdrar tetkiki ve kreatinin (aHUS)",
+        "Meningokoksemi klinik izlemi",
+        "Miyastenia gravis: kas güçsüzlüğü ve solunum izlemi"
+      ]
+    }
+  ],
+
+  "diseases": {
+    "Romatoid Artrit":                       ["AMGEVİTA", "HUMİRA", "HYRIMOZ", "CIMZIA", "SIMPONI", "AVSOLA", "IXIFI", "REMICADE", "TOLURİNE", "ENBREL", "ACTEMRA", "KEVZARA", "ORENCIA", "KİNERET", "MABTHERA"],
+    "Ankilozan Spondilit":                   ["AMGEVİTA", "HUMİRA", "HYRIMOZ", "CIMZIA", "SIMPONI", "AVSOLA", "IXIFI", "REMICADE", "TOLURİNE", "ENBREL", "COSENTYX"],
+    "Psöriyatik Artrit":                     ["AMGEVİTA", "HUMİRA", "HYRIMOZ", "CIMZIA", "SIMPONI", "AVSOLA", "IXIFI", "REMICADE", "TOLURİNE", "ENBREL", "COSENTYX", "STELARA"],
+    "Crohn Hastalığı":                       ["AMGEVİTA", "HUMİRA", "HYRIMOZ", "CIMZIA", "AVSOLA", "IXIFI", "REMICADE", "TOLURİNE", "STELARA", "ENTYVİO", "TYSABRI"],
+    "Ülseratif Kolit":                       ["AMGEVİTA", "HUMİRA", "HYRIMOZ", "SIMPONI", "AVSOLA", "IXIFI", "REMICADE", "TOLURİNE", "STELARA", "ENTYVİO"],
+    "Üveit":                                 ["AMGEVİTA", "HUMİRA", "HYRIMOZ"],
+    "Hidradenitis Suppurativa":              ["AMGEVİTA", "HUMİRA", "HYRIMOZ", "COSENTYX"],
+    "Plak Psoriasis":                        ["AMGEVİTA", "HUMİRA", "HYRIMOZ", "AVSOLA", "IXIFI", "REMICADE", "TOLURİNE", "ENBREL", "COSENTYX", "STELARA"],
+    "Jüvenil İdiopatik Artrit":              ["AMGEVİTA", "HUMİRA", "HYRIMOZ", "ENBREL", "ORENCIA", "ACTEMRA", "KİNERET", "ILARIS", "SIMPONI"],
+    "Non-radyografik Aksiyel Spondiloartrit": ["CIMZIA"],
+    "Gut Hastalığı":                         ["ILARIS"],
+    "Ailevi Akdeniz Ateşi":                  ["ILARIS", "KİNERET"],
+    "Sistemik Jüvenil İdiopatik Artrit":     ["ILARIS", "ACTEMRA", "KİNERET"],
+    "Kryopirin İlişkili Periyodik Sendromlar": ["ILARIS", "KİNERET"],
+    "TRAPS":                                 ["ILARIS"],
+    "Erişkin Still Hastalığı":               ["ILARIS", "ACTEMRA", "KİNERET"],
+    "Mevalonat Kinaz Eksikliği":             ["ILARIS"],
+    "Tekrarlayan Perikardit":                ["KİNERET"],
+    "Akut GvHD Profilaksisi":               ["ORENCIA"],
+    "Renal Transplant Reddi Profilaksisi":   ["SİMULECT", "NULOJİX"],
+    "Relapsing-Remitting Multipl Skleroz":   ["TYSABRI", "OCREVUS", "LEMTRADA"],
+    "Primer Progresif Multipl Skleroz":      ["OCREVUS"],
+    "Kronik Lenfositik Lösemi":              ["MABTHERA", "LEMTRADA"],
+    "Non-Hodgkin Lenfoma":                   ["MABTHERA"],
+    "Granülomatozis Polianjitis":            ["MABTHERA"],
+    "Pemfigus Vulgaris":                     ["MABTHERA"],
+    "Sistemik Lupus Eritematozus":           ["BENLYSTA"],
+    "Lupus Nefriti":                         ["BENLYSTA"],
+    "Alerjik Astım":                         ["XOLAIR"],
+    "Kronik İdiopatik Ürtiker":              ["XOLAIR"],
+    "Besin Alerjisi":                        ["XOLAIR"],
+    "Alerjik Rinit":                         ["XOLAIR"],
+    "Polimiyalji Romatika":                  ["ACTEMRA", "KEVZARA"],
+    "Temporal Arterit":                      ["ACTEMRA"],
+    "Sitokin Salınım Sendromu":              ["ACTEMRA"],
+    "HER2-pozitif Meme Kanseri":             ["HERCEPTİN"],
+    "HER2-pozitif Mide/Gastroözefageal Kanser": ["HERCEPTİN"],
+    "Kolorektal Kanser":                     ["AVASTIN", "OPDIVO", "KEYTRUDA"],
+    "Küçük Hücreli Olmayan Akciğer Kanseri": ["AVASTIN", "OPDIVO", "KEYTRUDA"],
+    "Glioblastom":                           ["AVASTIN"],
+    "Meme Kanseri":                          ["AVASTIN", "KEYTRUDA"],
+    "Renal Hücreli Karsinom":               ["AVASTIN", "OPDIVO", "KEYTRUDA"],
+    "Serviks Kanseri":                       ["AVASTIN", "KEYTRUDA"],
+    "Over Kanseri":                          ["AVASTIN"],
+    "Hepatosellüler Karsinom":               ["AVASTIN", "OPDIVO", "KEYTRUDA"],
+    "Melanom":                               ["OPDIVO", "KEYTRUDA"],
+    "Hodgkin Lenfoma":                       ["OPDIVO", "KEYTRUDA"],
+    "Mesane/Ürotelyal Kanser":               ["OPDIVO", "KEYTRUDA"],
+    "Özefagus Kanseri":                      ["OPDIVO", "KEYTRUDA"],
+    "Mide Kanseri":                          ["OPDIVO", "KEYTRUDA"],
+    "Endometrium Kanseri":                   ["KEYTRUDA"],
+    "Baş Boyun Kanseri":                     ["KEYTRUDA"],
+    "Plevral Mezotelyoma":                   ["OPDIVO"],
+    "Paroksismal Nokturnal Hemoglobinüri":   ["SOLİRİS"],
+    "Atipik Hemolitik Üremik Sendrom":       ["SOLİRİS"],
+    "Miyastenia Gravis":                     ["SOLİRİS"],
+    "Nöromyelitis Optika Spektrum Bozukluğu": ["SOLİRİS"],
+    "SSc-ILD":                               ["ACTEMRA"]
+  },
+
+  "drugs": {
+    "AMGEVİTA": {
+      "dosages": [
+        {
+          "value": "20mg/0.4ml",
+          "frequency": 14,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/amgetivatemizkt_6ef678d8-bfd9-43ac-889b-6affa9e5a3d3.pdf"
+          }
+        },
+        {
+          "value": "40mg/0.8ml",
+          "frequency": 14,
+          "forms": ["enjektor", "kalem"],
+          "prospectus": {
+            "enjektor": "https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/amgetivakt_f781bd38-a5c5-45d6-a3c0-555d6240411e.pdf",
+            "kalem":    "https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/amgevita4008kt_a5500d80-ac15-4925-b388-e340fa23f934.pdf"
+          }
+        }
+      ]
+    },
+
+    "HUMİRA": {
+      "dosages": [
+        {
+          "value": "20mg/0.2ml",
+          "frequency": 14,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/Archive/2025/kubKtAttachments/ek41312humirapfs2002kttemiz_26_03_2025.pdf"
+          }
+        },
+        {
+          "value": "40mg/0.4ml",
+          "frequency": 14,
+          "forms": ["enjektor", "kalem"],
+          "prospectus": {
+            "enjektor": "https://titck.gov.tr/storage/Archive/2025/kubKtAttachments/humirapfs4004kttemiz_26_03_2025.pdf",
+            "kalem":    "https://titck.gov.tr/storage/Archive/2025/kubKtAttachments/humirapen401312kttemiz_26_03_2025.pdf"
+          }
+        },
+        {
+          "value": "40mg/0.8ml",
+          "frequency": 14,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/kubKtAttachments/mfgfGfWpZDnrK5.pdf"
+          }
+        }
+      ]
+    },
+
+    "HYRIMOZ": {
+      "dosages": [
+        {
+          "value": "40mg/0.8ml",
+          "frequency": 14,
+          "forms": ["enjektor", "kalem"],
+          "prospectus": {
+            "enjektor": "https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/SonKTEnjektr_4fab1a4b-f379-4089-b570-7e391d0fadca.pdf",
+            "kalem":    "https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/OnaylKTkalem_3eea0ccf-ff5a-4761-a19b-e4559b5f5edc.pdf"
+          }
+        }
+      ]
+    },
+
+    "CIMZIA": {
+      "dosages": [
+        {
+          "value": "200mg/1ml",
+          "frequency": 28,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/ek9temizkt_d9c99a8a-dac1-45e9-9e1c-7593fa784209.pdf"
+          }
+        }
+      ]
+    },
+
+    "SIMPONI": {
+      "dosages": [
+        {
+          "value": "50mg/0.5ml",
+          "frequency": 28,
+          "forms": ["enjektor", "kalem"],
+          "prospectus": {
+            "enjektor": "https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/yaynlanacaksimponienjektr1312ktbaxter_8346333e-2b69-426a-80e9-0e410c02df89.pdf",
+            "kalem":    "https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/yaynlanacaksimponipen1312ktbaxter_167429d9-906f-45e1-8aea-ee9f3dacc091.pdf"
+          }
+        }
+      ]
+    },
+
+    "AVSOLA": {
+      "dosages": [
+        {
+          "value": "100mg/10ml",
+          "frequency": 56,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/FirmaKT06.04.2023UYGUNyaynlanacak_9ad31be9-3f92-4b26-9c71-3bf0b5d63174.pdf"
+          }
+        }
+      ]
+    },
+
+    "IXIFI": {
+      "dosages": [
+        {
+          "value": "100mg/10ml",
+          "frequency": 56,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/Archive/2025/kubKtAttachments/ONAYLIKT_12_03_2025.pdf"
+          }
+        }
+      ]
+    },
+
+    "REMICADE": {
+      "dosages": [
+        {
+          "value": "100mg/10ml",
+          "frequency": 56,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/yaynlanacakremicade1312kt_e94b0acd-3a55-4d39-bc1e-ec67ba521178.pdf"
+          }
+        }
+      ]
+    },
+
+    "TOLURİNE": {
+      "dosages": [
+        {
+          "value": "100mg/10ml",
+          "frequency": 56,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/uygunKT_c014a2e7-3d37-4626-88df-3d98f39c6bc2.pdf"
+          }
+        }
+      ]
+    },
+
+    "ILARIS": {
+      "dosages": [
+        {
+          "value": "150mg/1ml",
+          "frequency": 28,
+          "forms": ["enjektor", "toz"],
+          "prospectus": {
+            "enjektor": "https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/uygunktilarisenjzelti_fe65e5d3-165c-40a0-b427-ac7083854469.pdf",
+            "toz":      "https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/uygunktilaristoz_eda29fb1-636b-41b1-9ec7-68106cb98871.pdf"
+          }
+        }
+      ]
+    },
+
+    "ENBREL": {
+      "dosages": [
+        {
+          "value": "25mg/0.5ml",
+          "frequency": 7,
+          "forms": ["enjektor"],
+          "prospectus": {
+            "enjektor": "https://titck.gov.tr/storage/kubKtAttachments/enbrel25mg.pdf"
+          }
+        },
+        {
+          "value": "50mg/1ml",
+          "frequency": 7,
+          "forms": ["enjektor", "kalem"],
+          "prospectus": {
+            "enjektor": "https://titck.gov.tr/storage/kubKtAttachments/enbrel50mgenjektr.pdf",
+            "kalem":    "https://titck.gov.tr/storage/kubKtAttachments/enbrel50mgkalem.pdf"
+          }
+        }
+      ]
+    },
+
+    "ORENCIA": {
+      "dosages": [
+        {
+          "value": "125mg/1ml",
+          "frequency": 7,
+          "forms": ["enjektor"],
+          "prospectus": {
+            "enjektor": "https://titck.gov.tr/storage/kubKtAttachments/orencia125mg.pdf"
+          }
+        }
+      ]
+    },
+
+    "KİNERET": {
+      "dosages": [
+        {
+          "value": "100mg/0.67ml",
+          "frequency": 1,
+          "forms": ["enjektor"],
+          "prospectus": {
+            "enjektor": "https://titck.gov.tr/storage/kubKtAttachments/kineret100mg.pdf"
+          }
+        }
+      ]
+    },
+
+    "SİMULECT": {
+      "dosages": [
+        {
+          "value": "20mg/5ml",
+          "frequency": 4,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/kubKtAttachments/simulect20mg.pdf"
+          }
+        }
+      ]
+    },
+
+    "NULOJİX": {
+      "dosages": [
+        {
+          "value": "250mg/10ml",
+          "frequency": 28,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/kubKtAttachments/nulojix250mg.pdf"
+          }
+        }
+      ]
+    },
+
+    "BENLYSTA": {
+      "dosages": [
+        {
+          "value": "200mg/1ml",
+          "frequency": 7,
+          "forms": ["enjektor"],
+          "prospectus": {
+            "enjektor": "https://titck.gov.tr/storage/kubKtAttachments/benlysta200mg.pdf"
+          }
+        }
+      ]
+    },
+
+    "AVASTIN": {
+      "dosages": [
+        {
+          "value": "100mg/4ml",
+          "frequency": 14,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/kubKtAttachments/avastin100mg.pdf"
+          }
+        },
+        {
+          "value": "400mg/16ml",
+          "frequency": 14,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/kubKtAttachments/avastin400mg.pdf"
+          }
+        }
+      ]
+    },
+
+    "TYSABRI": {
+      "dosages": [
+        {
+          "value": "300mg/15ml",
+          "frequency": 28,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/kubKtAttachments/tysabri300mg.pdf"
+          }
+        }
+      ]
+    },
+
+    "OPDIVO": {
+      "dosages": [
+        {
+          "value": "100mg/10ml",
+          "frequency": 14,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/kubKtAttachments/opdivo100mg.pdf"
+          }
+        },
+        {
+          "value": "240mg/24ml",
+          "frequency": 14,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/kubKtAttachments/opdivo240mg.pdf"
+          }
+        }
+      ]
+    },
+
+    "OCREVUS": {
+      "dosages": [
+        {
+          "value": "300mg/10ml",
+          "frequency": 14,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/kubKtAttachments/ocrevus300mg.pdf"
+          }
+        },
+        {
+          "value": "600mg/20ml",
+          "frequency": 180,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/kubKtAttachments/ocrevus600mg.pdf"
+          }
+        }
+      ]
+    },
+
+    "XOLAIR": {
+      "dosages": [
+        {
+          "value": "75mg/0.5ml",
+          "frequency": 28,
+          "forms": ["enjektor"],
+          "prospectus": {
+            "enjektor": "https://titck.gov.tr/storage/kubKtAttachments/xolair75mg.pdf"
+          }
+        },
+        {
+          "value": "150mg/1ml",
+          "frequency": 28,
+          "forms": ["enjektor"],
+          "prospectus": {
+            "enjektor": "https://titck.gov.tr/storage/kubKtAttachments/xolair150mg.pdf"
+          }
+        }
+      ]
+    },
+
+    "KEYTRUDA": {
+      "dosages": [
+        {
+          "value": "100mg/4ml",
+          "frequency": 21,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/kubKtAttachments/keytruda100mg.pdf"
+          }
+        }
+      ]
+    },
+
+    "MABTHERA": {
+      "dosages": [
+        {
+          "value": "100mg/10ml",
+          "frequency": 180,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/kubKtAttachments/mabthera100mg.pdf"
+          }
+        },
+        {
+          "value": "500mg/50ml",
+          "frequency": 180,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/kubKtAttachments/mabthera500mg.pdf"
+          }
+        }
+      ]
+    },
+
+    "KEVZARA": {
+      "dosages": [
+        {
+          "value": "150mg/1.14ml",
+          "frequency": 14,
+          "forms": ["enjektor", "kalem"],
+          "prospectus": {
+            "enjektor": "https://titck.gov.tr/storage/kubKtAttachments/kevzara150mg.pdf",
+            "kalem":    "https://titck.gov.tr/storage/kubKtAttachments/kevzara150mgkalem.pdf"
+          }
+        },
+        {
+          "value": "200mg/1.14ml",
+          "frequency": 14,
+          "forms": ["enjektor", "kalem"],
+          "prospectus": {
+            "enjektor": "https://titck.gov.tr/storage/kubKtAttachments/kevzara200mg.pdf",
+            "kalem":    "https://titck.gov.tr/storage/kubKtAttachments/kevzara200mgkalem.pdf"
+          }
+        }
+      ]
+    },
+
+    "COSENTYX": {
+      "dosages": [
+        {
+          "value": "150mg/1ml",
+          "frequency": 28,
+          "forms": ["enjektor", "kalem"],
+          "prospectus": {
+            "enjektor": "https://titck.gov.tr/storage/kubKtAttachments/cosentyx150mg.pdf",
+            "kalem":    "https://titck.gov.tr/storage/kubKtAttachments/cosentyx150mgkalem.pdf"
+          }
+        },
+        {
+          "value": "300mg/2ml",
+          "frequency": 28,
+          "forms": ["enjektor", "kalem"],
+          "prospectus": {
+            "enjektor": "https://titck.gov.tr/storage/kubKtAttachments/cosentyx300mg.pdf",
+            "kalem":    "https://titck.gov.tr/storage/kubKtAttachments/cosentyx300mgkalem.pdf"
+          }
+        }
+      ]
+    },
+
+    "ACTEMRA": {
+      "dosages": [
+        {
+          "value": "162mg/0.9ml",
+          "frequency": 7,
+          "forms": ["enjektor"],
+          "prospectus": {
+            "enjektor": "https://titck.gov.tr/storage/kubKtAttachments/actemra162mg.pdf"
+          }
+        },
+        {
+          "value": "200mg/10ml",
+          "frequency": 28,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/kubKtAttachments/actemra200mgiv.pdf"
+          }
+        },
+        {
+          "value": "400mg/20ml",
+          "frequency": 28,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/kubKtAttachments/actemra400mgiv.pdf"
+          }
+        }
+      ]
+    },
+
+    "HERCEPTİN": {
+      "dosages": [
+        {
+          "value": "150mg/7.33ml",
+          "frequency": 21,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/kubKtAttachments/herceptin150mg.pdf"
+          }
+        },
+        {
+          "value": "440mg/20ml",
+          "frequency": 21,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/kubKtAttachments/herceptin440mg.pdf"
+          }
+        }
+      ]
+    },
+
+    "STELARA": {
+      "dosages": [
+        {
+          "value": "45mg/0.5ml",
+          "frequency": 84,
+          "forms": ["enjektor"],
+          "prospectus": {
+            "enjektor": "https://titck.gov.tr/storage/kubKtAttachments/stelara45mg.pdf"
+          }
+        },
+        {
+          "value": "90mg/1ml",
+          "frequency": 84,
+          "forms": ["enjektor"],
+          "prospectus": {
+            "enjektor": "https://titck.gov.tr/storage/kubKtAttachments/stelara90mg.pdf"
+          }
+        }
+      ]
+    },
+
+    "ENTYVİO": {
+      "dosages": [
+        {
+          "value": "300mg/20ml",
+          "frequency": 56,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/kubKtAttachments/entyvio300mg.pdf"
+          }
+        }
+      ]
+    },
+
+    "SOLİRİS": {
+      "dosages": [
+        {
+          "value": "300mg/30ml",
+          "frequency": 7,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/kubKtAttachments/soliris300mg.pdf"
+          }
+        }
+      ]
+    },
+
+    "LEMTRADA": {
+      "dosages": [
+        {
+          "value": "12mg/1.2ml",
+          "frequency": 365,
+          "forms": [],
+          "prospectus": {
+            "default": "https://titck.gov.tr/storage/kubKtAttachments/lemtrada12mg.pdf"
+          }
+        }
+      ]
+    }
+  }
+}

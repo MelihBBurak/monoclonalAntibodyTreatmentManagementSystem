@@ -3,59 +3,67 @@ import { Stack } from 'expo-router';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StyleSheet } from 'react-native';
+import { COLORS } from '../utils/styles';
 
-/**
- * Ana layout bileşeni
- * Uygulamanın navigasyon yapısını ve genel düzenini tanımlar
- * Tüm sayfalar için ortak header stilleri ve navigasyon ayarları
- */
 export default function Layout() {
   return (
-    // SafeAreaProvider - iOS'ta notch ve home indicator alanlarını yönetir
     <SafeAreaProvider>
-      {/* GestureHandlerRootView - React Native Gesture Handler için gerekli wrapper */}
       <GestureHandlerRootView style={styles.container}>
-        {/* Stack Navigator - Sayfalar arası geçişleri yönetir */}
         <Stack
           screenOptions={{
-            // Tüm sayfalar için ortak header stili
             headerStyle: {
-              backgroundColor: '#25292e', // Koyu gri header arka planı
+              backgroundColor: COLORS.primary,
             },
-            headerTintColor: '#fff', // Header metin rengi (beyaz)
+            headerTintColor: '#FFFFFF',
             headerTitleStyle: {
-              fontWeight: 'bold', // Header başlık kalın yazı
+              fontWeight: '700',
+              fontSize: 17,
+            },
+            headerShadowVisible: false,
+            contentStyle: {
+              backgroundColor: COLORS.background,
             },
           }}
         >
-          {/* Ana giriş sayfası - header gizli */}
           <Stack.Screen
             name="index"
             options={{
-              title: 'Giriş Ekranı',
-              headerLeft: () => null, // Geri butonu yok
-              headerShown: false, // Header tamamen gizli
+              headerShown: false,
             }}
           />
-          {/* Tedavi bilgileri form sayfası */}
           <Stack.Screen
             name="about"
             options={{
-              title: 'Profil Oluşturma Ekranı',
+              title: 'Profil Oluştur',
+              headerBackTitle: 'Geri',
             }}
           />
-          {/* Profil özet sayfası */}
           <Stack.Screen
             name="profile"
             options={{
-              title: 'Profil',
+              title: 'Tedavi Özeti',
+              headerBackTitle: 'Geri',
             }}
           />
-          {/* Takvim sayfası */}
           <Stack.Screen
             name="calendar"
             options={{
-              title: 'Takvim',
+              title: 'Tedavi Takvimi',
+              headerBackTitle: 'Geri',
+            }}
+          />
+          <Stack.Screen
+            name="symptom-log"
+            options={{
+              title: 'Semptom Kaydı',
+              headerBackTitle: 'Takvim',
+            }}
+          />
+          <Stack.Screen
+            name="data-manager"
+            options={{
+              title: 'Veri Yönetimi',
+              headerBackTitle: 'Takvim',
             }}
           />
         </Stack>
@@ -64,11 +72,9 @@ export default function Layout() {
   );
 }
 
-// Layout stilleri
 const styles = StyleSheet.create({
-  // Ana container - tüm uygulamayı kaplar
   container: {
     flex: 1,
-    backgroundColor: '#25292e', // Koyu gri arka plan
+    backgroundColor: COLORS.primary,
   },
 });

@@ -1,676 +1,892 @@
-import { useState, useEffect } from 'react';
-import { Text, View, TextInput, TouchableOpacity, ScrollView, Modal, Alert } from 'react-native';
+import { useState } from 'react';
+import {
+  Text, View, TextInput, TouchableOpacity, ScrollView,
+  Modal, Alert, StyleSheet, Dimensions,
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Picker } from '@react-native-picker/picker';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { Calendar, DateData } from 'react-native-calendars';
-import { Database } from '../utils/database';
-import { commonStyles } from '../utils/styles';
+import { COLORS, SHADOWS } from '../utils/styles';
+import {
+  getAntibodies,
+  getDiseasesForAntibody,
+  getDrugsForDisease,
+  getDosagesForDrug,
+  getFrequency,
+  getFormsForDosage,
+  getAntibodyEntry,
+} from '../utils/treatmentDataService';
 
-// Statik veri - Uygulama içinde kullanılan tüm seçenekler
-const MOCK_DATA = {
-  // Mevcut antikor seçenekleri
-  antibodies: ['Adalimumab', 'Certolizumab Pegol', 'Golimumab', 'Infliximab', 'Canakinumab'],
-  // Her antikor için uygun hastalıklar
-  diseases: {
-    'Adalimumab': ['Romatoid Artrit', 'Ankilozan Spondilit', 'Psöriyatik Artrit', 'Crohn Hastalığı', 'Ülseratif Kolit', 'Üveit', 'Hidradenitis Suppurativa'],
-    'Certolizumab Pegol': ['Romatoid Artrit', 'Ankilozan Spondilit', 'Psöriyatik Artrit', 'Crohn Hastalığı'],
-    'Golimumab': ['Romatoid Artrit', 'Ankilozan Spondilit', 'Psöriyatik Artrit'],
-    'Infliximab': ['Romatoid Artrit', 'Ankilozan Spondilit', 'Psöriyatik Artrit'],
-    'Canakinumab': ['Gut Hastalığı']
-  },
-  // Her hastalık için uygun ilaçlar
-  drugs: {
-    'Romatoid Artrit': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ', 'CIMZIA', 'SIMPONI', 'AVSOLA', 'IXIFI', 'REMICADE', 'TOLURİNE'],
-    'Ankilozan Spondilit': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ', 'CIMZIA', 'SIMPONI', 'AVSOLA', 'IXIFI', 'REMICADE', 'TOLURİNE'],
-    'Psöriyatik Artrit': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ', 'CIMZIA', 'SIMPONI', 'AVSOLA', 'IXIFI', 'REMICADE', 'TOLURİNE'],
-    'Crohn Hastalığı': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ', 'CIMZIA'],
-    'Ülseratif Kolit': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ'],
-    'Üveit': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ'],
-    'Hidradenitis Suppurativa': ['AMGEVİTA', 'HUMİRA', 'HYRIMOZ'],
-    'Gut Hastalığı': ['ILARIS']
-  },
-  // Her ilaç için mevcut dozaj seçenekleri
-  dosages: {
-    'AMGEVİTA': ['20mg/0.4ml', '40mg/0.8ml'],
-    'HUMİRA': ['20mg/0.2ml', '40mg/0.4ml', '40mg/0.8ml'],
-    'HYRIMOZ': ['40mg/0.8ml'],
-    'CIMZIA': ['200mg/1ml'],
-    'SIMPONI': ['50mg/0.5ml'],
-    'AVSOLA': ['100mg/10ml'],
-    'IXIFI': ['100mg/10ml'],
-    'REMICADE': ['100mg/10ml'],
-    'TOLURİNE': ['100mg/10ml'],
-    'ILARIS': ['150mg/1ml']
-  },
-  // Her dozaj için doz sıklığı (gün cinsinden)
-  frequencies: {
-    '40mg/0.4ml': 14,  // 14 günde bir
-    '80mg/0.8ml': 28,  // 28 günde bir
-    '200mg/1ml': 28,   // 28 günde bir
-    '50mg/0.5ml': 28,  // 28 günde bir
-    '100mg/1ml': 28,   // 28 günde bir
-    '100mg/10ml': 56,  // 56 günde bir
-    '150mg/1ml': 28    // 28 günde bir
-  }
+const { width } = Dimensions.get('window');
+
+const STEPS = [
+  { id: 1, label: 'Kişisel', icon: 'person' as const },
+  { id: 2, label: 'Tedavi', icon: 'medical' as const },
+  { id: 3, label: 'Takvim', icon: 'calendar' as const },
+];
+
+const FORM_LABELS: Record<string, string> = {
+  enjektor: 'Enjektör',
+  kalem: 'Kalem',
+  toz: 'Toz',
 };
 
-/**
- * Tedavi bilgileri form ekranı bileşeni
- * Kullanıcıdan kişisel bilgiler ve tedavi detaylarını alır
- * Profil sayfasına yönlendirme yapar
- */
 const AboutScreen = () => {
   const router = useRouter();
-  
-  // Form state'leri - kullanıcı girişlerini saklar
-  const [antibodies, setAntibodies] = useState<string[]>([]); // Mevcut antikor listesi
-  const [diseases, setDiseases] = useState<string[]>([]); // Seçilen antikora göre hastalıklar
-  const [drugs, setDrugs] = useState<string[]>([]); // Seçilen hastalığa göre ilaçlar
-  const [dosages, setDosages] = useState<string[]>([]); // Seçilen ilaca göre dozajlar
-  
-  // Seçim state'leri - kullanıcının seçtiği değerler
-  const [selectedAntibody, setSelectedAntibody] = useState<string>('');
-  const [selectedDisease, setSelectedDisease] = useState<string>('');
-  const [selectedDrug, setSelectedDrug] = useState<string>('');
-  const [selectedDosage, setSelectedDosage] = useState<string>('');
-  const [selectedFrequency, setSelectedFrequency] = useState<number>(0);
-  
-  // Kişisel bilgi state'leri
-  const [name, setName] = useState<string>('');
-  const [surname, setSurname] = useState<string>('');
-  const [age, setAge] = useState<string>('');
-  
-  // Süre bilgileri state'leri
-  const [diseaseDuration, setDiseaseDuration] = useState<string>('');
-  const [diseaseDurationType, setDiseaseDurationType] = useState<'year' | 'month' | 'week'>('week');
-  const [drugDuration, setDrugDuration] = useState<string>('');
-  const [drugDurationType, setDrugDurationType] = useState<'year' | 'month' | 'week'>('week');
-  
-  // Tarih seçimi state'leri
-  const [isCalendarVisible, setIsCalendarVisible] = useState<boolean>(false);
-  const [selectedStartDate, setSelectedStartDate] = useState<string>('');
-  const [startDate, setStartDate] = useState<Date>(new Date());
-  
-  // Form seçimi state'leri
-  const [isFormSelectionVisible, setIsFormSelectionVisible] = useState<boolean>(false);
-  const [selectedForm, setSelectedForm] = useState<string>('');
+  const [currentStep, setCurrentStep] = useState(1);
 
-  // Component yüklendiğinde veritabanından antikor listesini yükle
-  useEffect(() => {
-    const initializeData = async () => {
-      try {
-        const db = Database.getInstance();
-        await db.initialize();
-        const data = db.getData();
-        // Benzersiz antikor isimlerini al
-        const uniqueAntibodies = [...new Set(data.antibodies.map(ab => ab.name))];
-        setAntibodies(uniqueAntibodies);
-      } catch (error) {
-        console.error('Veri başlatma hatası:', error);
-        Alert.alert('Hata', 'Veriler yüklenirken bir hata oluştu.');
-      }
-    };
+  const [antibodies] = useState<string[]>(getAntibodies());
+  const [diseases, setDiseases] = useState<string[]>([]);
+  const [drugs, setDrugs] = useState<string[]>([]);
+  const [dosages, setDosages] = useState<string[]>([]);
+  const [availableForms, setAvailableForms] = useState<string[]>([]);
 
-    initializeData();
-  }, []);
+  const [selectedAntibody, setSelectedAntibody] = useState('');
+  const [selectedDisease, setSelectedDisease] = useState('');
+  const [selectedDrug, setSelectedDrug] = useState('');
+  const [selectedDosage, setSelectedDosage] = useState('');
+  const [selectedFrequency, setSelectedFrequency] = useState(0);
+  const [selectedForm, setSelectedForm] = useState('');
 
-  /**
-   * Yaş girişini kontrol eder - sadece 1-99 arası değer kabul eder
-   */
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [age, setAge] = useState('');
+
+  const [diseaseDuration, setDiseaseDuration] = useState('');
+  const [diseaseDurationType, setDiseaseDurationType] = useState<'year' | 'month' | 'week'>('year');
+  const [drugDuration, setDrugDuration] = useState('');
+  const [drugDurationType, setDrugDurationType] = useState<'year' | 'month' | 'week'>('month');
+
+  const [isCalendarVisible, setIsCalendarVisible] = useState(false);
+  const [selectedStartDate, setSelectedStartDate] = useState('');
+
+  // Step validation
+  const step1Valid = name.trim().length > 0 && surname.trim().length > 0 && age.length > 0;
+  const step2Valid =
+    selectedAntibody !== '' &&
+    selectedDisease !== '' &&
+    selectedDrug !== '' &&
+    selectedDosage !== '' &&
+    (availableForms.length === 0 || selectedForm !== '');
+  const step3Valid = diseaseDuration !== '' && drugDuration !== '' && selectedStartDate !== '';
+
   const handleAgeChange = (text: string) => {
     const num = parseInt(text);
-    if (text === '' || (num >= 1 && num <= 99)) {
-      setAge(text);
-    }
+    if (text === '' || (num >= 1 && num <= 120)) setAge(text);
   };
 
-  /**
-   * Hastalık süresi girişini kontrol eder
-   * Seçilen süre tipine göre geçerli aralıkları kontrol eder
-   */
-  const handleDurationChange = (text: string) => {
+  const handleDurationChange = (text: string, type: 'year' | 'month' | 'week', setter: (v: string) => void) => {
     const num = parseInt(text);
-    if (text === '') {
-      setDiseaseDuration(text);
-      return;
-    }
-
-    let isValid = false;
-    switch (diseaseDurationType) {
-      case 'year':
-        isValid = num >= 1 && num <= 99; // 1-99 yıl
-        break;
-      case 'month':
-        isValid = num >= 1 && num <= 12; // 1-12 ay
-        break;
-      case 'week':
-        isValid = num >= 0 && num <= 52; // 0-52 hafta
-        break;
-    }
-
-    if (isValid) {
-      setDiseaseDuration(text);
-    }
+    if (text === '') { setter(''); return; }
+    let valid = false;
+    if (type === 'year') valid = num >= 1 && num <= 99;
+    else if (type === 'month') valid = num >= 1 && num <= 120;
+    else valid = num >= 0 && num <= 520;
+    if (valid) setter(text);
   };
 
-  /**
-   * İlaç kullanım süresi girişini kontrol eder
-   * Hastalık süresinden fazla olamaz kontrolü yapar
-   */
-  const handleDrugDurationChange = (text: string) => {
-    const num = parseInt(text);
-    if (text === '') {
-      setDrugDuration(text);
-      return;
-    }
-
-    let isValid = false;
-    switch (drugDurationType) {
-      case 'year':
-        isValid = num >= 1 && num <= 99;
-        break;
-      case 'month':
-        isValid = num >= 1 && num <= 12;
-        break;
-      case 'week':
-        isValid = num >= 0 && num <= 52;
-        break;
-    }
-
-    if (isValid) {
-      // İlaç kullanım süresinin hastalık süresinden fazla olmaması için kontrol
-      const diseaseNum = parseInt(diseaseDuration);
-      if (diseaseDuration && diseaseNum) {
-        let diseaseInWeeks = 0;
-        let drugInWeeks = 0;
-
-        // Hastalık süresini haftaya çevir
-        switch (diseaseDurationType) {
-          case 'year':
-            diseaseInWeeks = diseaseNum * 52;
-            break;
-          case 'month':
-            diseaseInWeeks = diseaseNum * 4;
-            break;
-          case 'week':
-            diseaseInWeeks = diseaseNum;
-            break;
-        }
-
-        // İlaç süresini haftaya çevir
-        switch (drugDurationType) {
-          case 'year':
-            drugInWeeks = num * 52;
-            break;
-          case 'month':
-            drugInWeeks = num * 4;
-            break;
-          case 'week':
-            drugInWeeks = num;
-            break;
-        }
-
-        if (drugInWeeks > diseaseInWeeks) {
-          Alert.alert('Hata', 'İlaç kullanım süresi hastalık süresinden fazla olamaz.');
-          return;
-        }
-      }
-      setDrugDuration(text);
-    }
-  };
-
-  /**
-   * Antikor seçimi değiştiğinde bağımlı alanları sıfırlar
-   * Seçilen antikora göre hastalık listesini günceller
-   */
   const handleAntibodyChange = (value: string) => {
     setSelectedAntibody(value);
-    setSelectedDisease('');
-    setSelectedDrug('');
-    setSelectedDosage('');
-    setSelectedFrequency(0);
-    if (value) {
-      setDiseases(MOCK_DATA.diseases[value] || []);
-    } else {
-      setDiseases([]);
-    }
+    setSelectedDisease(''); setSelectedDrug(''); setSelectedDosage('');
+    setSelectedFrequency(0); setAvailableForms([]); setSelectedForm('');
+    setDiseases(value ? getDiseasesForAntibody(value) : []);
+    setDrugs([]); setDosages([]);
   };
 
-  /**
-   * Hastalık seçimi değiştiğinde bağımlı alanları sıfırlar
-   * Seçilen hastalığa göre ilaç listesini günceller
-   */
   const handleDiseaseChange = (value: string) => {
     setSelectedDisease(value);
-    setSelectedDrug('');
-    setSelectedDosage('');
-    setSelectedFrequency(0);
-    
-    if (value && selectedAntibody) {
-      // Seçilen hastalık ve antikor için uygun ilaçları filtrele
-      const availableDrugs = MOCK_DATA.drugs[value] || [];
-      setDrugs(availableDrugs);
-    } else {
-      setDrugs([]);
-    }
+    setSelectedDrug(''); setSelectedDosage('');
+    setSelectedFrequency(0); setAvailableForms([]); setSelectedForm('');
+    setDrugs(value ? getDrugsForDisease(value) : []);
+    setDosages([]);
   };
 
-  /**
-   * İlaç seçimi değiştiğinde bağımlı alanları sıfırlar
-   * Seçilen ilaca göre dozaj listesini günceller
-   */
-  const handleDrugChange = async (value: string) => {
+  const handleDrugChange = (value: string) => {
     setSelectedDrug(value);
-    setSelectedDosage('');
-    setSelectedFrequency(0);
-    if (value) {
-      setDosages(MOCK_DATA.dosages[value] || []);
-    } else {
-      setDosages([]);
-    }
+    setSelectedDosage(''); setSelectedFrequency(0);
+    setAvailableForms([]); setSelectedForm('');
+    setDosages(value ? getDosagesForDrug(value) : []);
   };
 
-  /**
-   * Dozaj seçimi değiştiğinde doz sıklığını hesaplar
-   * Form seçimi gerektiren ilaçlar için kontrol yapar
-   */
   const handleDosageChange = (value: string) => {
     setSelectedDosage(value);
+    setSelectedForm('');
     if (value) {
-      // Doz sıklığını belirle
-      let frequency = 14; // Varsayılan değer
-      if (value.includes('80mg')) frequency = 28;
-      if (value.includes('100mg')) frequency = 56;
-      if (value.includes('150mg') || value.includes('200mg')) frequency = 180;
-      setSelectedFrequency(frequency);
-
-      // Form seçimi gerektiren ilaçlar için kontrol
-      if ((selectedDrug === 'AMGEVİTA' && value === '40mg/0.8ml') || 
-          (selectedDrug === 'HUMİRA' && (value === '40mg/0.4ml' || value === '40mg/0.8ml')) ||
-          (selectedDrug === 'HYRIMOZ' && value === '40mg/0.8ml') ||
-          (selectedDrug === 'SIMPONI' && value === '50mg/0.5ml') ||
-          (selectedDrug === 'ILARIS' && value === '150mg/1ml')) {
-        setIsFormSelectionVisible(true);
-      } else {
-        setIsFormSelectionVisible(false);
-      }
+      setSelectedFrequency(getFrequency(selectedDrug, value));
+      setAvailableForms(getFormsForDosage(selectedDrug, value));
     } else {
-      setSelectedFrequency(0);
-      setIsFormSelectionVisible(false);
+      setSelectedFrequency(0); setAvailableForms([]);
     }
   };
 
-  /**
-   * Form gönderimi - tüm alanları kontrol eder ve profil sayfasına yönlendirir
-   */
-  const handleSubmit = async () => {
-    if (!name || !surname || !age || !selectedAntibody || !selectedDisease || 
-        !selectedDrug || !selectedDosage || !diseaseDuration || !drugDuration || !selectedStartDate) {
-      Alert.alert('Hata', 'Lütfen tüm alanları doldurun.');
+  const handleNext = () => {
+    if (currentStep === 1 && !step1Valid) {
+      Alert.alert('Eksik Bilgi', 'Ad, soyad ve yaş alanlarını doldurun.');
       return;
     }
+    if (currentStep === 2 && !step2Valid) {
+      Alert.alert('Eksik Bilgi', 'Antikor, hastalık, ilaç ve dozaj seçimlerini tamamlayın.');
+      return;
+    }
+    if (currentStep < 3) setCurrentStep(s => s + 1);
+  };
 
+  const handleBack = () => {
+    if (currentStep > 1) setCurrentStep(s => s - 1);
+  };
+
+  const handleSubmit = async () => {
+    if (!step3Valid) {
+      Alert.alert('Eksik Bilgi', 'Hastalık süresi, ilaç kullanım süresi ve başlangıç tarihini girin.');
+      return;
+    }
     try {
-      // Profil sayfasına yönlendir
+      const profileData = {
+        name, surname, age,
+        selectedAntibody, selectedDisease, selectedDrug, selectedDosage,
+        diseaseDuration, diseaseDurationType, drugDuration, drugDurationType,
+        startDate: selectedStartDate,
+        frequency: String(selectedFrequency),
+        selectedForm,
+      };
+      await AsyncStorage.setItem('@mabcare_profile', JSON.stringify(profileData));
       await router.replace({
         pathname: '/profile',
-        params: {
-          name,
-          surname,
-          age,
-          selectedAntibody,
-          selectedDisease,
-          selectedDrug,
-          selectedDosage,
-          diseaseDuration,
-          diseaseDurationType,
-          drugDuration,
-          drugDurationType,
-          startDate: selectedStartDate,
-          frequency: selectedFrequency
-        }
+        params: profileData,
       });
-
-      // Form alanlarını temizle
-      setName('');
-      setSurname('');
-      setAge('');
-      setSelectedAntibody('');
-      setSelectedDisease('');
-      setSelectedDrug('');
-      setSelectedDosage('');
-      setSelectedFrequency(0);
-      setDiseaseDuration('');
-      setDrugDuration('');
-      setSelectedStartDate('');
-    } catch (error) {
-      console.error('Yönlendirme hatası:', error);
-      Alert.alert('Hata', 'Profil sayfasına yönlendirme sırasında bir hata oluştu.');
+    } catch {
+      Alert.alert('Hata', 'Yönlendirme sırasında bir hata oluştu.');
     }
   };
 
-  /**
-   * Tarih formatını değiştirir (YYYY-MM-DD -> DD/MM/YYYY)
-   */
-  const formatDate = (date: string) => {
-    if (!date) return '';
-    const [year, month, day] = date.split('-');
-    return `${day}/${month}/${year}`;
+  const formatDate = (d: string) => {
+    if (!d) return '';
+    const [y, m, day] = d.split('-');
+    return `${day}/${m}/${y}`;
   };
 
-  /**
-   * Takvim için minimum tarih - bugünden 3 ay öncesi
-   */
   const getMinDate = () => {
-    const date = new Date();
-    date.setMonth(date.getMonth() - 3);
-    return date.toISOString().split('T')[0];
+    const d = new Date(); d.setMonth(d.getMonth() - 6);
+    return d.toISOString().split('T')[0];
+  };
+  const getMaxDate = () => {
+    const d = new Date(); d.setFullYear(d.getFullYear() + 2);
+    return d.toISOString().split('T')[0];
   };
 
-  /**
-   * Takvim için maksimum tarih - bugünden 10 yıl sonrası
-   */
-  const getMaxDate = () => {
-    const date = new Date();
-    date.setFullYear(date.getFullYear() + 10); // 10 yıl ileriye kadar seçilebilir
-    return date.toISOString().split('T')[0];
-  };
+  // Antibody info chip
+  const antibodyEntry = selectedAntibody ? getAntibodyEntry(selectedAntibody) : null;
 
   return (
-    <LinearGradient
-      colors={['#E8F5E9', '#FFFFFF']}
-      style={commonStyles.container}
-    >
-      <ScrollView contentContainerStyle={commonStyles.scrollContainer}>
-        <View style={commonStyles.headerContainer}>
-          <Text style={commonStyles.header}>Tedavi Bilgileri</Text>
-          <Text style={commonStyles.subHeader}>Lütfen tedavi bilgilerinizi girin</Text>
-        </View>
+    <LinearGradient colors={['#F5F7F5', '#FFFFFF']} style={styles.outer}>
+      {/* Step Indicator */}
+      <View style={styles.stepIndicatorWrapper}>
+        {STEPS.map((step, idx) => {
+          const done = currentStep > step.id;
+          const active = currentStep === step.id;
+          return (
+            <View key={step.id} style={styles.stepRow}>
+              <View style={styles.stepItemCol}>
+                <View style={[
+                  styles.stepCircle,
+                  active && styles.stepCircleActive,
+                  done && styles.stepCircleDone,
+                ]}>
+                  {done
+                    ? <Ionicons name="checkmark" size={16} color="#FFF" />
+                    : <Ionicons name={step.icon} size={16} color={active ? '#FFF' : COLORS.textMuted} />
+                  }
+                </View>
+                <Text style={[styles.stepLabel, active && styles.stepLabelActive]}>{step.label}</Text>
+              </View>
+              {idx < STEPS.length - 1 && (
+                <View style={[styles.stepLine, done && styles.stepLineDone]} />
+              )}
+            </View>
+          );
+        })}
+      </View>
 
-        <View style={commonStyles.formContainer}>
-          <View style={commonStyles.inputGroup}>
-            <Text style={commonStyles.label}>Kişisel Bilgiler</Text>
-            <View style={commonStyles.inputRow}>
-              <View style={[commonStyles.inputContainer, { flex: 1, marginRight: 10 }]}>
-                <Text style={commonStyles.inputLabel}>Ad</Text>
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+        {/* STEP 1: Personal Info */}
+        {currentStep === 1 && (
+          <View style={styles.stepCard}>
+            <View style={styles.stepCardHeader}>
+              <View style={[styles.stepHeaderIcon, { backgroundColor: COLORS.primaryPale }]}>
+                <Ionicons name="person" size={22} color={COLORS.primary} />
+              </View>
+              <View>
+                <Text style={styles.stepCardTitle}>Kişisel Bilgiler</Text>
+                <Text style={styles.stepCardSubtitle}>Adınızı ve yaşınızı girin</Text>
+              </View>
+            </View>
+
+            <View style={styles.inputRow}>
+              <View style={{ flex: 1, marginRight: 10 }}>
+                <Text style={styles.inputLabel}>Ad</Text>
                 <TextInput
-                  style={commonStyles.input}
+                  style={styles.input}
                   placeholder="Adınız"
                   value={name}
                   onChangeText={setName}
-                  placeholderTextColor="#999"
+                  placeholderTextColor={COLORS.textMuted}
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  spellCheck={false}
                 />
               </View>
-              <View style={[commonStyles.inputContainer, { flex: 1 }]}>
-                <Text style={commonStyles.inputLabel}>Soyad</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.inputLabel}>Soyad</Text>
                 <TextInput
-                  style={commonStyles.input}
+                  style={styles.input}
                   placeholder="Soyadınız"
                   value={surname}
                   onChangeText={setSurname}
-                  placeholderTextColor="#999"
+                  placeholderTextColor={COLORS.textMuted}
                   autoCapitalize="words"
                   autoCorrect={false}
+                  spellCheck={false}
                 />
               </View>
             </View>
 
-            <View style={commonStyles.inputContainer}>
-              <Text style={commonStyles.inputLabel}>Yaş (1-99)</Text>
-              <TextInput
-                style={commonStyles.input}
-                placeholder="Yaşınız"
-                value={age}
-                onChangeText={handleAgeChange}
-                keyboardType="numeric"
-                placeholderTextColor="#999"
-                maxLength={2}
-              />
-            </View>
+            <Text style={styles.inputLabel}>Yaş</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Yaşınız (1–120)"
+              value={age}
+              onChangeText={handleAgeChange}
+              keyboardType="numeric"
+              placeholderTextColor={COLORS.textMuted}
+              maxLength={3}
+            />
           </View>
+        )}
 
-          <View style={commonStyles.inputGroup}>
-            <Text style={commonStyles.label}>Tedavi Bilgileri</Text>
-            <View style={commonStyles.inputContainer}>
-              <Text style={commonStyles.inputLabel}>Antikor</Text>
-              <View style={commonStyles.pickerContainer}>
-                <Picker
-                  selectedValue={selectedAntibody}
-                  style={commonStyles.picker}
-                  onValueChange={(value: string) => handleAntibodyChange(value)}
-                  dropdownIconColor="#2E7D32"
-                >
-                  <Picker.Item label="Antikor Seçin" value="" />
-                  {antibodies.map((antibody: string) => (
-                    <Picker.Item key={antibody} label={antibody} value={antibody} />
-                  ))}
-                </Picker>
+        {/* STEP 2: Treatment Selection */}
+        {currentStep === 2 && (
+          <View style={styles.stepCard}>
+            <View style={styles.stepCardHeader}>
+              <View style={[styles.stepHeaderIcon, { backgroundColor: COLORS.blueLight }]}>
+                <Ionicons name="medical" size={22} color={COLORS.blue} />
+              </View>
+              <View>
+                <Text style={styles.stepCardTitle}>Tedavi Bilgileri</Text>
+                <Text style={styles.stepCardSubtitle}>İlacınızı ve dozajınızı seçin</Text>
               </View>
             </View>
 
-            <View style={commonStyles.inputContainer}>
-              <Text style={commonStyles.inputLabel}>Hastalık</Text>
-              <View style={commonStyles.pickerContainer}>
-                <Picker
-                  selectedValue={selectedDisease}
-                  style={commonStyles.picker}
-                  onValueChange={(value: string) => handleDiseaseChange(value)}
-                  dropdownIconColor="#2E7D32"
-                  enabled={!!selectedAntibody}
-                >
-                  <Picker.Item label="Hastalık Seçin" value="" />
-                  {diseases.map((disease: string) => (
-                    <Picker.Item key={disease} label={disease} value={disease} />
-                  ))}
-                </Picker>
-              </View>
+            <Text style={styles.inputLabel}>Monoklonal Antikor</Text>
+            <View style={styles.pickerWrap}>
+              <Picker
+                selectedValue={selectedAntibody}
+                style={styles.picker}
+                onValueChange={handleAntibodyChange}
+                dropdownIconColor={COLORS.primary}
+              >
+                <Picker.Item label="Antikor Seçin..." value="" />
+                {antibodies.map(a => <Picker.Item key={a} label={a} value={a} />)}
+              </Picker>
             </View>
 
-            <View style={commonStyles.inputContainer}>
-              <Text style={commonStyles.inputLabel}>Hastalık Süresi</Text>
-              <View style={commonStyles.durationContainer}>
-                <View style={[commonStyles.pickerContainer, { flex: 1, marginRight: 10 }]}>
-                  <Picker
-                    selectedValue={diseaseDurationType}
-                    style={commonStyles.picker}
-                    onValueChange={(itemValue: 'year' | 'month' | 'week') => {
-                      setDiseaseDurationType(itemValue);
-                      setDiseaseDuration('');
-                    }}
-                    dropdownIconColor="#2E7D32"
-                  >
-                    <Picker.Item label="Yıl" value="year" />
-                    <Picker.Item label="Ay" value="month" />
-                    <Picker.Item label="Hafta" value="week" />
-                  </Picker>
-                </View>
-                <View style={[commonStyles.inputContainer, { flex: 2 }]}>
-                  <TextInput
-                    style={commonStyles.input}
-                    placeholder={
-                      diseaseDurationType === 'year' ? "1-99 yıl" :
-                      diseaseDurationType === 'month' ? "1-12 ay" :
-                      "0-52 hafta"
-                    }
-                    value={diseaseDuration}
-                    onChangeText={handleDurationChange}
-                    keyboardType="numeric"
-                    placeholderTextColor="#999"
-                    maxLength={2}
-                  />
-                </View>
-              </View>
-            </View>
-
-            <View style={commonStyles.inputContainer}>
-              <Text style={commonStyles.inputLabel}>İlaç</Text>
-              <View style={commonStyles.pickerContainer}>
-                <Picker
-                  selectedValue={selectedDrug}
-                  style={commonStyles.picker}
-                  onValueChange={(value: string) => handleDrugChange(value)}
-                  dropdownIconColor="#2E7D32"
-                  enabled={!!selectedDisease}
-                >
-                  <Picker.Item label="İlaç Seçin" value="" />
-                  {drugs.map((drug: string) => (
-                    <Picker.Item key={drug} label={drug} value={drug} />
-                  ))}
-                </Picker>
-              </View>
-            </View>
-
-            <View style={commonStyles.inputContainer}>
-              <Text style={commonStyles.inputLabel}>Dozaj</Text>
-              <View style={commonStyles.pickerContainer}>
-                <Picker
-                  selectedValue={selectedDosage}
-                  style={commonStyles.picker}
-                  onValueChange={(value: string) => handleDosageChange(value)}
-                  dropdownIconColor="#2E7D32"
-                  enabled={!!selectedDrug}
-                >
-                  <Picker.Item label="Dozaj Seçin" value="" />
-                  {dosages.map((dosage: string) => (
-                    <Picker.Item key={dosage} label={dosage} value={dosage} />
-                  ))}
-                </Picker>
-              </View>
-            </View>
-
-            {isFormSelectionVisible && (
-              <View style={commonStyles.inputContainer}>
-                <Text style={commonStyles.inputLabel}>Form Seçimi</Text>
-                <View style={commonStyles.pickerContainer}>
-                  <Picker
-                    selectedValue={selectedForm}
-                    style={commonStyles.picker}
-                    onValueChange={(value: string) => setSelectedForm(value)}
-                    dropdownIconColor="#2E7D32"
-                  >
-                    <Picker.Item label="Form Seçin" value="" />
-                    <Picker.Item label="Enjektör" value="enjektor" />
-                    <Picker.Item label="Kalem" value="kalem" />
-                  </Picker>
-                </View>
+            {antibodyEntry && (
+              <View style={styles.mechanismChip}>
+                <Ionicons name="flask" size={14} color={COLORS.teal} />
+                <Text style={styles.mechanismChipText} numberOfLines={2}>
+                  {antibodyEntry.mechanism}
+                </Text>
               </View>
             )}
 
-            <View style={commonStyles.inputContainer}>
-              <Text style={commonStyles.inputLabel}>İlaç Kullanım Süresi</Text>
-              <View style={commonStyles.durationContainer}>
-                <View style={[commonStyles.pickerContainer, { flex: 1, marginRight: 10 }]}>
-                  <Picker
-                    selectedValue={drugDurationType}
-                    style={commonStyles.picker}
-                    onValueChange={(itemValue: 'year' | 'month' | 'week') => {
-                      setDrugDurationType(itemValue);
-                      setDrugDuration('');
-                    }}
-                    dropdownIconColor="#2E7D32"
-                  >
-                    <Picker.Item label="Yıl" value="year" />
-                    <Picker.Item label="Ay" value="month" />
-                    <Picker.Item label="Hafta" value="week" />
-                  </Picker>
-                </View>
-                <View style={[commonStyles.inputContainer, { flex: 2 }]}>
-                  <TextInput
-                    style={commonStyles.input}
-                    placeholder={
-                      drugDurationType === 'year' ? "1-99 yıl" :
-                      drugDurationType === 'month' ? "1-12 ay" :
-                      "0-52 hafta"
-                    }
-                    value={drugDuration}
-                    onChangeText={handleDrugDurationChange}
-                    keyboardType="numeric"
-                    placeholderTextColor="#999"
-                    maxLength={2}
-                  />
-                </View>
-              </View>
-            </View>
-          </View>
-
-          <View style={commonStyles.inputGroup}>
-            <Text style={commonStyles.label}>Doz Bilgileri</Text>
-            <View style={commonStyles.inputContainer}>
-              <Text style={commonStyles.inputLabel}>Doz Başlangıç Günü</Text>
-              <TouchableOpacity 
-                style={commonStyles.dateButton}
-                onPress={() => setIsCalendarVisible(true)}
+            <Text style={[styles.inputLabel, { marginTop: 4 }]}>Hastalık</Text>
+            <View style={[styles.pickerWrap, !selectedAntibody && styles.pickerDisabled]}>
+              <Picker
+                selectedValue={selectedDisease}
+                style={styles.picker}
+                onValueChange={handleDiseaseChange}
+                dropdownIconColor={COLORS.primary}
+                enabled={!!selectedAntibody}
               >
-                <Text style={[commonStyles.dateButtonText, !selectedStartDate && commonStyles.placeholder]}>
-                  {selectedStartDate ? formatDate(selectedStartDate) : 'Tarih Seçin'}
-                </Text>
-                <Ionicons name="calendar-outline" size={20} color="#2E7D32" />
-              </TouchableOpacity>
+                <Picker.Item label={selectedAntibody ? "Hastalık Seçin..." : "Önce antikor seçin"} value="" />
+                {diseases.map(d => <Picker.Item key={d} label={d} value={d} />)}
+              </Picker>
             </View>
 
-            <View style={commonStyles.inputContainer}>
-              <Text style={commonStyles.inputLabel}>Doz Sıklığı</Text>
-              <View style={commonStyles.frequencyInfo}>
-                <Text style={commonStyles.frequencyText}>
-                  {selectedDrug ? 
-                    `${selectedFrequency} günde bir` : 
-                    'Lütfen önce ilaç seçin'}
+            <Text style={[styles.inputLabel, { marginTop: 4 }]}>İlaç (Marka Adı)</Text>
+            <View style={[styles.pickerWrap, !selectedDisease && styles.pickerDisabled]}>
+              <Picker
+                selectedValue={selectedDrug}
+                style={styles.picker}
+                onValueChange={handleDrugChange}
+                dropdownIconColor={COLORS.primary}
+                enabled={!!selectedDisease}
+              >
+                <Picker.Item label={selectedDisease ? "İlaç Seçin..." : "Önce hastalık seçin"} value="" />
+                {drugs.map(d => <Picker.Item key={d} label={d} value={d} />)}
+              </Picker>
+            </View>
+
+            <Text style={[styles.inputLabel, { marginTop: 4 }]}>Dozaj</Text>
+            <View style={[styles.pickerWrap, !selectedDrug && styles.pickerDisabled]}>
+              <Picker
+                selectedValue={selectedDosage}
+                style={styles.picker}
+                onValueChange={handleDosageChange}
+                dropdownIconColor={COLORS.primary}
+                enabled={!!selectedDrug}
+              >
+                <Picker.Item label={selectedDrug ? "Dozaj Seçin..." : "Önce ilaç seçin"} value="" />
+                {dosages.map(d => <Picker.Item key={d} label={d} value={d} />)}
+              </Picker>
+            </View>
+
+            {availableForms.length > 0 && (
+              <>
+                <Text style={[styles.inputLabel, { marginTop: 4 }]}>Uygulama Formu</Text>
+                <View style={styles.formButtonsRow}>
+                  {availableForms.map(f => (
+                    <TouchableOpacity
+                      key={f}
+                      style={[styles.formButton, selectedForm === f && styles.formButtonActive]}
+                      onPress={() => setSelectedForm(f)}
+                    >
+                      <Ionicons
+                        name={f === 'kalem' ? 'pencil' : f === 'toz' ? 'beaker' : 'water'}
+                        size={18}
+                        color={selectedForm === f ? '#FFF' : COLORS.primary}
+                      />
+                      <Text style={[styles.formButtonText, selectedForm === f && styles.formButtonTextActive]}>
+                        {FORM_LABELS[f] || f}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </>
+            )}
+
+            {selectedFrequency > 0 && (
+              <View style={styles.freqBadge}>
+                <Ionicons name="repeat" size={18} color={COLORS.primary} />
+                <Text style={styles.freqBadgeText}>
+                  Her {selectedFrequency} günde bir doz
                 </Text>
               </View>
-            </View>
-          </View>
-        </View>
+            )}
 
-        <TouchableOpacity style={commonStyles.button} onPress={handleSubmit}>
-          <Text style={commonStyles.buttonText}>Devam Et</Text>
-          <Ionicons name="arrow-forward" size={20} color="#FFFFFF" />
-        </TouchableOpacity>
+            {antibodyEntry?.blackBoxWarning && (
+              <View style={styles.blackBoxBanner}>
+                <Ionicons name="warning" size={18} color={COLORS.danger} />
+                <Text style={styles.blackBoxText} numberOfLines={3}>
+                  ⬛ KARA KUTU UYARISI: {antibodyEntry.blackBoxWarning}
+                </Text>
+              </View>
+            )}
+          </View>
+        )}
+
+        {/* STEP 3: Duration & Schedule */}
+        {currentStep === 3 && (
+          <View style={styles.stepCard}>
+            <View style={styles.stepCardHeader}>
+              <View style={[styles.stepHeaderIcon, { backgroundColor: '#F3E5F5' }]}>
+                <Ionicons name="calendar" size={22} color="#7B1FA2" />
+              </View>
+              <View>
+                <Text style={styles.stepCardTitle}>Süre & Takvim</Text>
+                <Text style={styles.stepCardSubtitle}>Tedavi sürenizi ve başlangıç gününüzü belirleyin</Text>
+              </View>
+            </View>
+
+            <Text style={styles.inputLabel}>Hastalık Süresi</Text>
+            <View style={styles.durationRow}>
+              <View style={[styles.pickerWrap, { flex: 1, marginRight: 10 }]}>
+                <Picker
+                  selectedValue={diseaseDurationType}
+                  style={styles.picker}
+                  onValueChange={(v: 'year' | 'month' | 'week') => { setDiseaseDurationType(v); setDiseaseDuration(''); }}
+                  dropdownIconColor={COLORS.primary}
+                >
+                  <Picker.Item label="Yıl" value="year" />
+                  <Picker.Item label="Ay" value="month" />
+                  <Picker.Item label="Hafta" value="week" />
+                </Picker>
+              </View>
+              <TextInput
+                style={[styles.input, { flex: 1.5 }]}
+                placeholder={
+                  diseaseDurationType === 'year' ? '1–99 yıl' :
+                  diseaseDurationType === 'month' ? '1–120 ay' : '0–520 hafta'
+                }
+                value={diseaseDuration}
+                onChangeText={t => handleDurationChange(t, diseaseDurationType, setDiseaseDuration)}
+                keyboardType="numeric"
+                placeholderTextColor={COLORS.textMuted}
+                maxLength={3}
+              />
+            </View>
+
+            <Text style={[styles.inputLabel, { marginTop: 4 }]}>İlaç Kullanım Süresi</Text>
+            <View style={styles.durationRow}>
+              <View style={[styles.pickerWrap, { flex: 1, marginRight: 10 }]}>
+                <Picker
+                  selectedValue={drugDurationType}
+                  style={styles.picker}
+                  onValueChange={(v: 'year' | 'month' | 'week') => { setDrugDurationType(v); setDrugDuration(''); }}
+                  dropdownIconColor={COLORS.primary}
+                >
+                  <Picker.Item label="Yıl" value="year" />
+                  <Picker.Item label="Ay" value="month" />
+                  <Picker.Item label="Hafta" value="week" />
+                </Picker>
+              </View>
+              <TextInput
+                style={[styles.input, { flex: 1.5 }]}
+                placeholder={
+                  drugDurationType === 'year' ? '1–99 yıl' :
+                  drugDurationType === 'month' ? '1–120 ay' : '0–520 hafta'
+                }
+                value={drugDuration}
+                onChangeText={t => handleDurationChange(t, drugDurationType, setDrugDuration)}
+                keyboardType="numeric"
+                placeholderTextColor={COLORS.textMuted}
+                maxLength={3}
+              />
+            </View>
+
+            <Text style={[styles.inputLabel, { marginTop: 4 }]}>İlk Doz Tarihi</Text>
+            <TouchableOpacity style={styles.dateBtn} onPress={() => setIsCalendarVisible(true)}>
+              <Ionicons name="calendar-outline" size={20} color={COLORS.primary} />
+              <Text style={[styles.dateBtnText, !selectedStartDate && { color: COLORS.textMuted }]}>
+                {selectedStartDate ? formatDate(selectedStartDate) : 'Tarih seçin'}
+              </Text>
+              <Ionicons name="chevron-forward" size={18} color={COLORS.textMuted} />
+            </TouchableOpacity>
+
+            {/* Summary box */}
+            {selectedStartDate && (
+              <View style={styles.summaryBox}>
+                <Text style={styles.summaryTitle}>Özet</Text>
+                {[
+                  { label: 'Antikor', value: selectedAntibody },
+                  { label: 'Hastalık', value: selectedDisease },
+                  { label: 'İlaç', value: selectedDrug },
+                  { label: 'Dozaj', value: selectedDosage },
+                  { label: 'Sıklık', value: `${selectedFrequency} günde bir` },
+                  { label: 'Başlangıç', value: formatDate(selectedStartDate) },
+                ].map((row, i, arr) => (
+                  <View key={row.label} style={[styles.summaryRow, i === arr.length - 1 && { borderBottomWidth: 0 }]}>
+                    <Text style={styles.summaryLabel}>{row.label}</Text>
+                    <Text style={styles.summaryValue}>{row.value}</Text>
+                  </View>
+                ))}
+              </View>
+            )}
+          </View>
+        )}
+
+        {/* Navigation Buttons */}
+        <View style={styles.navButtons}>
+          {currentStep > 1 && (
+            <TouchableOpacity style={styles.backBtn} onPress={handleBack}>
+              <Ionicons name="arrow-back" size={18} color={COLORS.primary} />
+              <Text style={styles.backBtnText}>Geri</Text>
+            </TouchableOpacity>
+          )}
+          <View style={{ flex: 1 }} />
+          {currentStep < 3 ? (
+            <TouchableOpacity
+              style={[styles.nextBtn, !((currentStep === 1 ? step1Valid : step2Valid)) && styles.nextBtnDisabled]}
+              onPress={handleNext}
+            >
+              <Text style={styles.nextBtnText}>Devam</Text>
+              <Ionicons name="arrow-forward" size={18} color="#FFF" />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={[styles.nextBtn, !step3Valid && styles.nextBtnDisabled]}
+              onPress={handleSubmit}
+            >
+              <Text style={styles.nextBtnText}>Profili Oluştur</Text>
+              <Ionicons name="checkmark" size={18} color="#FFF" />
+            </TouchableOpacity>
+          )}
+        </View>
       </ScrollView>
 
-      <Modal
-        visible={isCalendarVisible}
-        transparent={true}
-        animationType="slide"
-      >
-        <View style={commonStyles.modalOverlay}>
-          <View style={commonStyles.modalContent}>
-            <Text style={commonStyles.modalTitle}>Doz Başlangıç Günü Seçin</Text>
+      {/* Calendar Modal */}
+      <Modal visible={isCalendarVisible} transparent animationType="slide">
+        <View style={styles.calModalOverlay}>
+          <View style={styles.calModalBox}>
+            <View style={styles.calModalHeader}>
+              <Text style={styles.calModalTitle}>İlk Doz Tarihi</Text>
+              <TouchableOpacity onPress={() => setIsCalendarVisible(false)} style={styles.closeBtn}>
+                <Ionicons name="close" size={22} color={COLORS.textSecondary} />
+              </TouchableOpacity>
+            </View>
             <Calendar
               onDayPress={(day: DateData) => {
-                const selectedDate = new Date(day.dateString);
-                const minDate = new Date();
-                minDate.setMonth(minDate.getMonth() - 3);
-                
-                if (selectedDate >= minDate) {
-                  setSelectedStartDate(day.dateString);
-                  setIsCalendarVisible(false);
-                } else {
-                  Alert.alert('Hata', 'Lütfen bugünden en fazla 3 ay öncesini seçin.');
-                }
+                setSelectedStartDate(day.dateString);
+                setIsCalendarVisible(false);
               }}
-              markedDates={{
-                [selectedStartDate]: { selected: true, selectedColor: '#2E7D32' }
-              }}
+              markedDates={{ [selectedStartDate]: { selected: true, selectedColor: COLORS.primary } }}
               minDate={getMinDate()}
               maxDate={getMaxDate()}
               theme={{
-                todayTextColor: '#2E7D32',
-                selectedDayBackgroundColor: '#2E7D32',
+                todayTextColor: COLORS.primary,
+                selectedDayBackgroundColor: COLORS.primary,
+                arrowColor: COLORS.primary,
+                dotColor: COLORS.primary,
+                textDayFontWeight: '500',
+                textMonthFontWeight: '700',
               }}
             />
-            <TouchableOpacity
-              style={commonStyles.closeButton}
-              onPress={() => setIsCalendarVisible(false)}
-            >
-              <Text style={commonStyles.closeButtonText}>Kapat</Text>
-            </TouchableOpacity>
           </View>
         </View>
       </Modal>
     </LinearGradient>
   );
 };
+
+const styles = StyleSheet.create({
+  outer: { flex: 1 },
+
+  // Step indicator
+  stepIndicatorWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    backgroundColor: COLORS.surface,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.border,
+  },
+  stepRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  stepItemCol: {
+    alignItems: 'center',
+  },
+  stepCircle: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: COLORS.background,
+    borderWidth: 2,
+    borderColor: COLORS.border,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  stepCircleActive: {
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
+  },
+  stepCircleDone: {
+    backgroundColor: COLORS.primaryLight,
+    borderColor: COLORS.primaryLight,
+  },
+  stepLabel: {
+    fontSize: 11,
+    color: COLORS.textMuted,
+    marginTop: 4,
+    fontWeight: '500',
+  },
+  stepLabelActive: {
+    color: COLORS.primary,
+    fontWeight: '700',
+  },
+  stepLine: {
+    flex: 1,
+    height: 2,
+    backgroundColor: COLORS.border,
+    marginBottom: 18,
+  },
+  stepLineDone: {
+    backgroundColor: COLORS.primaryLight,
+  },
+
+  // Card
+  scrollContent: { padding: 16, paddingBottom: 40 },
+  stepCard: {
+    backgroundColor: COLORS.surface,
+    borderRadius: 20,
+    padding: 20,
+    marginBottom: 16,
+    ...{
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
+      elevation: 4,
+    },
+  },
+  stepCardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.borderLight,
+  },
+  stepHeaderIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  stepCardTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: COLORS.textPrimary,
+  },
+  stepCardSubtitle: {
+    fontSize: 13,
+    color: COLORS.textSecondary,
+    marginTop: 2,
+  },
+
+  // Inputs
+  inputRow: { flexDirection: 'row', marginBottom: 14 },
+  inputLabel: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: COLORS.textSecondary,
+    marginBottom: 6,
+  },
+  input: {
+    backgroundColor: COLORS.background,
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 13,
+    fontSize: 16,
+    color: COLORS.textPrimary,
+    borderWidth: 1.5,
+    borderColor: COLORS.border,
+    marginBottom: 14,
+  },
+  pickerWrap: {
+    backgroundColor: COLORS.background,
+    borderRadius: 12,
+    overflow: 'hidden',
+    borderWidth: 1.5,
+    borderColor: COLORS.border,
+    marginBottom: 14,
+  },
+  pickerDisabled: { opacity: 0.5 },
+  picker: { height: 52 },
+
+  // Mechanism chip
+  mechanismChip: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: COLORS.tealLight,
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    marginBottom: 14,
+    borderWidth: 1,
+    borderColor: '#B2DFDB',
+  },
+  mechanismChipText: {
+    fontSize: 12,
+    color: COLORS.teal,
+    marginLeft: 6,
+    fontWeight: '600',
+    flex: 1,
+    lineHeight: 18,
+  },
+
+  // Form buttons (enjektör / kalem / toz)
+  formButtonsRow: {
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 14,
+    flexWrap: 'wrap',
+  },
+  formButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: COLORS.primary,
+    backgroundColor: COLORS.surface,
+  },
+  formButtonActive: {
+    backgroundColor: COLORS.primary,
+  },
+  formButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: COLORS.primary,
+    marginLeft: 6,
+  },
+  formButtonTextActive: { color: '#FFF' },
+
+  // Frequency badge
+  freqBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: COLORS.primaryPale,
+    borderRadius: 12,
+    paddingVertical: 12,
+    borderWidth: 1.5,
+    borderColor: '#C8E6C9',
+    marginBottom: 14,
+  },
+  freqBadgeText: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: COLORS.primary,
+    marginLeft: 8,
+  },
+
+  // Black box warning
+  blackBoxBanner: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: COLORS.dangerLight,
+    borderRadius: 12,
+    padding: 12,
+    borderLeftWidth: 4,
+    borderLeftColor: COLORS.danger,
+    marginTop: 4,
+  },
+  blackBoxText: {
+    fontSize: 12,
+    color: COLORS.danger,
+    flex: 1,
+    marginLeft: 8,
+    lineHeight: 18,
+    fontWeight: '500',
+  },
+
+  // Duration row
+  durationRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 14,
+  },
+
+  // Date button
+  dateBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.background,
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 13,
+    borderWidth: 1.5,
+    borderColor: COLORS.border,
+    marginBottom: 16,
+    gap: 10,
+  },
+  dateBtnText: {
+    flex: 1,
+    fontSize: 16,
+    color: COLORS.textPrimary,
+    fontWeight: '500',
+  },
+
+  // Summary box
+  summaryBox: {
+    backgroundColor: COLORS.primaryPale,
+    borderRadius: 14,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: '#C8E6C9',
+  },
+  summaryTitle: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: COLORS.primary,
+    marginBottom: 10,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  summaryRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 6,
+    borderBottomWidth: 1,
+    borderBottomColor: '#C8E6C9',
+  },
+  summaryLabel: { fontSize: 13, color: COLORS.textSecondary, fontWeight: '500' },
+  summaryValue: { fontSize: 13, color: COLORS.textPrimary, fontWeight: '700' },
+
+  // Nav buttons
+  navButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,
+  },
+  backBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.surface,
+    borderRadius: 14,
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    borderWidth: 1.5,
+    borderColor: COLORS.primary,
+    gap: 6,
+  },
+  backBtnText: { fontSize: 16, fontWeight: '600', color: COLORS.primary },
+  nextBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.primary,
+    borderRadius: 14,
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+    gap: 8,
+    ...{
+      shadowColor: COLORS.primary,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.3,
+      shadowRadius: 8,
+      elevation: 4,
+    },
+  },
+  nextBtnDisabled: { opacity: 0.5 },
+  nextBtnText: { fontSize: 16, fontWeight: '700', color: '#FFF' },
+
+  // Calendar modal
+  calModalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
+  },
+  calModalBox: {
+    backgroundColor: COLORS.surface,
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    padding: 24,
+    paddingBottom: 40,
+  },
+  calModalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  calModalTitle: { fontSize: 18, fontWeight: '700', color: COLORS.textPrimary },
+  closeBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: COLORS.background,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
 export default AboutScreen;

@@ -1,407 +1,607 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Modal, Pressable, TextInput, Dimensions, Platform, Linking } from 'react-native';
-import Tooltip, { TooltipProps } from 'react-native-walkthrough-tooltip';
+import {
+  View, Text, StyleSheet, ScrollView, Image, TouchableOpacity,
+  Modal, TextInput, Dimensions, Linking,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { commonStyles } from '../utils/styles';
-
-// Tip tanımlamaları - Takvim bileşeninin veri yapılarını tanımlar
-type Week = (number | null)[];
-type Weeks = Week[];
-
-// Gün bilgilerini tutan interface - her gün için gösterilecek ikon ve açıklama indekslerini saklar
-interface DayInfo {
-  imageIndex: number;  // Gösterilecek ikonun indeksi
-  descIndex: number;   // Gösterilecek açıklamanın indeksi
-}
+import { COLORS, SHADOWS } from '../utils/styles';
+import {
+  getProspectusUrl,
+  getReminderForDay,
+  getBlackBoxWarning,
+} from '../utils/treatmentDataService';
 
 const { width } = Dimensions.get('window');
+const CELL_SIZE = Math.floor((width - 40 - 12) / 7);
 
-/**
- * Belirli bir ayın günlerini hesaplar ve takvim görünümü için düzenler
- * @param month - Ay (0-11 arası)
- * @param year - Yıl
- * @returns Ayın günlerini içeren dizi (boş günler null ile doldurulur)
- */
+// ─── Takvim yardımcı ────────────────────────────────────────────────────────
 const daysInMonth = (month: number, year: number): (number | null)[] => {
-  const firstDay = new Date(year, month, 1).getDay(); // Ayın ilk gününün haftanın hangi günü olduğu
-  const daysInMonth = new Date(year, month + 1, 0).getDate(); // Ayın toplam gün sayısı
-  const days: (number | null)[] = Array(firstDay === 0 ? 6 : firstDay - 1).fill(null); // İlk haftanın boş günleri
-
-  // Ayın günlerini ekle
-  for (let day = 1; day <= daysInMonth; day++) {
-    days.push(day);
-  }
-
-  // 6 haftalık görünüm için kalan günleri null ile doldur
-  const remainingDays = 42 - days.length; // 6 hafta x 7 gün = 42
-  if (remainingDays > 0) {
-    days.push(...Array(remainingDays).fill(null));
-  }
-
+  const firstDay = new Date(year, month, 1).getDay();
+  const count = new Date(year, month + 1, 0).getDate();
+  const days: (number | null)[] = Array(firstDay === 0 ? 6 : firstDay - 1).fill(null);
+  for (let d = 1; d <= count; d++) days.push(d);
+  const rem = 42 - days.length;
+  if (rem > 0) days.push(...Array(rem).fill(null));
   return days;
 };
 
-/**
- * Ayın ilk gününün haftanın hangi günü olduğunu döndürür
- */
-const getFirstDayOfMonth = (month: number, year: number) => new Date(year, month, 1).getDay();
+// ─── Gün türleri ────────────────────────────────────────────────────────────
+const DAY_TYPES = {
+  DOSE: {
+    label: 'Doz Günü',
+    shortDesc: 'İlacınızı bugün alın.',
+    color: COLORS.primary,
+    bgColor: COLORS.primaryPale,
+    borderColor: '#A5D6A7',
+    icon: 'medical' as const,
+    image: require('../assets/images/reminder_dose.png'),
+  },
+  PREDOSE: {
+    label: 'Doz Öncesi Uyarı',
+    shortDesc: 'Yarın doz gününüz. Hazırlıklı olun.',
+    color: COLORS.amber,
+    bgColor: COLORS.amberLight,
+    borderColor: COLORS.amberBorder,
+    icon: 'notifications' as const,
+    image: require('../assets/images/reminder_predose.png'),
+  },
+  SHOWER: {
+    label: 'Duş / Su Teması',
+    shortDesc: 'Enjeksiyon bölgesini 24 saat ıslatmayın.',
+    color: '#0277BD',
+    bgColor: COLORS.blueLight,
+    borderColor: '#81D4FA',
+    icon: 'water' as const,
+    image: require('../assets/images/reminder_shower.png'),
+  },
+  SMOKE: {
+    label: 'Sigara Uyarısı',
+    shortDesc: 'Sigara tedavinin etkinliğini düşürür.',
+    color: '#37474F',
+    bgColor: '#ECEFF1',
+    borderColor: '#B0BEC5',
+    icon: 'close-circle' as const,
+    image: require('../assets/images/reminder_smoke.png'),
+  },
+  ALCOHOL: {
+    label: 'Alkol Uyarısı',
+    shortDesc: 'Alkol bağışıklık sistemini zayıflatır.',
+    color: '#6A1B9A',
+    bgColor: '#F3E5F5',
+    borderColor: '#CE93D8',
+    icon: 'wine' as const,
+    image: require('../assets/images/reminder_alcohol.png'),
+  },
+  FOOD: {
+    label: 'Sağlıklı Beslenme',
+    shortDesc: 'Anti-inflamatuvar beslenme önerileri.',
+    color: COLORS.teal,
+    bgColor: COLORS.tealLight,
+    borderColor: '#80CBC4',
+    icon: 'leaf' as const,
+    image: require('../assets/images/reminder_food.png'),
+  },
+  CROWD: {
+    label: 'Kalabalıktan Uzak Dur',
+    shortDesc: 'Kapalı kalabalık ortamlar enfeksiyon riskini artırır.',
+    color: '#5D4037',
+    bgColor: '#EFEBE9',
+    borderColor: '#BCAAA4',
+    icon: 'people' as const,
+    image: require('../assets/images/reminder_crowd.png'),
+  },
+  NORMAL: {
+    label: '',
+    shortDesc: '',
+    color: 'transparent',
+    bgColor: 'transparent',
+    borderColor: 'transparent',
+    icon: 'ellipse' as const,
+    image: null,
+  },
+};
 
+type DayTypeKey = keyof typeof DAY_TYPES;
+
+// Kısa özet metinleri (JSON'dan gelen uzun metinlerin hastalara yönelik sade özeti)
+const SHORT_SUMMARIES: Record<DayTypeKey, string> = {
+  DOSE:    'İlacınızı bugün uygulayın. Enjeksiyondan sonra 24 saat enjeksiyon bölgesine su değdirmeyin.',
+  PREDOSE: 'Yarın doz gününüz. Ateş, öksürük veya ağrı varsa ilacı uygulamadan önce doktorunuzu arayın.',
+  SHOWER:  'Doz sonrası 24 saat enjeksiyon bölgesine su değdirmeyin (banyo, havuz, deniz dahil).',
+  SMOKE:   'Sigara, bağışıklık sisteminizi zayıflatır ve ilacın etkinliğini düşürebilir. Bugün sigara içmemeniz önerilir.',
+  ALCOHOL: 'Alkol bağışıklığı baskılayabilir ve karaciğer üzerindeki yükü artırır. Tedavi süresince mümkün olduğunca kaçının.',
+  FOOD:    'Bol sebze-meyve, tam tahıl ve omega-3 içeren gıdalar tüketin. İşlenmiş ve kızartılmış gıdalardan kaçının.',
+  CROWD:   'Kapalı, kalabalık ortamlarda bağışıklık baskılanması nedeniyle enfeksiyon kapma riskiniz artmıştır. Mümkünse bu tür ortamlardan kaçının veya maske kullanın.',
+  NORMAL:  '',
+};
+
+// ─── Bileşen ────────────────────────────────────────────────────────────────
 const Calendar = () => {
-  // URL parametrelerinden gelen verileri al
   const params = useLocalSearchParams();
-  const startDate = params.startDate as string;        // Tedavi başlangıç tarihi
-  const frequency = parseInt(params.frequency as string, 10); // Doz sıklığı (gün)
-  const selectedDrug = params.selectedDrug as string;  // Seçilen ilaç
-  const selectedDosage = params.selectedDosage as string; // Seçilen dozaj
-  const selectedForm = params.selectedForm as string;  // Seçilen form (enjektör/kalem)
+  const router = useRouter();
+  const startDate        = params.startDate as string;
+  const frequency        = parseInt(params.frequency as string, 10);
+  const selectedDrug     = params.selectedDrug as string;
+  const selectedDosage   = params.selectedDosage as string;
+  const selectedForm     = params.selectedForm as string;
+  const selectedAntibody = params.selectedAntibody as string;
+  const selectedDisease  = params.selectedDisease as string;
 
-  // State tanımlamaları
-  const [selectedDay, setSelectedDay] = useState<number | null>(null); // Seçilen gün
-  const [isModalVisible, setIsModalVisible] = useState(false); // Modal görünürlüğü
-  const [note, setNote] = useState(''); // Günlük not
-  const [savedNotes, setSavedNotes] = useState<{[key: string]: string}>({}); // Kaydedilen notlar
-  const [currentMonth, setCurrentMonth] = useState(() => {
-    const date = new Date(startDate);
-    return date.getMonth(); // Başlangıç tarihinin ayını al
-  });
-  const year = 2025; // Sabit yıl
+  const [selectedDay, setSelectedDay]         = useState<number | null>(null);
+  const [isModalVisible, setIsModalVisible]   = useState(false);
+  const [isDetailOpen, setIsDetailOpen]       = useState(false);  // detay popup
+  const [note, setNote]                       = useState('');
+  const [savedNotes, setSavedNotes]           = useState<Record<string, string>>({});
+  const [currentMonth, setCurrentMonth]       = useState(() => new Date(startDate).getMonth());
+  const [currentYear, setCurrentYear]         = useState(() => new Date(startDate).getFullYear());
 
-  // Türkçe ay isimleri
   const monthNames = [
-    'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
-    'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
+    'Ocak','Şubat','Mart','Nisan','Mayıs','Haziran',
+    'Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık',
   ];
+  const dayNames = ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
 
-  /**
-   * Belirli bir günün doz günü olup olmadığını hesaplar
-   * @param day - Gün
-   * @param month - Ay
-   * @returns Doz günü indeksi (-1: doz günü değil, 0: doz günü, diğer: doz öncesi günler)
-   */
-  const calculateDoseDays = (day: number, month: number) => {
-    const currentDate = new Date(2025, month, day);
-    const startDateObj = new Date(startDate);
-    const diffTime = currentDate.getTime() - startDateObj.getTime();
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    
-    if (diffDays < 0) return -1; // Başlangıç tarihinden önceki günler için
-    return diffDays % frequency; // Doz sıklığına göre kalan gün
-  };
+  useEffect(() => { loadNotes(); }, []);
 
-  /**
-   * Gün için gösterilecek ikonu ve açıklamayı belirler
-   * @param day - Gün
-   * @param month - Ay
-   * @returns Gün bilgisi (ikon ve açıklama indeksleri)
-   */
-  const getDayInfo = (day: number, month: number) => {
-    const doseDay = calculateDoseDays(day, month);
-    
-    if (doseDay === -1) return { imageIndex: -1, descIndex: -1 }; // Başlangıç tarihinden önce
-    if (doseDay === 0) return { imageIndex: 1, descIndex: 1 }; // Doz günü
-    if (doseDay === frequency - 1) return { imageIndex: 0, descIndex: 0 }; // Doz öncesi
-    if (doseDay === 1) return { imageIndex: 2, descIndex: 2 }; // Duş almayın
-    if (doseDay <= 7) return { imageIndex: (doseDay + 2) % images.length, descIndex: (doseDay + 2) % descriptions.length };
-    
-    return { imageIndex: -1, descIndex: -1 }; // Normal gün
-  };
-
-  // Takvimde gösterilecek ikonlar
-  const images = [
-    require('../assets/images/warning.webp'),        // Doz öncesi uyarı
-    require('../assets/images/syringe.png'),         // Doz günü
-    require('../assets/images/donottakeashower.jpeg'), // Duş almayın
-    require('../assets/images/donotsmoke.jpeg'),     // Sigara içmeyin
-    require('../assets/images/donotdrinkalcohol.jpeg'), // Alkol almayın
-    require('../assets/images/junkfood.jpeg'),       // Sağlıklı beslenme
-    require('../assets/images/donotstayinpeople.jpeg') // Kalabalıkta kalmayın
-  ];
-
-  // İkonların açıklamaları
-  const descriptions = [
-    'Doz Öncesi Hatırlatma',
-    'Doz Günü',
-    'Duş Almayın',
-    'Sigara İçmeyin',
-    'Alkol Almayın',
-    'Sağlıklı Beslenme',
-    'Kalabalıkta Kalmayın'
-  ];
-
-  // Haftanın günleri
-  const dayNames = ['Pzt', 'Sal', 'Çar', 'Per', 'Cuma', 'Cmt', 'Pzr'];
-
-  // Component yüklendiğinde kaydedilen notları yükle
-  useEffect(() => {
-    loadNotes();
-  }, []);
-
-  /**
-   * AsyncStorage'dan kaydedilen notları yükler
-   */
   const loadNotes = async () => {
     try {
-      const notes = await AsyncStorage.getItem('calendar_notes');
-      if (notes) {
-        setSavedNotes(JSON.parse(notes));
-      }
-    } catch (error) {
-      console.error('Notlar yüklenirken hata oluştu:', error);
-    }
+      const n = await AsyncStorage.getItem('calendar_notes');
+      if (n) setSavedNotes(JSON.parse(n));
+    } catch {}
   };
 
-  /**
-   * Günlük notu kaydeder
-   */
   const saveNote = async () => {
-    if (selectedDay) {
+    if (selectedDay !== null) {
       try {
-        const noteKey = `${year}-${currentMonth + 1}-${selectedDay}`;
-        const updatedNotes = { ...savedNotes, [noteKey]: note };
-        await AsyncStorage.setItem('calendar_notes', JSON.stringify(updatedNotes));
-        setSavedNotes(updatedNotes);
+        const key = `${currentYear}-${currentMonth + 1}-${selectedDay}`;
+        const updated = { ...savedNotes, [key]: note };
+        await AsyncStorage.setItem('calendar_notes', JSON.stringify(updated));
+        setSavedNotes(updated);
         setIsModalVisible(false);
         setNote('');
-      } catch (error) {
-        console.error('Not kaydedilirken hata oluştu:', error);
-      }
+      } catch {}
     }
   };
 
-  /**
-   * Gün tıklandığında modal'ı açar ve notu yükler
-   */
+  const deleteNote = async () => {
+    if (selectedDay !== null) {
+      try {
+        const key = `${currentYear}-${currentMonth + 1}-${selectedDay}`;
+        const updated = { ...savedNotes };
+        delete updated[key];
+        await AsyncStorage.setItem('calendar_notes', JSON.stringify(updated));
+        setSavedNotes(updated);
+        setNote('');
+      } catch {}
+    }
+  };
+
+  // ─── Doz günü hesabı ──────────────────────────────────────────────────────
+  const calculateDoseDays = (day: number, month: number): number => {
+    if (!startDate || !frequency) return -1;
+    const cur = new Date(currentYear, month, day);
+    cur.setHours(0, 0, 0, 0);
+    const [sy, sm, sd] = startDate.split('-').map(Number);
+    const start = new Date(sy, sm - 1, sd);
+    start.setHours(0, 0, 0, 0);
+    const diff = Math.floor((cur.getTime() - start.getTime()) / 86400000);
+    if (diff < 0) return -1;
+    return diff % frequency;
+  };
+
+  const getDayTypeKey = (day: number, month: number): DayTypeKey => {
+    const d = calculateDoseDays(day, month);
+    if (d === -1) return 'NORMAL';
+    if (d === 0) return 'DOSE';
+    if (d === frequency - 1) return 'PREDOSE';
+    if (d === 1) return 'SHOWER';
+    if (d === 2) return 'SMOKE';
+    if (d === 3) return 'ALCOHOL';
+    if (d === 4) return 'FOOD';
+    if (d === 5) return 'CROWD';
+    if (d === 6) return 'SHOWER';
+    return 'NORMAL';
+  };
+
+  // Reminder offset (JSON'dan gelen kişisel metin için)
+  const getReminderOffset = (doseDay: number): number | null => {
+    if (doseDay < 0) return null;
+    if (doseDay === 0) return 0;
+    if (doseDay === frequency - 1) return -1;
+    if (doseDay >= 1 && doseDay <= 6) return doseDay;
+    return null;
+  };
+
   const handleDayPress = (day: number) => {
     setSelectedDay(day);
-    const noteKey = `${year}-${currentMonth + 1}-${day}`;
-    setNote(savedNotes[noteKey] || '');
+    const key = `${currentYear}-${currentMonth + 1}-${day}`;
+    setNote(savedNotes[key] || '');
+    setIsDetailOpen(false);
     setIsModalVisible(true);
   };
 
-  /**
-   * Ay navigasyonu - önceki/sonraki aya geçer
-   */
-  const navigateMonth = (direction: number) => {
+  const navigateMonth = (dir: number) => {
     setCurrentMonth(prev => {
-      const newMonth = prev + direction;
-      if (newMonth < 0) return 11; // Aralık'tan Kasım'a
-      if (newMonth > 11) return 0; // Ocak'tan Şubat'a
-      return newMonth;
+      let m = prev + dir;
+      if (m < 0) { m = 11; setCurrentYear(y => y - 1); }
+      else if (m > 11) { m = 0; setCurrentYear(y => y + 1); }
+      return m;
     });
   };
 
-  // Ayın günlerini hesapla
-  const days = daysInMonth(currentMonth, year);
-
-  /**
-   * Seçilen ilaç ve dozaja göre prospektüs linkini açar
-   * Her ilaç için farklı dozaj ve form kombinasyonlarına göre TİTCK linkleri
-   */
   const openProspectus = () => {
-    if (selectedDrug === 'HUMİRA') {
-      if (selectedDosage === '20mg/0.2ml') {
-        Linking.openURL('https://titck.gov.tr/storage/Archive/2025/kubKtAttachments/ek41312humirapfs2002kttemiz_26_03_2025.pdf');
-      } else if (selectedDosage === '40mg/0.4ml') {
-        if (selectedForm === 'enjektor') {
-          Linking.openURL('https://titck.gov.tr/storage/Archive/2025/kubKtAttachments/humirapfs4004kttemiz_26_03_2025.pdf');
-        } else if (selectedForm === 'kalem') {
-          Linking.openURL('https://titck.gov.tr/storage/Archive/2025/kubKtAttachments/humirapen401312kttemiz_26_03_2025.pdf');
-        }
-      } else if (selectedDosage === '40mg/0.8ml') {
-        Linking.openURL('https://titck.gov.tr/storage/kubKtAttachments/mfgfGfWpZDnrK5.pdf');
-      }
-    } else if (selectedDrug === 'AMGEVİTA') {
-      if (selectedDosage === '20mg/0.4ml') {
-        Linking.openURL('https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/amgetivatemizkt_6ef678d8-bfd9-43ac-889b-6affa9e5a3d3.pdf');
-      } else if (selectedDosage === '40mg/0.8ml') {
-        if (selectedForm === 'enjektor') {
-          Linking.openURL('https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/amgetivakt_f781bd38-a5c5-45d6-a3c0-555d6240411e.pdf');
-        } else if (selectedForm === 'kalem') {
-          Linking.openURL('https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/amgevita4008kt_a5500d80-ac15-4925-b388-e340fa23f934.pdf');
-        }
-      }
-    } else if (selectedDrug === 'HYRIMOZ') {
-      if (selectedDosage === '40mg/0.8ml') {
-        if (selectedForm === 'enjektor') {
-          Linking.openURL('https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/SonKTEnjektr_4fab1a4b-f379-4089-b570-7e391d0fadca.pdf');
-        } else if (selectedForm === 'kalem') {
-          Linking.openURL('https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/OnaylKTkalem_3eea0ccf-ff5a-4761-a19b-e4559b5f5edc.pdf');
-        }
-      }
-    } else if (selectedDrug === 'CIMZIA') {
-      if (selectedDosage === '200mg/1ml') {
-        Linking.openURL('https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/ek9temizkt_d9c99a8a-dac1-45e9-9e1c-7593fa784209.pdf');
-      }
-    } else if (selectedDrug === 'SIMPONI') {
-      if (selectedDosage === '50mg/0.5ml') {
-        if (selectedForm === 'enjektor') {
-          Linking.openURL('https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/yaynlanacaksimponienjektr1312ktbaxter_8346333e-2b69-426a-80e9-0e410c02df89.pdf');
-        } else if (selectedForm === 'kalem') {
-          Linking.openURL('https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/yaynlanacaksimponipen1312ktbaxter_167429d9-906f-45e1-8aea-ee9f3dacc091.pdf');
-        }
-      }
-    } else if (selectedDrug === 'AVSOLA') {
-      if (selectedDosage === '100mg/10ml') {
-        Linking.openURL('https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/FirmaKT06.04.2023UYGUNyaynlanacak_9ad31be9-3f92-4b26-9c71-3bf0b5d63174.pdf');
-      }
-    } else if (selectedDrug === 'IXIFI') {
-      if (selectedDosage === '100mg/10ml') {
-        Linking.openURL('https://titck.gov.tr/storage/Archive/2025/kubKtAttachments/ONAYLIKT_12_03_2025.pdf');
-      }
-    } else if (selectedDrug === 'REMICADE') {
-      if (selectedDosage === '100mg/10ml') {
-        Linking.openURL('https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/yaynlanacakremicade1312kt_e94b0acd-3a55-4d39-bc1e-ec67ba521178.pdf');
-      }
-    } else if (selectedDrug === 'TOLURİNE') {
-      if (selectedDosage === '100mg/10ml') {
-        Linking.openURL('https://titck.gov.tr/storage/Archive/2024/kubKtAttachments/uygunKT_c014a2e7-3d37-4626-88df-3d98f39c6bc2.pdf');
-      }
-    } else if (selectedDrug === 'ILARIS') {
-      if (selectedDosage === '150mg/1ml') {
-        if (selectedForm === 'enjektor') {
-          Linking.openURL('https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/uygunktilarisenjzelti_fe65e5d3-165c-40a0-b427-ac7083854469.pdf');
-        } else if (selectedForm === 'toz') {
-          Linking.openURL('https://titck.gov.tr/storage/Archive/2023/kubKtAttachments/uygunktilaristoz_eda29fb1-636b-41b1-9ec7-68106cb98871.pdf');
-        }
-      }
-    }
+    const url = getProspectusUrl(selectedDrug, selectedDosage, selectedForm || undefined);
+    if (url) Linking.openURL(url);
   };
 
+  // Sonraki doz sayacı
+  const getNextDoseDays = (): number | null => {
+    if (!startDate || !frequency) return null;
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const [sy, sm, sd] = startDate.split('-').map(Number);
+    const start = new Date(sy, sm - 1, sd); start.setHours(0, 0, 0, 0);
+    const diff = Math.floor((today.getTime() - start.getTime()) / 86400000);
+    if (diff < 0) return -diff;
+    const rem = frequency - (diff % frequency);
+    return rem === frequency ? 0 : rem;
+  };
+
+  const nextDoseDays  = getNextDoseDays();
+  const blackBox      = getBlackBoxWarning(selectedAntibody);
+  const days          = daysInMonth(currentMonth, currentYear);
+
+  // Modal için seçili günün hesaplamaları
+  const selectedDoseDay      = selectedDay !== null ? calculateDoseDays(selectedDay, currentMonth) : -1;
+  const selectedDayTypeKey   = selectedDay !== null ? getDayTypeKey(selectedDay, currentMonth) : 'NORMAL';
+  const selectedDayType      = DAY_TYPES[selectedDayTypeKey];
+  const reminderOffset       = selectedDoseDay >= 0 ? getReminderOffset(selectedDoseDay) : null;
+  const personalizedReminder = (selectedAntibody && reminderOffset !== null)
+    ? getReminderForDay(selectedAntibody, reminderOffset)
+    : null;
+
+  const today = new Date();
+  const isToday = (day: number) =>
+    day === today.getDate() &&
+    currentMonth === today.getMonth() &&
+    currentYear === today.getFullYear();
+
   return (
-    <LinearGradient
-      colors={['#E8F5E9', '#FFFFFF']}
-      style={commonStyles.container}
-    >
-      <ScrollView contentContainerStyle={commonStyles.scrollContainer}>
-        <View style={commonStyles.headerContainer}>
-          <Text style={commonStyles.header}>Tedavi Takvimi</Text>
-          <Text style={commonStyles.subHeader}>Doz günlerinizi ve hatırlatmalarınızı takip edin</Text>
-        </View>
+    <LinearGradient colors={['#F5F7F5', '#FFFFFF']} style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
 
-        <View style={commonStyles.formContainer}>
-          <View style={styles.calendarContainer}>
-            <View style={styles.monthHeader}>
-              <TouchableOpacity onPress={() => navigateMonth(-1)}>
-                <Ionicons name="chevron-back" size={24} color="#2E7D32" />
-              </TouchableOpacity>
-              <Text style={styles.monthText}>{monthNames[currentMonth]} 2025</Text>
-              <TouchableOpacity onPress={() => navigateMonth(1)}>
-                <Ionicons name="chevron-forward" size={24} color="#2E7D32" />
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.weekDaysContainer}>
-              {dayNames.map((day, index) => (
-                <Text key={index} style={styles.weekDayText}>{day}</Text>
-              ))}
-            </View>
-
-            <View style={styles.daysContainer}>
-              {days.map((day, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={styles.dayContainer}
-                  onPress={() => day && handleDayPress(day)}
-                >
-                  <Text style={styles.dayText}>{day}</Text>
-                  {day && getDayInfo(day, currentMonth).imageIndex >= 0 && (
-                    <Image
-                      source={images[getDayInfo(day, currentMonth).imageIndex]}
-                      style={styles.image}
-                    />
-                  )}
-                </TouchableOpacity>
-              ))}
-            </View>
+        {/* ── İlaç Başlık Kartı ── */}
+        <View style={styles.drugHeader}>
+          <View style={styles.drugHeaderLeft}>
+            <Text style={styles.drugName} numberOfLines={1}>{selectedDrug}</Text>
+            <Text style={styles.drugDetail} numberOfLines={1}>
+              {selectedAntibody} · {selectedDosage}
+            </Text>
+            <Text style={styles.drugDisease} numberOfLines={2}>{selectedDisease}</Text>
           </View>
 
-          <View style={styles.legendContainer}>
-            {images.map((image, index) => (
-              <View key={index} style={styles.legendItem}>
-                <Image source={image} style={styles.legendImage} />
-                <View style={styles.legendTextContainer}>
-                  <Text style={styles.legendText}>{descriptions[index]}</Text>
-                  <Text style={styles.legendDescriptionText}>
-                    {index === 0 && 'Doz öncesi hatırlatma mesajıdır. Dozunuzu yarın almayı unutmayın.'}
-                    {index === 1 && 'Doz alım günündesiniz. Kullanım talimatlarına uyun.'}
-                    {index === 2 && 'Dozunuzu aldığınız andan itibaren 24 saat boyunca duş almamanız önerilir.'}
-                    {index === 3 && 'Sigara içmek sağlığınızı olumsuz etkiler. İçmeyin.'}
-                    {index === 4 && 'Alkol tüketimi tedavi sürecinizi olumsuz etkileyebilir. Alkol almayın.'}
-                    {index === 5 && 'Sağlıksız besinlerin tüketimi sağlığınıza zararlıdır. Sağlıklı beslenin.'}
-                    {index === 6 && 'Kalabalık ortamlarda bulunmak enfeksiyon riskini artırır. Kalabalıkta kalmayın.'}
+          {/* Veri Yönetimi butonu */}
+          <TouchableOpacity
+            style={styles.dataManagerBtn}
+            onPress={() => router.push({ pathname: '/data-manager', params: {} })}
+            activeOpacity={0.75}
+          >
+            <Ionicons name="settings-outline" size={20} color={COLORS.textSecondary} />
+          </TouchableOpacity>
+          {nextDoseDays !== null && (
+            <View style={[
+              styles.nextDoseBadge,
+              nextDoseDays === 0 && styles.nextDoseBadgeToday,
+              nextDoseDays === 1 && styles.nextDoseBadgeTomorrow,
+            ]}>
+              <Ionicons
+                name={nextDoseDays === 0 ? 'medical' : 'time-outline'}
+                size={14}
+                color={nextDoseDays === 0 ? COLORS.primary : nextDoseDays === 1 ? COLORS.amber : COLORS.textSecondary}
+              />
+              <Text style={[
+                styles.nextDoseText,
+                nextDoseDays === 0 && { color: COLORS.primary },
+                nextDoseDays === 1 && { color: COLORS.amber },
+              ]}>
+                {nextDoseDays === 0 ? 'Bugün doz!' :
+                 nextDoseDays === 1 ? 'Yarın doz' :
+                 `${nextDoseDays} gün`}
+              </Text>
+            </View>
+          )}
+        </View>
+
+        {/* ── Kara Kutu Banner ── */}
+        {blackBox && (
+          <View style={styles.blackBoxBanner}>
+            <Ionicons name="warning" size={16} color={COLORS.danger} style={{ flexShrink: 0 }} />
+            <Text style={styles.blackBoxText} numberOfLines={3}>{blackBox}</Text>
+          </View>
+        )}
+
+        {/* ── Takvim ── */}
+        <View style={styles.calendarCard}>
+          <View style={styles.monthHeader}>
+            <TouchableOpacity style={styles.navBtn} onPress={() => navigateMonth(-1)}>
+              <Ionicons name="chevron-back" size={20} color={COLORS.primary} />
+            </TouchableOpacity>
+            <Text style={styles.monthText}>{monthNames[currentMonth]} {currentYear}</Text>
+            <TouchableOpacity style={styles.navBtn} onPress={() => navigateMonth(1)}>
+              <Ionicons name="chevron-forward" size={20} color={COLORS.primary} />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.dayNamesRow}>
+            {dayNames.map(d => <Text key={d} style={styles.dayName}>{d}</Text>)}
+          </View>
+
+          <View style={styles.daysGrid}>
+            {days.map((day, idx) => {
+              if (!day) return <View key={idx} style={styles.emptyCell} />;
+              const typeKey  = getDayTypeKey(day, currentMonth);
+              const type     = DAY_TYPES[typeKey];
+              const isSpec   = typeKey !== 'NORMAL';
+              const todayFlag = isToday(day);
+              const noteKey  = `${currentYear}-${currentMonth + 1}-${day}`;
+              const hasNote  = !!savedNotes[noteKey];
+
+              return (
+                <TouchableOpacity
+                  key={idx}
+                  style={[
+                    styles.dayCell,
+                    isSpec && { backgroundColor: type.bgColor, borderColor: type.borderColor, borderWidth: 1 },
+                    todayFlag && styles.dayCellToday,
+                  ]}
+                  onPress={() => handleDayPress(day)}
+                  activeOpacity={0.7}
+                >
+                  <Text style={[
+                    styles.dayNumber,
+                    isSpec && { color: type.color, fontWeight: '700' },
+                    todayFlag && styles.dayNumberToday,
+                  ]}>
+                    {day}
                   </Text>
+                  {isSpec && (
+                    <View style={[styles.dayIconBg, { backgroundColor: type.color + '25' }]}>
+                      <Ionicons name={type.icon} size={11} color={type.color} />
+                    </View>
+                  )}
+                  {hasNote && <View style={styles.noteDot} />}
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </View>
+
+        {/* ── Lejant ── */}
+        <View style={styles.legendCard}>
+          <Text style={styles.legendTitle}>Renk Rehberi</Text>
+          {(Object.entries(DAY_TYPES) as [DayTypeKey, typeof DAY_TYPES.DOSE][])
+            .filter(([k]) => k !== 'NORMAL')
+            .map(([key, type]) => (
+              <View key={key} style={[styles.legendRow, { borderLeftColor: type.color }]}>
+                <Image source={type.image!} style={styles.legendImg} />
+                <View style={styles.legendTexts}>
+                  <Text style={[styles.legendLabel, { color: type.color }]}>{type.label}</Text>
+                  <Text style={styles.legendDesc} numberOfLines={2}>{SHORT_SUMMARIES[key]}</Text>
                 </View>
               </View>
             ))}
-          </View>
         </View>
+
+        {/* ── Prospektüs Butonu ── */}
+        <TouchableOpacity style={styles.prospBtn} onPress={openProspectus} activeOpacity={0.8}>
+          <Ionicons name="document-text-outline" size={20} color={COLORS.teal} />
+          <Text style={styles.prospBtnText} numberOfLines={1}>{selectedDrug} Prospektüsü</Text>
+          <Ionicons name="open-outline" size={16} color={COLORS.teal} />
+        </TouchableOpacity>
       </ScrollView>
 
+      {/* ═══════════════ Gün Detay Modal ═══════════════ */}
       <Modal
         animationType="slide"
-        transparent={true}
+        transparent
         visible={isModalVisible}
         onRequestClose={() => setIsModalVisible(false)}
       >
-        <View style={commonStyles.modalOverlay}>
-          <View style={commonStyles.modalContent}>
-            <View style={commonStyles.modalHeader}>
-              <Text style={commonStyles.modalTitle}>{selectedDay} {monthNames[currentMonth]} 2025</Text>
-              <TouchableOpacity 
-                onPress={() => setIsModalVisible(false)}
-                style={commonStyles.closeButton}
-              >
-                <Ionicons name="close-circle" size={24} color="#666" />
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalBox}>
+            <View style={styles.dragHandle} />
+
+            {/* Modal başlık */}
+            <View style={styles.modalHeader}>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.modalDate}>
+                  {selectedDay} {monthNames[currentMonth]} {currentYear}
+                </Text>
+                {selectedDayTypeKey !== 'NORMAL' && (
+                  <View style={[styles.modalTypeBadge, {
+                    backgroundColor: selectedDayType.bgColor,
+                    borderColor: selectedDayType.borderColor,
+                  }]}>
+                    <Ionicons name={selectedDayType.icon} size={12} color={selectedDayType.color} />
+                    <Text style={[styles.modalTypeBadgeText, { color: selectedDayType.color }]}>
+                      {selectedDayType.label}
+                    </Text>
+                  </View>
+                )}
+              </View>
+              <TouchableOpacity style={styles.closeBtn} onPress={() => setIsModalVisible(false)}>
+                <Ionicons name="close" size={20} color={COLORS.textSecondary} />
               </TouchableOpacity>
             </View>
-            
-            <View style={styles.modalMessageContainer}>
-              {selectedDay && getDayInfo(selectedDay, currentMonth).imageIndex >= 0 && (
-                <>
-                  <Image 
-                    source={images[getDayInfo(selectedDay, currentMonth).imageIndex]} 
-                    style={styles.modalImage} 
-                  />
-                  <Text style={styles.modalMessage}>
-                    {descriptions[getDayInfo(selectedDay, currentMonth).descIndex]}
-                  </Text>
-                </>
-              )}
-            </View>
 
-            <View style={styles.noteContainer}>
-              <Text style={styles.noteLabel}>Notunuz:</Text>
+            <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
+
+              {/* ── Hatırlatma Kartı (Görsel + Kısa Metin + Detay Butonu) ── */}
+              {selectedDayTypeKey !== 'NORMAL' && selectedDayType.image && (
+                <View style={[styles.reminderCard, {
+                  backgroundColor: selectedDayType.bgColor,
+                  borderColor: selectedDayType.borderColor,
+                }]}>
+                  {/* Sol: görsel */}
+                  <Image
+                    source={selectedDayType.image}
+                    style={styles.reminderImage}
+                    resizeMode="contain"
+                  />
+
+                  {/* Sağ: metin */}
+                  <View style={styles.reminderRight}>
+                    <Text style={[styles.reminderLabel, { color: selectedDayType.color }]}>
+                      {selectedDayType.label}
+                    </Text>
+
+                    {/* Kısa özet (hasta dostu dil) */}
+                    <Text style={styles.reminderShort}>
+                      {SHORT_SUMMARIES[selectedDayTypeKey]}
+                    </Text>
+
+                    {/* Detay butonu → uzun kişiselleştirilmiş metin popup */}
+                    {personalizedReminder && (
+                      <TouchableOpacity
+                        style={[styles.detailBtn, { borderColor: selectedDayType.color }]}
+                        onPress={() => setIsDetailOpen(true)}
+                      >
+                        <Ionicons name="information-circle-outline" size={14} color={selectedDayType.color} />
+                        <Text style={[styles.detailBtnText, { color: selectedDayType.color }]}>
+                          Doktor tavsiyeleri
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                </View>
+              )}
+
+              {/* İlaç bağlamı */}
+              <View style={styles.drugContextRow}>
+                <Ionicons name="medical-outline" size={13} color={COLORS.textMuted} />
+                <Text style={styles.drugContextText} numberOfLines={2}>
+                  {selectedDrug} · {selectedAntibody} · {selectedDisease}
+                </Text>
+              </View>
+
+              {/* Not girişi */}
+              <View style={styles.noteLabelRow}>
+                <Text style={styles.noteLabel}>Kişisel Not</Text>
+                {(note.trim().length > 0 || !!savedNotes[`${currentYear}-${currentMonth + 1}-${selectedDay}`]) && (
+                  <TouchableOpacity style={styles.noteDeleteBtn} onPress={deleteNote}>
+                    <Ionicons name="trash-outline" size={15} color={COLORS.danger} />
+                    <Text style={styles.noteDeleteText}>Notu Sil</Text>
+                  </TouchableOpacity>
+                )}
+              </View>
               <TextInput
                 style={styles.noteInput}
                 multiline
                 numberOfLines={4}
                 value={note}
                 onChangeText={setNote}
-                placeholder="Buraya notunuzu yazın..."
-                placeholderTextColor="#999"
+                placeholder="Bugüne ait notunuzu yazın (semptomlar, yan etkiler, genel durum...)"
+                placeholderTextColor={COLORS.textMuted}
+                textAlignVertical="top"
               />
-            </View>
 
-            <View style={styles.buttonContainer}>
+              {/* Semptom Kaydı Butonu */}
               <TouchableOpacity
-                style={[commonStyles.button, styles.prospectusButton]}
-                onPress={openProspectus}
+                style={styles.symptomLogBtn}
+                onPress={() => {
+                  setIsModalVisible(false);
+                  router.push({
+                    pathname: '/symptom-log',
+                    params: {
+                      date: `${currentYear}-${currentMonth + 1 < 10 ? '0' : ''}${currentMonth + 1}-${selectedDay && selectedDay < 10 ? '0' : ''}${selectedDay}`,
+                      selectedDrug,
+                      selectedDosage,
+                      selectedAntibody,
+                      selectedDisease,
+                    },
+                  });
+                }}
+                activeOpacity={0.8}
               >
-                <Text style={commonStyles.buttonText}>Prospektüs</Text>
-                <Ionicons name="document-text-outline" size={20} color="#FFFFFF" />
+                <Ionicons name="pulse" size={18} color={COLORS.danger} />
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.symptomLogBtnTitle}>Semptom / Ağrı Kaydı</Text>
+                  <Text style={styles.symptomLogBtnSub}>Vücut haritasında bölge seç, şiddet belirle</Text>
+                </View>
+                <Ionicons name="chevron-forward" size={16} color={COLORS.danger} />
               </TouchableOpacity>
 
-              <TouchableOpacity
-                style={commonStyles.button}
-                onPress={saveNote}
-              >
-                <Text style={commonStyles.buttonText}>Kaydet</Text>
-                <Ionicons name="save-outline" size={20} color="#FFFFFF" />
+              {/* Butonlar */}
+              <View style={styles.modalBtnRow}>
+                <TouchableOpacity style={styles.prospModalBtn} onPress={openProspectus}>
+                  <Ionicons name="document-text-outline" size={17} color={COLORS.teal} />
+                  <Text style={styles.prospModalBtnText}>Prospektüs</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.saveBtn} onPress={saveNote}>
+                  <Ionicons name="save-outline" size={17} color="#FFF" />
+                  <Text style={styles.saveBtnText}>Kaydet</Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
+
+      {/* ═══════════════ Doktor Tavsiyeleri Detay Popup ═══════════════ */}
+      <Modal
+        animationType="fade"
+        transparent
+        visible={isDetailOpen}
+        onRequestClose={() => setIsDetailOpen(false)}
+      >
+        <View style={styles.detailOverlay}>
+          <View style={styles.detailBox}>
+            {/* Başlık */}
+            <View style={styles.detailHeader}>
+              <View style={[styles.detailHeaderIcon,
+                { backgroundColor: selectedDayType.bgColor }]}>
+                <Ionicons name={selectedDayType.icon} size={20} color={selectedDayType.color} />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.detailTitle}>{selectedDayType.label}</Text>
+                <Text style={styles.detailSubtitle}>{selectedDrug} · {selectedAntibody}</Text>
+              </View>
+              <TouchableOpacity style={styles.closeBtn} onPress={() => setIsDetailOpen(false)}>
+                <Ionicons name="close" size={20} color={COLORS.textSecondary} />
               </TouchableOpacity>
             </View>
+
+            {/* Hasta dostu kısa açıklama */}
+            <View style={[styles.shortSummaryBox, { backgroundColor: selectedDayType.bgColor, borderColor: selectedDayType.borderColor }]}>
+              <Ionicons name="person-outline" size={15} color={selectedDayType.color} style={{ marginRight: 8 }} />
+              <Text style={[styles.shortSummaryText, { color: selectedDayType.color }]}>
+                {SHORT_SUMMARIES[selectedDayTypeKey]}
+              </Text>
+            </View>
+
+            <View style={styles.detailDivider}>
+              <View style={styles.detailDividerLine} />
+              <Text style={styles.detailDividerText}>Klinik Tavsiye</Text>
+              <View style={styles.detailDividerLine} />
+            </View>
+
+            {/* Kişiselleştirilmiş uzun metin (JSON'dan, tıbbi dil) */}
+            <ScrollView style={styles.detailScroll} showsVerticalScrollIndicator={false}>
+              {personalizedReminder ? (
+                <Text style={styles.detailFullText}>{personalizedReminder}</Text>
+              ) : (
+                <Text style={styles.detailFullText}>{SHORT_SUMMARIES[selectedDayTypeKey]}</Text>
+              )}
+            </ScrollView>
+
+            <TouchableOpacity
+              style={[styles.detailCloseBtn, { backgroundColor: selectedDayType.color }]}
+              onPress={() => setIsDetailOpen(false)}
+            >
+              <Text style={styles.detailCloseBtnText}>Tamam, Anladım</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -409,137 +609,289 @@ const Calendar = () => {
   );
 };
 
+// ─── Stiller ────────────────────────────────────────────────────────────────
 const styles = StyleSheet.create({
-  calendarContainer: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 15,
-    padding: 15,
-    marginBottom: 20,
+  scroll: { padding: 16, paddingBottom: 48 },
+
+  // İlaç başlığı
+  drugHeader: {
+    backgroundColor: COLORS.surface,
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    ...SHADOWS.small,
+    borderWidth: 1,
+    borderColor: COLORS.borderLight,
+  },
+  drugHeaderLeft: { flex: 1, marginRight: 8 },
+  dataManagerBtn: {
+    width: 38, height: 38, borderRadius: 19,
+    backgroundColor: COLORS.background,
+    alignItems: 'center', justifyContent: 'center',
+    borderWidth: 1, borderColor: COLORS.borderLight,
+  },
+  drugName:   { fontSize: 19, fontWeight: '800', color: COLORS.primary, letterSpacing: -0.4 },
+  drugDetail: { fontSize: 12, color: COLORS.textSecondary, marginTop: 2, fontWeight: '500' },
+  drugDisease:{ fontSize: 12, color: COLORS.textMuted, marginTop: 3, lineHeight: 16 },
+  nextDoseBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.background,
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    gap: 5,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    flexShrink: 0,
+  },
+  nextDoseBadgeToday:    { backgroundColor: COLORS.primaryPale,  borderColor: '#A5D6A7' },
+  nextDoseBadgeTomorrow: { backgroundColor: COLORS.amberLight,   borderColor: COLORS.amberBorder },
+  nextDoseText: { fontSize: 11, fontWeight: '700', color: COLORS.textSecondary },
+
+  // Kara kutu
+  blackBoxBanner: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: COLORS.dangerLight,
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 10,
+    borderLeftWidth: 4,
+    borderLeftColor: COLORS.danger,
+    gap: 8,
+  },
+  blackBoxText: { fontSize: 12, color: COLORS.danger, flex: 1, fontWeight: '500', lineHeight: 17 },
+
+  // Takvim kartı
+  calendarCard: {
+    backgroundColor: COLORS.surface,
+    borderRadius: 20,
+    padding: 14,
+    marginBottom: 12,
+    ...SHADOWS.small,
+    borderWidth: 1,
+    borderColor: COLORS.borderLight,
   },
   monthHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 15,
+    marginBottom: 14,
   },
-  monthText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#2E7D32',
+  navBtn: {
+    width: 36, height: 36, borderRadius: 18,
+    backgroundColor: COLORS.primaryPale,
+    alignItems: 'center', justifyContent: 'center',
   },
-  weekDaysContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 10,
+  monthText: { fontSize: 17, fontWeight: '700', color: COLORS.textPrimary },
+  dayNamesRow: { flexDirection: 'row', marginBottom: 6 },
+  dayName: {
+    width: CELL_SIZE, textAlign: 'center',
+    fontSize: 10, fontWeight: '700',
+    color: COLORS.textMuted, textTransform: 'uppercase',
   },
-  weekDayText: {
-    width: 40,
-    textAlign: 'center',
-    color: '#666',
-    fontSize: 14,
+  daysGrid: { flexDirection: 'row', flexWrap: 'wrap' },
+  emptyCell: { width: CELL_SIZE, height: CELL_SIZE + 8 },
+  dayCell: {
+    width: CELL_SIZE, height: CELL_SIZE + 8,
+    alignItems: 'center', justifyContent: 'center',
+    borderRadius: 8, marginBottom: 3, position: 'relative',
+    borderWidth: 0,
   },
-  daysContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+  dayCellToday: { borderWidth: 2, borderColor: COLORS.primary },
+  dayNumber:      { fontSize: 13, fontWeight: '500', color: COLORS.textPrimary },
+  dayNumberToday: { color: COLORS.primary, fontWeight: '800' },
+  dayIconBg: {
+    width: 18, height: 18, borderRadius: 9,
+    alignItems: 'center', justifyContent: 'center', marginTop: 2,
   },
-  dayContainer: {
-    width: 40,
-    height: 60,
-    marginHorizontal: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
+  noteDot: {
+    position: 'absolute', top: 2, right: 3,
+    width: 5, height: 5, borderRadius: 2.5,
+    backgroundColor: COLORS.blue,
   },
-  dayText: {
-    color: '#333',
-    fontSize: 16,
-    fontWeight: 'bold',
+
+  // Lejant
+  legendCard: {
+    backgroundColor: COLORS.surface, borderRadius: 16,
+    padding: 16, marginBottom: 12,
+    ...SHADOWS.small, borderWidth: 1, borderColor: COLORS.borderLight,
   },
-  image: {
-    width: 20,
-    height: 20,
-    marginTop: 5,
+  legendTitle: {
+    fontSize: 13, fontWeight: '700', color: COLORS.textPrimary,
+    marginBottom: 12, textTransform: 'uppercase', letterSpacing: 0.5,
   },
-  legendContainer: {
-    marginTop: 20,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 15,
-    padding: 15,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    elevation: 5,
+  legendRow: {
+    flexDirection: 'row', alignItems: 'center',
+    marginBottom: 10, paddingLeft: 10,
+    borderLeftWidth: 3, paddingVertical: 4,
   },
-  legendItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 15,
-    padding: 10,
-    backgroundColor: '#F5F5F5',
-    borderRadius: 10,
+  legendImg: { width: 40, height: 40, borderRadius: 8, marginRight: 12, flexShrink: 0 },
+  legendTexts: { flex: 1 },
+  legendLabel: { fontSize: 13, fontWeight: '700', marginBottom: 2 },
+  legendDesc:  { fontSize: 12, color: COLORS.textSecondary, lineHeight: 16 },
+
+  // Prospektüs
+  prospBtn: {
+    flexDirection: 'row', alignItems: 'center',
+    backgroundColor: COLORS.tealLight, borderRadius: 14,
+    padding: 14, gap: 10, borderWidth: 1, borderColor: '#B2DFDB',
   },
-  legendImage: {
-    width: 30,
-    height: 30,
-    marginRight: 10,
+  prospBtnText: { flex: 1, fontSize: 14, fontWeight: '600', color: COLORS.teal },
+
+  // ── Modal ──────────────────────────────────────────────────────────────────
+  modalOverlay: {
+    flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end',
   },
-  legendTextContainer: {
-    flex: 1,
+  modalBox: {
+    backgroundColor: COLORS.surface,
+    borderTopLeftRadius: 28, borderTopRightRadius: 28,
+    padding: 20, paddingBottom: 36, maxHeight: '88%',
   },
-  legendText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#2E7D32',
+  dragHandle: {
+    width: 40, height: 4, backgroundColor: COLORS.border,
+    borderRadius: 2, alignSelf: 'center', marginBottom: 14,
   },
-  legendDescriptionText: {
-    fontSize: 14,
-    color: '#666',
-    marginTop: 4,
+  modalHeader: {
+    flexDirection: 'row', justifyContent: 'space-between',
+    alignItems: 'flex-start', marginBottom: 14,
   },
-  modalMessageContainer: {
-    alignItems: 'center',
-    marginBottom: 20,
+  modalDate: { fontSize: 17, fontWeight: '700', color: COLORS.textPrimary },
+  modalTypeBadge: {
+    flexDirection: 'row', alignItems: 'center',
+    borderRadius: 20, paddingHorizontal: 10, paddingVertical: 4,
+    marginTop: 5, gap: 5, alignSelf: 'flex-start',
+    borderWidth: 1,
   },
-  modalImage: {
-    width: 100,
-    height: 100,
-    marginBottom: 10,
+  modalTypeBadgeText: { fontSize: 12, fontWeight: '700' },
+  closeBtn: {
+    width: 32, height: 32, borderRadius: 16,
+    backgroundColor: COLORS.background,
+    alignItems: 'center', justifyContent: 'center',
   },
-  modalMessage: {
-    fontSize: 18,
-    color: '#333',
-    textAlign: 'center',
+
+  // Hatırlatma kartı (modal içinde)
+  reminderCard: {
+    borderRadius: 16, marginBottom: 12,
+    borderWidth: 1.5, flexDirection: 'row',
+    overflow: 'hidden', alignItems: 'stretch',
   },
-  noteContainer: {
-    marginBottom: 20,
+  reminderImage: {
+    width: 88, height: 88, flexShrink: 0,
   },
-  noteLabel: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 5,
+  reminderRight: {
+    flex: 1, padding: 12, justifyContent: 'center',
   },
+  reminderLabel: { fontSize: 13, fontWeight: '800', marginBottom: 4 },
+  reminderShort: {
+    fontSize: 13, color: COLORS.textPrimary,
+    lineHeight: 18, fontWeight: '500',
+  },
+  detailBtn: {
+    flexDirection: 'row', alignItems: 'center',
+    marginTop: 8, paddingVertical: 4, paddingHorizontal: 8,
+    borderRadius: 8, borderWidth: 1, alignSelf: 'flex-start',
+    gap: 4,
+  },
+  detailBtnText: { fontSize: 11, fontWeight: '700' },
+
+  // İlaç bağlamı
+  drugContextRow: {
+    flexDirection: 'row', alignItems: 'center',
+    marginBottom: 14, gap: 6,
+  },
+  drugContextText: { fontSize: 12, color: COLORS.textMuted, fontWeight: '500', flex: 1 },
+
+  // Not
+  noteLabelRow: {
+    flexDirection: 'row', alignItems: 'center',
+    justifyContent: 'space-between', marginBottom: 8,
+  },
+  noteLabel: { fontSize: 14, fontWeight: '700', color: COLORS.textSecondary },
+  noteDeleteBtn: {
+    flexDirection: 'row', alignItems: 'center', gap: 4,
+    paddingHorizontal: 8, paddingVertical: 4,
+    backgroundColor: COLORS.dangerLight, borderRadius: 8,
+  },
+  noteDeleteText: { fontSize: 12, fontWeight: '700', color: COLORS.danger },
   noteInput: {
-    backgroundColor: '#F5F5F5',
-    borderRadius: 10,
-    padding: 12,
-    fontSize: 16,
-    color: '#333',
-    minHeight: 100,
-    textAlignVertical: 'top',
+    backgroundColor: COLORS.background, borderRadius: 12,
+    padding: 12, fontSize: 14, color: COLORS.textPrimary,
+    minHeight: 85, borderWidth: 1.5, borderColor: COLORS.border,
+    marginBottom: 14,
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 20,
+
+  // Semptom kayıt butonu
+  symptomLogBtn: {
+    flexDirection: 'row', alignItems: 'center',
+    backgroundColor: COLORS.dangerLight, borderRadius: 14,
+    padding: 13, marginBottom: 10, gap: 10,
+    borderWidth: 1, borderColor: COLORS.dangerBorder,
   },
-  prospectusButton: {
-    backgroundColor: '#4CAF50',
-    marginRight: 10,
+  symptomLogBtnTitle: { fontSize: 14, fontWeight: '700', color: COLORS.danger },
+  symptomLogBtnSub:   { fontSize: 11, color: '#7F1D1D', marginTop: 1, fontWeight: '500' },
+
+  // Modal butonları
+  modalBtnRow: { flexDirection: 'row', gap: 10 },
+  prospModalBtn: {
+    flex: 1, flexDirection: 'row', alignItems: 'center',
+    justifyContent: 'center', backgroundColor: COLORS.tealLight,
+    borderRadius: 14, padding: 13, borderWidth: 1,
+    borderColor: '#B2DFDB', gap: 6,
   },
+  prospModalBtnText: { fontSize: 14, fontWeight: '700', color: COLORS.teal },
+  saveBtn: {
+    flex: 1, flexDirection: 'row', alignItems: 'center',
+    justifyContent: 'center', backgroundColor: COLORS.primary,
+    borderRadius: 14, padding: 13, gap: 6,
+  },
+  saveBtnText: { fontSize: 14, fontWeight: '700', color: '#FFF' },
+
+  // ── Detay Popup (Doktor Tavsiyeleri) ─────────────────────────────────────
+  detailOverlay: {
+    flex: 1, backgroundColor: 'rgba(0,0,0,0.65)',
+    justifyContent: 'center', alignItems: 'center', padding: 24,
+  },
+  detailBox: {
+    backgroundColor: COLORS.surface, borderRadius: 24,
+    padding: 22, width: '100%', maxHeight: '80%',
+    ...SHADOWS.large,
+  },
+  detailHeader: {
+    flexDirection: 'row', alignItems: 'center',
+    marginBottom: 14, gap: 12,
+  },
+  detailHeaderIcon: {
+    width: 44, height: 44, borderRadius: 22,
+    alignItems: 'center', justifyContent: 'center',
+  },
+  detailTitle:    { fontSize: 17, fontWeight: '800', color: COLORS.textPrimary },
+  detailSubtitle: { fontSize: 12, color: COLORS.textSecondary, marginTop: 2, fontWeight: '500' },
+  shortSummaryBox: {
+    flexDirection: 'row', alignItems: 'flex-start',
+    borderRadius: 12, padding: 12, borderWidth: 1,
+    marginBottom: 14,
+  },
+  shortSummaryText: { fontSize: 14, fontWeight: '600', lineHeight: 20, flex: 1 },
+  detailDivider: {
+    flexDirection: 'row', alignItems: 'center',
+    marginBottom: 14, gap: 8,
+  },
+  detailDividerLine: { flex: 1, height: 1, backgroundColor: COLORS.border },
+  detailDividerText: { fontSize: 11, fontWeight: '700', color: COLORS.textMuted, textTransform: 'uppercase' },
+  detailScroll: { maxHeight: 200, marginBottom: 16 },
+  detailFullText: {
+    fontSize: 14, color: COLORS.textPrimary,
+    lineHeight: 22, fontWeight: '400',
+  },
+  detailCloseBtn: {
+    borderRadius: 14, paddingVertical: 14,
+    alignItems: 'center',
+  },
+  detailCloseBtnText: { fontSize: 15, fontWeight: '700', color: '#FFF' },
 });
 
 export default Calendar;
