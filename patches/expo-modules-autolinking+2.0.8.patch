@@ -1,0 +1,19 @@
+diff --git a/node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle b/node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
+index 98c404e..56c1927 100644
+--- a/node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
++++ b/node_modules/expo-modules-autolinking/scripts/android/autolinking_implementation.gradle
+@@ -85,9 +85,11 @@ class MavenRepo {
+   String authentication
+ 
+   MavenRepo(Object data) {
+-    this.url = data.url
+-    this.credentials = data.credentials
+-    this.authentication = data.authentication
++    // Handle both Map and Map.Entry (Groovy iterates Map as entries)
++    def d = (data instanceof java.util.Map.Entry) ? data.value : data
++    this.url = d.url
++    this.credentials = d.credentials
++    this.authentication = d.authentication
+   }
+ }
+ 
