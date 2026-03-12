@@ -406,17 +406,19 @@
       ],
       "majorWarnings": [
         "Aktif enfeksiyon varken tedaviyi başlatmayın.",
-        "TNF inhibitörleriyle birlikte kullanmayın; ciddi enfeksiyon ve nötropeni riski artar.",
+        "TNF inhibitörleriyle birlikte kullanmayın; ciddi enfeksiyon ve nötropeni riski belirgin artar.",
+        "Canakinumab ile birlikte kullanmayın; aditif IL-1 blokajı ciddi enfeksiyon ve nötropeni riskini artırır.",
         "Nötropeni (ANC <1500/mm³) gelişirse tedaviyi durdurun.",
-        "Lateks alerjisi olanlarda dikkatli olun; kapak içerdiği bilinmektedir.",
+        "Lateks alerjisi olanlarda kontrendikedir; ön kapak lateks içermektedir.",
         "Canlı aşı almayın.",
-        "Renal yetmezliği olan hastalarda doz ayarlaması gerekebilir."
+        "Orta-ağır böbrek yetmezliğinde (eGFR <30 mL/dk/1.73m²) doz hergün yerine günaşırı uygulamaya alın; ileri böbrek yetmezliğinde dikkatli kullanın.",
+        "Nötropeni (ANC <1000/mm³ ise) gelişimine karşı aralıklı kan sayımı yaptırın."
       ],
       "drugInteractions": [
-        { "drug": "TNF inhibitörleri", "severity": "Major", "note": "Ciddi enfeksiyon ve nötropeni riski artar. Birlikte kullanmayın." },
-        { "drug": "Etanercept", "severity": "Major", "note": "Klinik çalışmalarda ciddi enfeksiyon ve nötropeni görülmüştür." },
+        { "drug": "TNF inhibitörleri (Etanercept, Adalimumab vb.)", "severity": "Major", "note": "Ciddi enfeksiyon ve nötropeni riski belirgin artar. Mutlaka kaçının." },
+        { "drug": "Canakinumab", "severity": "Major", "note": "Aditif IL-1 blokajı; ciddi enfeksiyon riski artar. Birlikte kullanmayın." },
         { "drug": "Canlı aşılar", "severity": "Major", "note": "Enfeksiyon riski artar." },
-        { "drug": "Diğer biyolojik ilaçlar", "severity": "Major", "note": "Aditif immünosüpresyon riski." }
+        { "drug": "Diğer biyolojik ilaçlar (JAK inhibitörleri dahil)", "severity": "Major", "note": "Aditif immünosüpresyon; kaçının." }
       ],
       "calendarReminders": {
         "preDose": "Yarın doz gününüz. KİNERET'i günlük enjekte etmeniz gerekiyor. Ateş, enfeksiyon veya enjeksiyon bölgesinde aşırı reaksiyon varsa doktorunuzu arayın. İlacı buzdolabından çıkarın, 30 dk oda ısısında bekletin.",
@@ -451,17 +453,20 @@
         "Renal Transplant Reddi Profilaksisi"
       ],
       "majorWarnings": [
-        "Sadece transplant deneyimli hekimler tarafından uygulanmalıdır.",
+        "Sadece transplant alanında deneyimli hekimler tarafından uygulanmalıdır.",
         "İlk veya ikinci dozdan sonra anafilaksi gelişebilir; resüsitasyon ekipmanı hazır bulundurulmalıdır.",
-        "Daha önce basiliximab kullandıktan sonra ciddi reaksiyon gelişmişse ikinci kez vermeyiniz.",
+        "Daha önce basiliximab kullandıktan sonra ciddi reaksiyon gelişmişse yeniden kullanmayın.",
         "Canlı aşı almayın.",
-        "Hamilelik ve emzirme döneminde dikkatli kullanın."
+        "Hamilelik ve emzirme döneminde dikkatli kullanın.",
+        "Transplant sonrası hiperglisemi riski artmıştır; kan şekerini yakından izleyin ve antidiyabetik tedavi gerekebilir.",
+        "CMV enfeksiyonu riski artmıştır; profilaksi değerlendirin."
       ],
       "drugInteractions": [
         { "drug": "Siklosporin", "severity": "Moderate", "note": "Kombinasyon standart rejimin bir parçasıdır; terapötik izlem yapın." },
         { "drug": "Takrolimus", "severity": "Moderate", "note": "Aditif immünosüpresyon; kan düzeyini izleyin." },
         { "drug": "Mikofenolat mofetil", "severity": "Moderate", "note": "Standart kombinasyon rejiminin parçası." },
-        { "drug": "Canlı aşılar", "severity": "Major", "note": "Canlı aşı enfeksiyonu riski artar." }
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Canlı aşı enfeksiyonu riski artar." },
+        { "drug": "Antidiyabetik ilaçlar (insülin, metformin vb.)", "severity": "Moderate", "note": "Basiliximab içeren transplant rejimi hiperglisemi yapabilir; antidiyabetik doz ayarı gerekebilir." }
       ],
       "calendarReminders": {
         "preDose": "Yarın infüzyon gününüz (nakil cerrahisi öncesi veya sonrası). Ateş, döküntü veya nefes darlığı varsa nakilden sorumlu hekiminizi bilgilendirin.",
@@ -547,12 +552,17 @@
         "Aktif ciddi lupus nefritiyle ya da aktif MSS lupusuyla başlanan klinik veriler yetersizdir.",
         "Aktif enfeksiyon varken tedaviyi başlatmayın.",
         "Canlı aşı almayın (son 30 gün içinde almış olanlarda da dikkatli olun).",
-        "Depresyon ve intihar düşüncesi bildirilen vakalarda ruh sağlığını izleyin.",
+        "Depresyon, anksiyete ve intihar düşüncesi (suicidal ideation) bildirilmiştir; ruh sağlığını yakından izleyin ve herhangi bir psikiyatrik değişimde derhal doktorunuzu arayın.",
+        "Progresif Multifokal Lökoensefalopati (PML) vakası bildirilmiştir; konuşma güçlüğü, hafıza kaybı, yürüme bozukluğu gelişirse acile gidin.",
         "İnfüzyon reaksiyonları ve geç aşırı duyarlılık reaksiyonları gelişebilir.",
-        "Nöromiyeltitis optika hastalarında kullanmayın (kötüleşme riski)."
+        "Nöromiyeltitis optika hastalarında kullanmayın (kötüleşme riski).",
+        "Siyah ırk hastalarda tedavi yanıtı daha az olabilir; doktorunuzla yakın takip yapın.",
+        "Subkütan formda COVID-19 gibi viral hastalık döneminde 1-2 hafta ilacı durdurmak için doktorunuzu arayın."
       ],
       "drugInteractions": [
         { "drug": "Canlı aşılar", "severity": "Major", "note": "Aşı etkinliği azalır, enfeksiyon riski artar." },
+        { "drug": "Rituximab", "severity": "Major", "note": "Ciddi immünosüpresyon ve enfeksiyon riski; birlikte kullanmayın. Rituximab'dan sonra Belimumab başlamadan yeterli arınma süresi bırakın." },
+        { "drug": "Anifrolumab", "severity": "Major", "note": "Aditif immünosüpresyon riski artmıştır; kombinasyondan kaçının." },
         { "drug": "Abatacept", "severity": "Major", "note": "Aditif immünosüpresyon riski." },
         { "drug": "Diğer biyolojik ilaçlar", "severity": "Major", "note": "Birlikte kullanılmamalıdır." },
         { "drug": "Siklofosfamid (IV)", "severity": "Major", "note": "Birlikte kullanılması önerilmez; ciddi enfeksiyon riski artar." }
@@ -704,17 +714,22 @@
         "Crohn Hastalığı"
       ],
       "majorWarnings": [
-        "PML riski nedeniyle JC virüs antikor testi gereklidir; antikor indeksini izleyin.",
+        "PML riski nedeniyle JC virüs antikor testi gereklidir; antikor indeksini her 6 ayda bir izleyin. İndeks >0.9 ise risk-fayda değerlendirmesi yapılmalıdır.",
         "Sadece TOUCH kayıt sistemi (veya ülke REMS'i) kapsamında kullanılabilir.",
-        "Diğer immünosüpresiflerle birlikte kullanmayın (özellikle beta-interferon, mitoksantron).",
-        "İmmün rekonstitüsyon inflamatuar sendromu (IRIS) bildirilmiştir.",
+        "Diğer immünosüpresiflerle birlikte kullanmayın (özellikle beta-interferon, mitoksantron, kortikosteroid uzun dönem).",
+        "Tedavi 24 ayı aştığında PML riski belirgin artar; doktorunuzla risk-fayda tartışması yapın.",
+        "İmmün rekonstitüsyon inflamatuar sendromu (IRIS) bildirilmiştir; tedavi kesilirse izleyin.",
         "Canlı aşı almayın.",
-        "Ciddi alerjik reaksiyonlar (anafilaksi) bildirilmiştir; premedikasyon değerlendirin."
+        "Ciddi alerjik reaksiyonlar (anafilaksi dahil) bildirilmiştir; anafilaksi için enjeksiyon sonrası 1 saat gözlem yapın.",
+        "Hepatit B reaktivasyonu: tedavi öncesi HBsAg ve anti-HBc taraması yapın.",
+        "Herpetik ensefalit/menenjit vakaları bildirilmiştir; ateş ve nörolojik bulgu varlığında acilen başvurun."
       ],
       "drugInteractions": [
         { "drug": "İmmünosüpresif ilaçlar", "severity": "Major", "note": "PML ve ciddi enfeksiyon riski artar. Birlikte kullanmayın." },
-        { "drug": "Beta-interferon", "severity": "Major", "note": "Kombinasyon PML riskini artırabilir." },
-        { "drug": "Kortikosteroidler (kısa süreli)", "severity": "Moderate", "note": "Relaps tedavisi için kabul edilebilir; uzun süreli kullanmayın." },
+        { "drug": "Beta-interferon (İnterferon Beta-1a/1b)", "severity": "Major", "note": "Kombinasyon PML riskini artırabilir; eş zamanlı kullanmayın." },
+        { "drug": "Metotreksat", "severity": "Major", "note": "Aditif immünosüpresyon; PML ve ciddi enfeksiyon riski artar. Birlikte kullanmayın." },
+        { "drug": "Mitoksantron", "severity": "Major", "note": "Kombinasyon PML riskini belirgin artırır; kullanmayın." },
+        { "drug": "Kortikosteroidler (kısa süreli)", "severity": "Moderate", "note": "Relaps tedavisi için kabul edilebilir; uzun süreli sistemik kullanmayın." },
         { "drug": "Canlı aşılar", "severity": "Major", "note": "Enfeksiyon riski artar." }
       ],
       "calendarReminders": {
@@ -804,22 +819,25 @@
       "mechanismDetail": "CD20 hücre yüzey antijenini hedef alan humanize IgG1 monoklonal antikorudur. Antikor bağımlı hücresel sitotoksisite (ADCC), kompleman bağımlı sitotoksisite (CDC) ve apoptoz aracılığıyla CD20+ B lenfositlerini deplete eder. Prekursor B hücrelerini ve matür B hücrelerini etkiler; kök hücreleri ve plazma hücrelerini etkilemez.",
       "blackBoxWarning": null,
       "diseases": [
-        "Relapsing Multipl Skleroz",
+        "Relapsing-Remitting Multipl Skleroz",
         "Primer Progresif Multipl Skleroz"
       ],
       "majorWarnings": [
-        "İnfüzyon reaksiyonlarını azaltmak için premedikasyon (metilprednizolon, antihistaminik, antipiretik) gereklidir.",
+        "Her infüzyon öncesi mutlaka premedikasyon (metilprednizolon 100 mg IV + antihistaminik + ateş düşürücü) uygulanmalıdır; aksi takdirde ciddi infüzyon reaksiyonu riski artar.",
+        "Aktif HBV enfeksiyonu durumunda kullanmayın; ölümcül reaktivasyon bildirilmiştir. Tedavi öncesi HBsAg ve anti-HBc taraması zorunludur.",
         "Aktif enfeksiyon varken infüzyonu erteleyin.",
-        "Hepatit B reaktivasyonu bildirilmiştir; tedavi öncesi HBsAg ve anti-HBc taraması yapın.",
-        "Progresif Multifokal Lökoensefalopati (PML) vakası bildirilmiştir; JC virüs antikoru izleyin.",
-        "Malignite (meme kanseri dahil) riski bildirilmiştir; mamografik tarama önerilir.",
-        "Canlı aşı almayın; tedaviden önce gerekli aşıları tamamlayın.",
+        "Progresif Multifokal Lökoensefalopati (PML) vakası bildirilmiştir; JC virüs antikoru takibi yapın.",
+        "İmmün aracılı kolit (şiddetli ishal, rektal kanama) postmarketing bildirimlerinde yer almıştır; tedaviyi kesin ve steroid başlayın.",
+        "Meme kanseri riski: klinik çalışmalarda karşılaştırıcı gruba (%0) kıyasla Ocrelizumab grubunda (%0.8) meme kanseri görülmüştür; düzenli mamografi yaptırın.",
+        "Canlı aşı almayın; inaktif aşıları tedaviden en az 4-6 hafta önce tamamlayın.",
+        "COVID-19 aşısı gibi inaktif aşılar için B hücre rekonstitüsyonunu bekleyin ya da tedaviden 2-4 hafta önce uygulayın.",
         "Gebelikte kullanımından kaçının; fetal B hücre deplesyonu yapabilir."
       ],
       "drugInteractions": [
         { "drug": "İmmünosüpresif ilaçlar", "severity": "Major", "note": "Aditif immünosüpresyon; enfeksiyon riski artar." },
         { "drug": "Canlı aşılar", "severity": "Major", "note": "Enfeksiyon riski artar." },
-        { "drug": "Kortikosteroidler", "severity": "Moderate", "note": "İnfüzyon reaksiyonu premedikasyonu için gereklidir." }
+        { "drug": "Metotreksat", "severity": "Moderate", "note": "Kombine immünosüpresyon; hemogram ve karaciğer enzimlerini izleyin." },
+        { "drug": "Kortikosteroidler", "severity": "Moderate", "note": "İnfüzyon reaksiyonu premedikasyonu için gerekli; uzun süreli sistemik kullanımdan kaçının." }
       ],
       "calendarReminders": {
         "preDose": "Yarın infüzyon gününüz (OCREVUS, 6 ayda bir). Ateş veya aktif enfeksiyon varsa kliniğinizi arayın. İnfüzyon yaklaşık 3.5 saat sürecektir; hazırlıklı olun.",
@@ -1029,9 +1047,12 @@
       ],
       "drugInteractions": [
         { "drug": "TNF inhibitörleri", "severity": "Major", "note": "Ciddi enfeksiyon riski artar. Birlikte kullanmayın." },
+        { "drug": "Baricitinib / Tofacitinib (JAK inhibitörleri)", "severity": "Major", "note": "Aditif immünosüpresyon ve enfeksiyon riski artar; birlikte kullanmayın." },
+        { "drug": "Anifrolumab", "severity": "Major", "note": "Aditif immünosüpresyon; kombinasyondan kaçının." },
         { "drug": "Canlı aşılar", "severity": "Major", "note": "Enfeksiyon riski artar." },
         { "drug": "Metotreksat", "severity": "Moderate", "note": "Standart kombinasyondur; hepatotoksisite açısından izleyin." },
-        { "drug": "Statinler / warfarin / siklosporin", "severity": "Moderate", "note": "IL-6 inhibisyonu CYP450 enzimlerini normalleştirir; bu ilaçların düzeyi değişebilir, takip edin." }
+        { "drug": "Statinler (atorvastatin vb.)", "severity": "Moderate", "note": "IL-6 inhibisyonu CYP3A4'ü normalleştirir; statin düzeyi azalabilir, etkinliği düşebilir. Doz ayarı gerekebilir." },
+        { "drug": "Warfarin / siklosporin / fenitoin", "severity": "Moderate", "note": "CYP450 normalizasyonu yoluyla bu ilaçların düzeyi değişebilir; terapötik izlem yapın." }
       ],
       "calendarReminders": {
         "preDose": "Yarın doz gününüz. Ateş veya enfeksiyon belirtisi varsa doktorunuzu arayın. KEVZARA'yı buzdolabından çıkarın, 30 dakika oda ısısında bekletin.",
@@ -1068,18 +1089,24 @@
         "Plak Psoriasis",
         "Psöriyatik Artrit",
         "Ankilozan Spondilit",
+        "Non-radyografik Aksiyel Spondiloartrit",
         "Hidradenitis Suppurativa",
         "Jüvenil İdiopatik Artrit"
       ],
       "majorWarnings": [
         "Aktif enfeksiyon varken ilacı uygulamayın.",
-        "İnflamatuar bağırsak hastalığı (Crohn) olan ya da olası hastalarda dikkatli kullanın; kötüleşme bildirilmiştir.",
+        "İnflamatuar bağırsak hastalığı (Crohn hastalığı veya ülseratif kolit) olan hastalarda kullanmayın; ciddi kötüleşme ve alevlenme bildirilmiştir. IBD öyküsü olan hastalarda mutlak kontrendikasyon olarak değerlendirin.",
         "Canlı aşı almayın.",
-        "Lateks alerjisi olanlarda ön yükleme kalemi içerdiğinden dikkatli olun.",
-        "Tüberküloz reaktivasyonu bildirilmiştir; tedavi öncesi tarama yapın."
+        "Lateks alerjisi olanlarda ön yükleme kalemi lateks içerdiğinden kontrendikedir.",
+        "Tüberküloz reaktivasyonu bildirilmiştir; tedavi öncesi tarama yapın.",
+        "Hepatit B reaktivasyonu bildirilen vakalar mevcuttur; tedavi öncesi HBsAg ve anti-HBc taraması yapın.",
+        "Ekzamatöz deri reaksiyonları (şiddetli egzema alevlenmesi) bildirilmiştir; özellikle atopik deri hastalığı olanlarda dikkatli olun.",
+        "Baricitinib gibi JAK inhibitörleriyle kombinasyondan kaçının; aditif immünosüpresyon ve enfeksiyon riski artar."
       ],
       "drugInteractions": [
         { "drug": "Canlı aşılar", "severity": "Major", "note": "Enfeksiyon riski artar." },
+        { "drug": "Baricitinib / Tofacitinib (JAK inhibitörleri)", "severity": "Major", "note": "Aditif immünosüpresyon; ciddi enfeksiyon ve lenfoma riski artar. Birlikte kullanmayın." },
+        { "drug": "TNF inhibitörleri (Infliximab vb.)", "severity": "Major", "note": "Klinik yararı gösterilmemiştir; kombinasyondan kaçının. İBH'de Crohn kötüleşme riski." },
         { "drug": "CYP450 substratları (warfarin, siklosporin, fenitoin)", "severity": "Moderate", "note": "IL-17A inhibisyonu CYP enzimlerini etkileyebilir; kan düzeylerini izleyin." }
       ],
       "calendarReminders": {
@@ -1223,14 +1250,18 @@
       ],
       "majorWarnings": [
         "Aktif enfeksiyon varken ilacı uygulamayın.",
-        "Tedaviye başlamadan önce tüberküloz taraması yaptırın.",
-        "Canlı aşı almayın.",
-        "Reversible posterior lökoensefalopati sendromu (RPLS) nadir bildirilmiştir; nörolojik belirtileri izleyin.",
-        "Malignite riski (lenfoma dahil) artmış olabilir."
+        "Tedaviye başlamadan önce tüberküloz taraması yaptırın; latent TB varsa tedavi başlamadan önce TB tedavisini başlatın.",
+        "Canlı aşı almayın. BCG aşısı için tedavi öncesi ve sonrasında en az 1 yıl bekleyin.",
+        "Reversible Posterior Lökoensefalopati Sendromu (RPLS): ani baş ağrısı, nöbet, görme bozukluğu gelişirse tedaviyi durdurun ve acile gidin.",
+        "Nonenfeksiyöz pnömoni (organize pnömoni, eozinofilik pnömonit dahil) bildirilmiştir; yeni ve açıklanamayan nefes darlığı veya öksürük gelişirse akciğer görüntülemesi yaptırın.",
+        "Malignite riski (lenfoma dahil) artmış olabilir; düzenli kontroller önerilir.",
+        "İlaç antikoru (anti-ustekinumab) gelişimi zaman içinde etkinliği azaltabilir."
       ],
       "drugInteractions": [
-        { "drug": "Canlı aşılar", "severity": "Major", "note": "Enfeksiyon riski artar." },
-        { "drug": "CYP450 substratları (warfarin, siklosporin)", "severity": "Moderate", "note": "IL-12/23 inhibisyonu normalleşme yoluyla bu ilaçların düzeyini etkileyebilir." }
+        { "drug": "Canlı aşılar", "severity": "Major", "note": "Enfeksiyon riski artar. BCG ve diğer canlı aşılar için uzun arınma süresi gerekir." },
+        { "drug": "TNF inhibitörleri (Infliximab vb.)", "severity": "Major", "note": "Aditif immünosüpresyon; enfeksiyon riski artar. Birlikte kullanmayın." },
+        { "drug": "Alerjen immünoterapi", "severity": "Moderate", "note": "Ustekinumab immünoterapi etkinliğini azaltabilir; birlikte kullanıyorsanız alerjistinizi bilgilendirin." },
+        { "drug": "CYP450 substratları (warfarin, siklosporin)", "severity": "Moderate", "note": "IL-12/23 inhibisyonu bu ilaçların düzeyini değiştirebilir; kan düzeylerini izleyin." }
       ],
       "calendarReminders": {
         "preDose": "Yarın doz gününüz. Ateş veya aktif enfeksiyon belirtisi varsa doktorunuzu arayın. STELARA'yı buzdolabından çıkarın, 30 dakika oda ısısında bekletin.",
@@ -1249,11 +1280,14 @@
         ]
       },
       "monitoring": [
-        "Tedavi öncesi TB taraması",
+        "Tedavi öncesi TB taraması (latent TB varsa tedavi başlamadan tedavi et)",
         "Deri belirtilerinin izlenmesi (PASI skoru)",
-        "Eklem değerlendirmesi",
-        "Gastrointestinal belirtilerin izlenmesi",
-        "Enfeksiyon belirtilerinin izlenmesi"
+        "Eklem değerlendirmesi (DAS28 skoru)",
+        "Gastrointestinal belirtilerin izlenmesi (Crohn/ÜK için)",
+        "Pulmoner belirtiler (açıklanamayan nefes darlığı → RPLS veya pnömoni düşün)",
+        "Karaciğer fonksiyon testleri (6-12 ayda bir)",
+        "Tam kan sayımı (her 6 ayda bir)",
+        "Malignite takibi (deri muayenesi, lenfoma belirtileri)"
       ]
     },
 
@@ -1267,16 +1301,19 @@
         "Ülseratif Kolit"
       ],
       "majorWarnings": [
-        "PML vakası bildirilmiştir; nörolojik belirtileri izleyin.",
+        "Karaciğer hasarı: ALT veya AST değeri normalin 5 katını aşarsa veya sarılık gelişirse tedaviyi kesin. Yaş >55 ve alkol kullananlar daha yüksek risk altındadır.",
+        "PML vakası bildirilmiştir (teorik risk); nörolojik belirtileri yakından izleyin.",
         "Aktif ciddi enfeksiyon varken tedaviyi başlatmayın.",
-        "Canlı aşı almayın.",
-        "İnfüzyon reaksiyonları bildirmiştir; premedikasyon gerekebilir.",
-        "Kronik aktif hepatit B: tedavi öncesi tarama yapın."
+        "Canlı aşı almayın; tedaviden önce tüm aşıları tamamlayın.",
+        "İnfüzyon reaksiyonları bildirilmiştir; premedikasyon gerekebilir (antihistaminik ± kortikosteroid).",
+        "Kronik aktif hepatit B: tedavi öncesi tarama zorunludur.",
+        "Kolera / Seyahat ishali aşıları (canlı oral): bu aşıları tedaviden önce yapmayı tercih edin; gerekirse meslektaşınıza danışın."
       ],
       "drugInteractions": [
-        { "drug": "Natalizumab", "severity": "Major", "note": "Aditif α4-integrin inhibisyonu; PML riski artabilir." },
-        { "drug": "TNF inhibitörleri", "severity": "Major", "note": "Birlikte kullanmayın; enfeksiyon riski artar." },
-        { "drug": "Canlı aşılar", "severity": "Major", "note": "Enfeksiyon riski artar." }
+        { "drug": "Natalizumab", "severity": "Major", "note": "Aditif α4-integrin inhibisyonu; PML riski artabilir. Birlikte kullanmayın." },
+        { "drug": "TNF inhibitörleri", "severity": "Major", "note": "Birlikte kullanmayın; ciddi enfeksiyon riski artar." },
+        { "drug": "Canlı aşılar (oral kolera, sarı humma dahil)", "severity": "Major", "note": "Enfeksiyon riski artar; tedaviden önce tamamlayın." },
+        { "drug": "Hepatotoksik ilaçlar (metotreksat, azatiyoprin vb.)", "severity": "Moderate", "note": "Karaciğer hasarı riski artabilir; karaciğer enzimlerini izleyin." }
       ],
       "calendarReminders": {
         "preDose": "Yarın infüzyon gününüz (ENTYVİO). Karın ağrısı, ishal veya rektal kanama değişimini not edin. Ateş varsa kliniğinizi arayın.",
@@ -1284,21 +1321,24 @@
         "day1": "İnfüzyon reaksiyonu (döküntü, kaşıntı) gelişirse kliniğinizi arayın.",
         "day2": "Bağırsak belirtilerinizi (ishal, karın ağrısı, kanama) kaydedin.",
         "day3": "Sinir sistemi belirtileri (konuşma güçlüğü, görme bozukluğu) PML işareti olabilir; acile gidin.",
-        "day4": "Yeterli sıvı alın.",
+        "day4": "Yeterli sıvı alın. Alkol tüketiminden kaçının; karaciğer hasarı riskini artırır.",
         "day5": "Tetikleyici gıdalardan (gluten, süt ürünleri, yüksek lifli gıdalar) kaçının (doktorunuzun önerisine göre).",
         "day6": "Genel sağlık durumunuzu ve bağırsak belirtilerini kaydedin.",
         "generalMonitoring": [
-          "Tedavi öncesi hepatit B taraması önerilir.",
+          "Tedavi öncesi hepatit B taraması zorunludur.",
+          "Karaciğer hasarı belirtilerini (sarılık, koyu idrar, sağ üst karın ağrısı) izleyin; ALT/AST normalin 5 katını aşarsa tedaviyi durdurun.",
+          "55 yaş üzeri ve alkol kullananlar karaciğer hasarı için daha yüksek risk grubundadır.",
           "PML belirtilerini (bilişsel değişiklik, motor güçsüzlük) yakından izleyin.",
           "Bağırsak semptomlarındaki değişimi düzenli kaydedin; endoskopik remisyon değerlendirmesi yapın.",
+          "Seyahat planınız varsa kolera veya seyahat ishali için aşıları tedaviden önce yaptırın.",
           "Tedavi süresince canlı aşı uygulatmayın."
         ]
       },
       "monitoring": [
         "Tedavi öncesi hepatit B taraması",
+        "Karaciğer fonksiyon testleri (ALT, AST, bilirubin) - düzenli izlem",
         "Bağırsak semptomlarının klinik değerlendirmesi",
         "Endoskopik değerlendirme (6. ayda)",
-        "Karaciğer fonksiyon testleri",
         "PML belirtilerinin nörolojik izlemi"
       ]
     },
@@ -1363,7 +1403,7 @@
     "Hidradenitis Suppurativa":              ["AMGEVİTA", "HUMİRA", "HYRIMOZ", "COSENTYX"],
     "Plak Psoriasis":                        ["AMGEVİTA", "HUMİRA", "HYRIMOZ", "AVSOLA", "IXIFI", "REMICADE", "TOLURİNE", "ENBREL", "COSENTYX", "STELARA"],
     "Jüvenil İdiopatik Artrit":              ["AMGEVİTA", "HUMİRA", "HYRIMOZ", "ENBREL", "ORENCIA", "ACTEMRA", "KİNERET", "ILARIS", "SIMPONI"],
-    "Non-radyografik Aksiyel Spondiloartrit": ["CIMZIA"],
+    "Non-radyografik Aksiyel Spondiloartrit": ["CIMZIA", "COSENTYX"],
     "Gut Hastalığı":                         ["ILARIS"],
     "Ailevi Akdeniz Ateşi":                  ["ILARIS", "KİNERET"],
     "Sistemik Jüvenil İdiopatik Artrit":     ["ILARIS", "ACTEMRA", "KİNERET"],
